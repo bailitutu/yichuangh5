@@ -1,0 +1,36 @@
+<template>
+    <div id="app">
+        <router-view/>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: 'App',
+        watch:{
+            '$route'(to,from){
+                console.log(to);
+                if(to.path == '/back'){
+                    this.$comm.normalBack();
+                    return;
+                }else if(to.path == '/record'){ //跳转交易记录
+                    if(this.$comm.isAndroid()){
+                        window.location.href = 'http://www.yichuangpt.com/static/gotoRecord.html'
+                    }else if(this.$comm.isIos()){
+                        goRecord();
+                    }
+                    return;
+                }
+
+            }
+        }
+    }
+</script>
+
+<style>
+    #app {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+</style>
