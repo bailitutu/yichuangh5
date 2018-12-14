@@ -1,5 +1,5 @@
 <template>
-    <yd-layout title="地址选择" link="/back">
+    <yd-layout title="地址选择" link="/orderSubmit">
         <yd-cell-group class="mlr-10" style="background: #f4f4f4;">
             <yd-cell-item class="list_item" @click.native="selectHandle(item)"
                           v-for="(item,index) in addressList" :key="index">
@@ -48,16 +48,8 @@
             },
             // 选择地址
             selectHandle(item){
-                console.log(item)
-                // if(this.$comm.isAndroid()){
-                //
-                // }else if(this.$comm.isIos()){
-                //
-                // }else{
-                //
-                //
-                // }
-
+                this.$comm.setStorge( 'selAddressId', item.id);
+                this.$router.back(-1);
             },
             // 进入地址管理
             addressManage() {

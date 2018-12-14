@@ -1,5 +1,5 @@
 <template>
-    <yd-layout class="page" >
+    <yd-layout class="page" link="/back">
         <yd-navbar bgcolor="rgba(255,255,255,0)"  class="page_nav">
             <router-link to="" @click.native="backPage()"  slot="left">
                 <yd-navbar-back-icon color="#fff"></yd-navbar-back-icon>
@@ -21,8 +21,8 @@
                 </div>
             </div>
             <div class="shop_right">
-                <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn">上架</yd-button>
-                <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn">预售</yd-button>
+                <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn" @click.native="upperFn">上架</yd-button>
+                <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn" @click.native="presellFn">预售</yd-button>
             </div>
         </div>
         <yd-tab border-color="#f4f4f4" color="#B0B0B0" active-color="#333333">
@@ -104,12 +104,7 @@
             this.getPreSellData();
         },
         methods: {
-            // 返回
-            backPage(){
-                // 要做三方区分
 
-                this.$comm.normalBack();
-            },
             // 获取店铺信息
             getShopInfo(){
                 this.$http.post('/appUser/findUserById', {
@@ -150,7 +145,23 @@
                         timeout: 1500
                     })
                 })
+            },
+            // 前往上架
+          upperFn(){
+            if(this.$comm.isAndroid()){
+              window.location.href = 'http://www.yichuangpt.com/static/gotoUpdate.html?userId='+ this.shopId
+            }else if(this.$comm.isIos()){
+              goUpdate()
             }
+          },
+          // 前往预售发布
+          presellFn(){
+            if(this.$comm.isAndroid()){
+              window.location.href = 'http://www.yichuangpt.com/static/gotoPresale.html?userId='+ this.shopId
+            }else if(this.$comm.isIos()){
+              goPresell()
+            }
+          }
 
             // loadList() {
             //     this.$http.post('http://list.ydui.org/getdata.php?type=backposition', {

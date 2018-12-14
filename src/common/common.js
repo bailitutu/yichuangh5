@@ -17,7 +17,6 @@ function normalBack() {
     if (isAndroid()) {
         window.location.href = 'http://www.yichuangpt.com/static/gotoRecord.html'
     } else if (isIos()) {
-        alert(11111)
         goBack();
     }
 }
