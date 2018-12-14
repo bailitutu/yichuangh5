@@ -1,7 +1,7 @@
 <template>
-    <yd-layout >
+    <yd-layout>
         <yd-navbar title="商品详情" class="page_nav">
-            <router-link to="/" slot="left">
+            <router-link to="" @click.native="backFn" slot="left">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </router-link>
             <router-link slot="right" to="/shopDetail">
@@ -69,7 +69,10 @@
             <p class="fs-16 c-28 plr-12">规格分类</p>
             <ul class="attr_list" v-if="goodInfo.detail">
                 <li v-for="(att,atti) in goodInfo.detail" :key="atti">
-                    <yd-button type="primary" size="small" bgcolor="#f4f4f4" color="#333333" @click.native="selectAttr(atti)" class="attr_btn" :class=" att.selected ? 'active': ''">{{att.spec}}</yd-button>
+                    <yd-button type="primary" size="small" bgcolor="#f4f4f4" color="#333333"
+                               @click.native="selectAttr(atti)" class="attr_btn" :class=" att.selected ? 'active': ''">
+                        {{att.spec}}
+                    </yd-button>
                 </li>
             </ul>
 
@@ -77,10 +80,13 @@
                 <yd-cell-group>
                     <yd-cell-item>
                         <span slot="left">购买数量</span>
-                        <yd-spinner slot="right" max="100" unit="1" width="1.6rem" height="0.45rem" v-model="buyNumber"></yd-spinner>
+                        <yd-spinner slot="right" max="100" unit="1" width="1.6rem" height="0.45rem"
+                                    v-model="buyNumber"></yd-spinner>
                     </yd-cell-item>
                 </yd-cell-group>
-                <yd-button size="large" shape="angle" bgcolor="#000" color="#fff" :disabled="buyGoodsInfo.stock == '0'" @click.native="submitFn">确定</yd-button>
+                <yd-button size="large" shape="angle" bgcolor="#000" color="#fff" :disabled="buyGoodsInfo.stock == '0'"
+                           @click.native="submitFn">确定
+                </yd-button>
             </div>
         </yd-popup>
     </yd-layout>
@@ -92,12 +98,12 @@
         data() {
             return {
                 swiperHeight: 0,
-                userId:'',
+                userId: '',
                 goodInfo: {},
                 showSelect: false,//选择规格
-                buyGoodsInfo:{},
+                buyGoodsInfo: {},
                 buyNumber: 1,
-                buyType:1,
+                buyType: 1,
             }
         },
         created() {
@@ -107,6 +113,13 @@
             this.getGoodDetail();
         },
         methods: {
+            backFn() {
+                if (this.$comm.getUrlKey('isH5')) {
+                    this.$router.back();
+                } else {
+                    this.$router.push({path: 'back'})
+                }
+            },
             // 获取商品信息
             getGoodDetail() {
                 this.$dialog.loading.open('努力加载中...');
@@ -115,9 +128,9 @@
                 }, (res) => {
                     this.$dialog.loading.close();
                     this.goodInfo = res.data;
-                    if( this.goodInfo.detail.length> 0 ){
-                        this.goodInfo.detail = this.goodInfo.detail.map((item)=>{
-                            Object.assign(item,{selected : false});
+                    if (this.goodInfo.detail.length > 0) {
+                        this.goodInfo.detail = this.goodInfo.detail.map((item) => {
+                            Object.assign(item, {selected: false});
                             return item;
                         })
                     }
@@ -132,9 +145,11 @@
             // 联系店主 跳转原生
             connctShop() {
                 let shopPhone = this.goodInfo.shop.shopPhone;
-                console.log(shopPhone)
-
-
+                if (this.$comm.isAndroid()) {
+                    window.location.href = 'http://www.yichuangpt.com/static/gochat.html?phone=' + shopPhone;
+                } else if (this.$comm.isIos()) {
+                    goChat(shopPhone)
+                }
             },
             // 加入购物车
             addCar() {
@@ -149,43 +164,46 @@
                 this.setSelectDefault();
             },
             // 选择商品规格
-            selectAttr(i){
-                this.goodInfo.detail = this.goodInfo.detail.map((item)=>{item.selected = false ;return item;});
+            selectAttr(i) {
+                this.goodInfo.detail = this.goodInfo.detail.map((item) => {
+                    item.selected = false;
+                    return item;
+                });
                 this.goodInfo.detail[i].selected = true;
                 this.buyGoodsInfo = this.goodInfo.detail[i];
             },
             // 设置默认选中的规格
-            setSelectDefault(){
-                if(!this.buyGoodsInfo.length){
+            setSelectDefault() {
+                if (!this.buyGoodsInfo.length) {
                     this.goodInfo.detail[0].selected = true;
-                    this.buyGoodsInfo =  this.goodInfo.detail[0];
+                    this.buyGoodsInfo = this.goodInfo.detail[0];
                 }
             },
             // 选择规格完成确认
-            submitFn(){
+            submitFn() {
                 // 判断当前库存是否足够
-                if( parseInt( this.buyNumber) > parseInt(this.buyGoodsInfo.stock) ){
+                if (parseInt(this.buyNumber) > parseInt(this.buyGoodsInfo.stock)) {
                     this.$dialog.toast({
-                        mes:'库存不足',
-                        timeout:'1500'
+                        mes: '库存不足',
+                        timeout: '1500'
                     });
                     return;
                 }
                 let totalPrice = 0;
-                totalPrice =Math.floor( parseInt(this.buyNumber) * this.buyGoodsInfo.price * 100)/100;
+                totalPrice = Math.floor(parseInt(this.buyNumber) * this.buyGoodsInfo.price * 100) / 100;
 
                 // 判断是加入购物车还是立即购买
-                if(this.buyType == 1){
+                if (this.buyType == 1) {
                     this.$http.post('/type/addShoppingCart', {
                         goodsId: this.shopGoodsId,
-                        userId:this.userId,
-                        number:this.buyNumber,
+                        userId: this.userId,
+                        number: this.buyNumber,
                         specId: this.buyGoodsInfo.id,
                         price: totalPrice,
                     }, (res) => {
                         this.$dialog.toast({
-                            mes:'加入购物车成功！',
-                            timeout:'1500'
+                            mes: '加入购物车成功！',
+                            timeout: '1500'
                         });
                         this.showSelect = false;
                         return;
@@ -195,20 +213,14 @@
                             timeout: 1500
                         })
                     })
-                }else if(this.buyType == 2){
-                    console.log(2222)
+                } else if (this.buyType == 2) {
 
                     // 跳转原生页面
-                    let goodsId = this.shopGoodsId ;
-                    let specId = this.buyGoodsInfo.id ;
-                    let goodsNum = this.buyNumber ;
+                    let goodsId = this.shopGoodsId;
+                    let specId = this.buyGoodsInfo.id;
+                    let goodsNum = this.buyNumber;
                     // 跳转结算页面
-                    window.location.href = 'http://www.yichuangpt.com/static/h5/yichuang-H5/html/shop-user/order-submit.html?userId='+ this.userId+'&goodsId='+ goodsId+'&specId='+ specId +'&num='+ goodsNum
-
-
-
-
-
+                    this.$router.push({ path:'orderSubmit',query:{ userId: this.userId, goodsId : goodsId,specId:specId,num:goodsNum }});
                 }
 
             }
@@ -294,6 +306,7 @@
         background: url("../../assets/good_trans.png") no-repeat center left;
         background-size: 0.28rem 0.2rem;
     }
+
     .good_attr .good_baotui {
         display: inline-block;
         font-size: 12px;
@@ -414,41 +427,47 @@
         width: 1.8rem;
         height: 1.8rem;
     }
-    .sel_good_info{
-        padding:0 2.6rem;
+
+    .sel_good_info {
+        padding: 0 2.6rem;
         background: #fff;
-        height:1.6rem;
+        height: 1.6rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        align-items:flex-start;
-        align-content:stretch;
-    }
-    .sel_good_info p{
-        padding:0.2rem 0;
+        align-items: flex-start;
+        align-content: stretch;
     }
 
-    .attr_list{
-        width: 100%;
-        font-size:0;
-        height:3rem;
-        overflow-y:auto;
+    .sel_good_info p {
+        padding: 0.2rem 0;
     }
-    .attr_list li{
+
+    .attr_list {
+        width: 100%;
+        font-size: 0;
+        height: 3rem;
+        overflow-y: auto;
+    }
+
+    .attr_list li {
         display: inline-block;
-        font-size:0.28rem;
-        color:#333;
-        padding:0.2rem 0.24rem;
+        font-size: 0.28rem;
+        color: #333;
+        padding: 0.2rem 0.24rem;
         -webkit-border-radius: 0.08rem;
         -moz-border-radius: 0.08rem;
         border-radius: 0.08rem;
     }
-    .attr_btn{
-        border:1px solid transparent;
+
+    .attr_btn {
+        border: 1px solid transparent;
     }
-    .active{
-        border:1px solid #939393;
+
+    .active {
+        border: 1px solid #939393;
     }
+
     .sel_good_footer {
         border-top: 1px solid #f4f4f4;
         position: absolute;

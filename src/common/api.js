@@ -18,35 +18,36 @@ let http = axios.create({
     }]
 });
 
-function apiAxios(method, url, params, response,error) {
+function apiAxios(method, url, params, response, error) {
     http({
         method: method,
         url: url,
         data: method === 'POST' || method === 'PUT' ? params : null,
         params: method === 'GET' || method === 'DELETE' ? params : null,
     }).then(function (res) {
-        console.log(res)
-        if(res.data.code == '0'){
+        if (res.data.code == '0') {
             response(res.data);
-        }else{
-            error ? error(res.data) : '';
+        } else {
+            error ? error(res.data) : function () {};
         }
     }).catch(function (err) {
-        error ? error(err) : '';
+        error ? error(err) : function () {
+            alert('系统异常')
+        };
     })
 }
 
 export default {
-    get: function (url, params, response) {
-        return apiAxios('GET', url, params, response)
+    get: function (url, params, response,error) {
+        return apiAxios('GET', url, params, response,error)
     },
-    post: function (url, params, response) {
-        return apiAxios('POST', url, params, response)
+    post: function (url, params, response,error) {
+        return apiAxios('POST', url, params, response,error)
     },
-    put: function (url, params, response) {
-        return apiAxios('PUT', url, params, response)
+    put: function (url, params, response,error) {
+        return apiAxios('PUT', url, params, response,error)
     },
-    delete: function (url, params, response) {
-        return apiAxios('DELETE', url, params, response)
+    delete: function (url, params, response,error) {
+        return apiAxios('DELETE', url, params, response,error)
     }
 }

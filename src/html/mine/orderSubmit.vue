@@ -1,7 +1,9 @@
 <template>
-    <yd-layout title="订单详情">
+    <yd-layout title="订单详情" :link="backUrl">
         <div class="address_item" v-if="hasAddress">
-            <yd-button type="primary" size="large" style="margin-top:4px;" shape="angle"  bgcolor="#fff" color="#333">选择收货地址</yd-button>
+            <yd-button type="primary" size="large" style="margin-top:4px;" shape="angle" bgcolor="#fff" color="#333">
+                选择收货地址
+            </yd-button>
         </div>
         <yd-cell-group v-else>
             <yd-cell-item arrow class="list_item" :href="{ path:'/addressSelect',query:{ type:'2'}}" type="link"
@@ -37,20 +39,23 @@
             </div>
             <div class="car_end">
                 <p class="fs-16 c-money">￥{{ allMoney }}</p>
-                <yd-button type="primary" bgcolor="#333" shape="angle" color="#fff" class="sub_btn" @click.native="goPay">结算</yd-button>
+                <yd-button type="primary" bgcolor="#333" shape="angle" color="#fff" class="sub_btn"
+                           @click.native="submitFn">结算
+                </yd-button>
             </div>
         </div>
-
-
     </yd-layout>
 </template>
 
 <script>
     export default {
         name: "order-submit",
-        data(){
+        data() {
             return {
-                hasAddress:false,
+                backUrl: '',
+                hasAddress: false,
+                addressInfo: {},
+                allMoney: 0,
                 list: [
 
                     {
@@ -62,12 +67,59 @@
                     }
                 ]
             }
+        },
+        created() {
+            this.addressId = this.$comm.getUrlKey('addressId') || '';
+            this.userId = this.$comm.getUrlKey('userId') || '';
+            this.goodsId = this.$comm.getUrlKey('goodsId') || '';
+            this.specId = this.$comm.getUrlKey('specId') || '';
+            this.backUrl = this.$router;
+        },
+        methods: {
+            // 存储订单信息
+            saveOrderInfo(){
+
+            },
+            // 获取页面信息
+            getPageData() {
+
+                // 获取默认 地址
+                this.$http.post('/userAddress/findAllAddrByUserId', {
+                    userId: this.userId
+                }, (res) => {
+                    console.log(res)
+                    this.addressList = res.data;
+                    if (res.data.length > 0) {
+                        res.data.map((item) => {
+                            if (item.isDefault) {
+                                this.addressInfo = item;
+                            }
+                        })
+                    } else {
+                        this.hasAddress = false;
+                    }
+
+                })
+                this.getOrderInfo();
+            },
+            // 获取订单信息
+            getOrderInfo(){
+
+
+            },
+            // 提交订单
+            submitFn() {
+
+
+            }
+
+
         }
     }
 </script>
 
 <style scoped>
-    .address_item{
+    .address_item {
         height: 52px;
         width: 100%;
         margin-top: 0.28rem;
@@ -75,6 +127,7 @@
         line-height: 52px;
         overflow: hidden;
     }
+
     .list_item {
         min-height: 85px;
         margin-top: 10px;
@@ -116,17 +169,18 @@
         overflow: hidden;
 
     }
+
     .car_center {
         height: 100%;
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: stretch;
-        align-content:center ;
+        align-content: center;
     }
 
     .car_center .goods_detail {
-        min-height: 1.6rem ;
+        min-height: 1.6rem;
         width: 3rem;
         flex: 1;
         display: flex;
@@ -146,6 +200,7 @@
         width: 100%;
         height: 100%;
     }
+
     .car_footer {
         width: 100%;
         height: 2rem;
@@ -156,26 +211,29 @@
         right: 0;
         z-index: 100;
     }
-    .car_tool{
-        border-top:1px solid #f4f4f4;
-        border-bottom:1px solid #f4f4f4;
+
+    .car_tool {
+        border-top: 1px solid #f4f4f4;
+        border-bottom: 1px solid #f4f4f4;
     }
-    .car_tool p{
+
+    .car_tool p {
         line-height: 1rem;
 
     }
 
-    .car_tool span{
-        min-width:2rem;
+    .car_tool span {
+        min-width: 2rem;
         text-align: center;
         line-height: 1rem;
     }
+
     .car_tool, .car_end {
-        height:1rem;
+        height: 1rem;
         display: flex;
         justify-content: space-between;
         align-content: center;
-        padding-left:0.24rem;
+        padding-left: 0.24rem;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
@@ -185,9 +243,9 @@
         line-height: 1rem;
     }
 
-    .sub_btn{
-        height:1rem;
-        width:2rem;
-        font-size:0.32rem;
+    .sub_btn {
+        height: 1rem;
+        width: 2rem;
+        font-size: 0.32rem;
     }
 </style>

@@ -6,7 +6,7 @@
             </router-link>
         </yd-navbar>
 
-        <yd-slider autoplay="30000" pagination-color="#fff" pagination-activecolor="#fff"
+        <yd-slider v-if="isReady" autoplay="30000" pagination-color="#fff" pagination-activecolor="#fff"
                    :style="{height:swiperHeight}">
             <yd-slider-item v-for="(item,index) in goodInfo.goodsImg" :key="index">
                 <a>
@@ -14,7 +14,7 @@
                 </a>
             </yd-slider-item>
         </yd-slider>
-        <div class="good_info">
+        <div class="good_info"  v-if="isReady">
             <div class="good_info_head" v-if="goodInfo.goods">
                 <p class="fs-16 c-333 goods_name">{{goodInfo.goods.goodsName}}</p>
                 <div v-if="goodInfo.detail">
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="good_detail">
+        <div class="good_detail"  v-if="isReady">
             <div class="good_detail_title tac">
                 <span class="fs-14">详情</span>
             </div>
@@ -39,9 +39,12 @@
             </div>
         </div>
 
-        <div class="goods_footer">
-            <yd-button size="large" bgcolor="#000" color="#fff" shape="angle" class="buy_btn" @click.native="submitFn">
+        <div class="goods_footer"  v-if="isReady">
+            <yd-button size="large" v-if="goodInfo.isUpperShelf == '0'" bgcolor="#000" color="#fff" shape="angle" class="buy_btn" @click.native="submitFn">
                 上架
+            </yd-button>
+            <yd-button v-else  size="large"  bgcolor="#000" color="#fff" shape="angle" class="buy_btn" @click.native="hasUpper">
+                已上架
             </yd-button>
         </div>
     </yd-layout>
@@ -52,6 +55,7 @@
         name: "supply-goods",
         data() {
             return {
+                isReady:false,
                 swiperHeight: 0,
                 userId: '',
                 goodInfo: {},
@@ -62,15 +66,17 @@
             this.swiperHeight = window.innerWidth + 'px'; //设置轮播图高度
             this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '231225779655151616';
             this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
-            this.shopCode = this.$comm.getUrlKey('shopCode')|| '224418465157615616';
+            this.shopCode = this.$comm.getUrlKey('shopCode') || '224418465157615616';
             this.getGoodDetail();
         },
         methods: {
             // 获取商品信息
             getGoodDetail() {
-                this.$http.post('/type/detail', {
-                    shopGoodsId: this.shopGoodsId,
+                this.$http.post('/type/detailSup', {
+                    userId: this.userId,
+                    supplierGoodsId: this.shopGoodsId
                 }, (res) => {
+                    this.isReady = true
                     this.goodInfo = res.data;
                     if (this.goodInfo.detail.length > 0) {
                         this.goodInfo.detail = this.goodInfo.detail.map((item) => {
@@ -108,6 +114,12 @@
                             })
                         }
                     }
+                })
+            },
+            hasUpper(){
+                this.$dialog.toast({
+                    mes: '该商品已上架！',
+                    timeout: 1500
                 })
             }
         }

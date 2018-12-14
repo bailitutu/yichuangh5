@@ -11,10 +11,14 @@ import '@/common/reset.css'
 import Api from '@/common/api.js'
 import myFilter from './filter'
 import comm from '@/common/common.js'
+// import Vuex from 'vuex'
+// import store  from './store'
 
 Vue.prototype.$http = Api
 Vue.prototype.$comm = comm
 Vue.use(YDUI)
+// Vue.use(Vuex);
+
 Vue.config.productionTip = false
 
 for (let key in myFilter) {
@@ -28,3 +32,6 @@ new Vue({
     components: {App},
     template: '<App/>'
 })
+
+
+
