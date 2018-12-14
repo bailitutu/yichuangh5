@@ -188,7 +188,11 @@
                             let goodsId = selectList[0].goodsId //要移除的id 或数组
                             let specId = selectList[0].specId //要移除的id 或数组
                             let goodsNum = selectList[0].number //要移除的id 或数组
-                            this.$router.push({ path:'/orderSubmit',query:{ userId: this.userId, goodsId : goodsId,specId:specId,num:goodsNum }})
+                            this.$router.push({ path:'/orderSubmit',query:{ userId: this.userId, goodsId : goodsId,specId:specId,num:goodsNum }});
+                            this.$comm.setStorge('preOrderGoodsId',goodsId);
+                            this.$comm.setStorge('preOrderSpecId',specId);
+                            this.$comm.setStorge('preOrderGoodsNum',goodsNum);
+                            this.$comm.setStorge('preOrderUserId',this.userId);
                         }
                     })
                 } else if(!this.list.length){

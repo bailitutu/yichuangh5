@@ -15,7 +15,8 @@ function isIos() {
 // 常规返回
 function normalBack() {
     if (isAndroid()) {
-        window.location.href = 'http://www.yichuangpt.com/static/gotoRecord.html'
+        alert('正常返回')
+        window.location.href = 'http://www.yichuangpt.com/static/gotoAndroid.html'
     } else if (isIos()) {
         goBack();
     }

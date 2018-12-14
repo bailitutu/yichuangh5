@@ -221,6 +221,11 @@
                     let goodsNum = this.buyNumber;
                     // 跳转结算页面
                     this.$router.push({ path:'orderSubmit',query:{ userId: this.userId, goodsId : goodsId,specId:specId,num:goodsNum }});
+
+                    this.$comm.setStorge('preOrderGoodsId',goodsId);
+                    this.$comm.setStorge('preOrderSpecId',specId);
+                    this.$comm.setStorge('preOrderGoodsNum',goodsNum);
+                    this.$comm.setStorge('preOrderUserId',this.userId);
                 }
 
             }
