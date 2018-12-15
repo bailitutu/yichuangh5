@@ -1,6 +1,6 @@
 <template>
     <yd-layout>
-        <yd-navbar title="昵称修改">
+        <yd-navbar title="昵称(店铺名)修改">
             <router-link to="/back" slot="left">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </router-link>
@@ -26,7 +26,7 @@
             }
         },
         created(){
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616'
+            this.userId = this.$comm.getUrlKey('userId') || ''
         },
         methods:{
             submitFn(){
@@ -46,8 +46,7 @@
                         timeout:1500,
                         callback:()=>{
                             // 返回APP端
-
-                            this.$router.history.go(-1)
+                            this.$comm.normalBack();
                         }
                     })
 

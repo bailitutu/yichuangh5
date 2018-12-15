@@ -8,24 +8,25 @@
 
         <yd-slider v-if="isReady" autoplay="30000" pagination-color="#fff" pagination-activecolor="#fff"
                    :style="{height:swiperHeight}">
-            <yd-slider-item v-for="(item,index) in goodInfo.goodsImg" :key="index">
+            <yd-slider-item v-for="(item,index) in goodInfo.goodsImgs" :key="index">
                 <a>
                     <img :src="item">
                 </a>
             </yd-slider-item>
         </yd-slider>
         <div class="good_info"  v-if="isReady">
-            <div class="good_info_head" v-if="goodInfo.goods">
-                <p class="fs-16 c-333 goods_name">{{goodInfo.goods.goodsName}}</p>
-                <div v-if="goodInfo.detail">
-                    <p class="good_prop">价格 <span class="fs-16 c-money">￥{{goodInfo.detail[0].price || 0.00}}</span></p>
+            <div class="good_info_head" >
+                <p class="fs-16 c-333 goods_name">{{goodInfo.goodsName}}</p>
+                <div v-if="goodInfo.spec">
+                    <p class="good_prop">价格 <span class="fs-16 c-money">￥{{goodInfo.spec.price || 0.00}} </span><span class="c-money plr-10">佣金：￥{{goodInfo.spec.commission }}</span></p>
                     <div class="good_attr">
-                        <span class="good_label">{{goodInfo.goods.label}}</span>
+                        <span class="good_label">{{goodInfo.label}}</span>
+                        <span class="good_baotui">七天包退</span>
                         <span class="good_trans">商家配送</span>
                     </div>
                 </div>
                 <div class="good_intro fs-12 ">
-                    {{goodInfo.goods.goodsInfo}}
+                    {{goodInfo.goodsInfo}}
                 </div>
             </div>
         </div>
@@ -35,7 +36,7 @@
                 <span class="fs-14">详情</span>
             </div>
             <div class="good_detail_img">
-                <img v-for="(cell,ind) in goodInfo.goodsInfoImg" :key="ind" :src="cell" alt="">
+                <img v-for="(cell,ind) in goodInfo.goodsInfoImgs" :key="ind" :src="cell" alt="">
             </div>
         </div>
 
@@ -63,8 +64,8 @@
             }
         },
         created() {
-            this.swiperHeight = window.innerWidth + 'px'; //设置轮播图高度
-            this.shopGoodsId = this.$comm.getUrlKey('supplierGoodsId') || '231225779655151616';
+            this.swiperHeight = window.innerWidth + 'px';
+            this.shopGoodsId = this.$comm.getUrlKey('supplierGoodsId') || '233177474844987392';
             this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
             this.shopCode = this.$comm.getUrlKey('shopCode') || '224418465157615616';
             this.getGoodDetail();
@@ -76,14 +77,9 @@
                     userId: this.userId,
                     supplierGoodsId: this.shopGoodsId
                 }, (res) => {
-                    this.isReady = true
+                    this.isReady = true;
+                    console.log(222)
                     this.goodInfo = res.data;
-                    if (this.goodInfo.detail.length > 0) {
-                        this.goodInfo.detail = this.goodInfo.detail.map((item) => {
-                            Object.assign(item, {selected: false});
-                            return item;
-                        })
-                    }
                 }, (err) => {
                     this.$dialog.toast({
                         mes: err.msg,
@@ -99,7 +95,7 @@
                         if (this.goodInfo.goods) {
                             this.$http.post('/shop/upperShop', {
                                 shopCode: this.shopCode,
-                                goodsId: this.goodInfo.goods.id
+                                goodsId: this.shopGoodsId
                             }, (res) => {
                                 this.$dialog.toast({
                                     mes: '上架成功！',
@@ -201,7 +197,7 @@
         margin-right: 0.2rem;
         padding-left: 0.4rem;
         background: url("../../assets/good_trans.png") no-repeat center left;
-        background-size: 0.28rem 0.2rem;
+        background-size: 0.24rem 0.24rem;
     }
 
     .goods_name {

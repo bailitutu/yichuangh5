@@ -33,7 +33,7 @@
             }
         },
         created() {
-            let userId = this.$comm.getUrlKey('userId') || '224418465157615616';
+            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
             this.pageType = this.$comm.getUrlKey('type') || '2';  //2:关注；1：粉丝
             this.noDataText = this.pageType == '2' ? '还没有任何关注哦' : '还没有粉丝哦~';
             this.getData(this.pageType);

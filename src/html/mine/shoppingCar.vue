@@ -7,7 +7,7 @@
                 </div>
                 <div class="car_center">
                     <div class="goods_img">
-                        <img :src="item.goodImg" alt="">
+                        <img :src="item.goodsImg" alt="">
                     </div>
                     <div class="goods_detail" @click="checkGoodDetai(item.goodsId)">
                         <div class="one_row">{{item.goodsName}}</div>
@@ -143,13 +143,12 @@
                         title: '',
                         mes: '确认移除？',
                         opts: () => {
-
-                            let selectList = this.list.filter(item =>{ item.selected});
-
+                            console.log(1111)
+                            let selectList = this.list.filter(item =>{ return item.selected});
+                            console.log(selectList)
                             let carId = selectList[0].id //要移除的id 或数组
-
                             // 发送删除请求
-                            this.$http.post('',{
+                            this.$http.post('/myCays/delOneCar',{
                                 carId:carId,
                             },()=>{
                                 this.$dialog.toast({
@@ -159,7 +158,7 @@
                                 this.list = this.list.filter(item => !item.selected)
                             },()=>{
                                 this.$dialog.toast({
-                                    mes:'修改失败，请重新！',
+                                    mes:'修改失败，请重试！',
                                     timeout:1500,
                                 })
                             })
@@ -189,6 +188,7 @@
                             let specId = selectList[0].specId //要移除的id 或数组
                             let goodsNum = selectList[0].number //要移除的id 或数组
                             this.$router.push({ path:'/orderSubmit',query:{ userId: this.userId, goodsId : goodsId,specId:specId,num:goodsNum }});
+                            this.$comm.setStorge('YCOrderBackUrl',this.$route.fullPath);
                             this.$comm.setStorge('preOrderGoodsId',goodsId);
                             this.$comm.setStorge('preOrderSpecId',specId);
                             this.$comm.setStorge('preOrderGoodsNum',goodsNum);

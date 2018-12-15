@@ -4,7 +4,8 @@
             <router-link to="" @click.native="backFn" slot="left">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </router-link>
-            <router-link slot="right" to="/shopDetail">
+            <router-link v-if="goodInfo.shop" slot="right"
+                         :to="{ path:'/shopDetail',query:{ isCheck: 1, shopId: goodInfo.shop.shopId,userId:userId}}">
                 <span class="shop_icon"></span>
             </router-link>
         </yd-navbar>
@@ -60,7 +61,7 @@
 
         <yd-popup v-model="showSelect" position="bottom" height="60%">
             <div class="sel_good_img" v-show="showSelect">
-                <img src="../../assets/goods.png" class="hasBra" alt="">
+                <img :src="goodInfo.goodsImg[0]" class="hasBra" alt="">
             </div>
             <div class="sel_good_info">
                 <p class="c-money fs-14">￥<span class="fs-16">{{buyGoodsInfo.price}}</span></p>
@@ -113,11 +114,12 @@
             this.getGoodDetail();
         },
         methods: {
+            // 返回
             backFn() {
                 if (this.$comm.getUrlKey('isH5')) {
-                    this.$router.back();
+                    this.$router.back(-1);
                 } else {
-                    this.$router.push({path: 'back'})
+                    this.$comm.normalBack();
                 }
             },
             // 获取商品信息
@@ -220,12 +222,15 @@
                     let specId = this.buyGoodsInfo.id;
                     let goodsNum = this.buyNumber;
                     // 跳转结算页面
-                    this.$router.push({ path:'orderSubmit',query:{ userId: this.userId, goodsId : goodsId,specId:specId,num:goodsNum }});
-
-                    this.$comm.setStorge('preOrderGoodsId',goodsId);
-                    this.$comm.setStorge('preOrderSpecId',specId);
-                    this.$comm.setStorge('preOrderGoodsNum',goodsNum);
-                    this.$comm.setStorge('preOrderUserId',this.userId);
+                    this.$router.push({
+                        path: 'orderSubmit',
+                        query: {userId: this.userId, goodsId: goodsId, specId: specId, num: goodsNum}
+                    });
+                    this.$comm.setStorge('YCOrderBackUrl', this.$route.fullPath);
+                    this.$comm.setStorge('preOrderGoodsId', goodsId);
+                    this.$comm.setStorge('preOrderSpecId', specId);
+                    this.$comm.setStorge('preOrderGoodsNum', goodsNum);
+                    this.$comm.setStorge('preOrderUserId', this.userId);
                 }
 
             }
@@ -247,12 +252,8 @@
         bottom: 1.1rem;
     }
 
-    .yd-btn-block {
-        margin-top: 0;
-    }
-
     .yd-popup-content {
-        overflow-y: visible;
+        overflow-y: visible !important;
     }
 </style>
 <style scoped>
@@ -318,7 +319,7 @@
         margin-right: 0.2rem;
         padding-left: 0.4rem;
         background: url("../../assets/baotui_icon.png") no-repeat center left;
-        background-size: 0.28rem 0.2rem;
+        background-size: 0.24rem 0.24rem;
     }
 
     .goods_name {

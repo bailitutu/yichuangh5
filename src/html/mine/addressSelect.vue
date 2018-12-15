@@ -4,20 +4,18 @@
             <yd-cell-item class="list_item" @click.native="selectHandle(item)"
                           v-for="(item,index) in addressList" :key="index">
                 <div slot="left">
-                    <p> {{item.consignee}} <span class="ml-40">{{item.phone}}</span> <span v-if="item.isDefault" class="address_dot hasBra c-fff ml-40">默认</span>
+                    <p> {{item.consignee}} <span class="ml-40">{{item.phone}}</span> <span v-if="item.isDefault == '1'" class="address_dot hasBra c-fff ml-40">默认</span>
                     </p>
                     <div class="address_detail">{{item.provinceName + item.cityName + item.areaName + item.detailAddr}}</div>
                 </div>
             </yd-cell-item>
         </yd-cell-group>
-        <div class="plr-10"
-             style="width:100%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+        <white-page v-if="addressList.length > 0 ? false :true" ></white-page>
+        <div class="plr-10 mt-10">
             <yd-button size="large" type="primary" class='foo_btn' bgcolor="#fff" @click.native="addressManage">
-                <!--<yd-icon name="home" size=".6rem" color=""></yd-icon>-->
                 地址管理
             </yd-button>
         </div>
-        <white-page v-if="addressList.length > 0 ? false :true" ></white-page>
     </yd-layout>
 </template>
 
@@ -32,7 +30,7 @@
             }
         },
         created(){
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
+            this.userId = this.$comm.getUrlKey('userId') || '';
             this.getAddressList();
         },
         methods: {
@@ -44,7 +42,6 @@
                 }, (res) => {
                     this.addressList = res.data;
                 })
-
             },
             // 选择地址
             selectHandle(item){
@@ -53,7 +50,7 @@
             },
             // 进入地址管理
             addressManage() {
-                this.$router.push({path: 'addressList', query: {isH5: '1'}})
+                this.$router.push({path: 'addressList', query: {userId:this.userId,isH5: '1'}})
             }
         }
     }

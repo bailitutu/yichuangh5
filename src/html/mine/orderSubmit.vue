@@ -7,7 +7,7 @@
             </yd-button>
         </div>
         <yd-cell-group v-else>
-            <yd-cell-item arrow class="list_item" :href="{ path:'/addressSelect',query:{ type:'2'}}" type="link" >
+            <yd-cell-item arrow class="list_item" :href="{ path:'/addressSelect',query:{ userId:userId}}" type="link" >
                 <div slot="left">
                     <p> {{addressInfo.consignee}} <span class="ml-40">{{addressInfo.phone}}</span></p>
                     <div class="address_detail">{{addressInfo.provinceName + addressInfo.cityName + addressInfo.areaName+addressInfo.detailAddr}}
@@ -67,8 +67,11 @@
             this.specId = this.$comm.getUrlKey('specId') || this.$comm.getStorge('preOrderSpecId') || '';
             this.num = this.$comm.getUrlKey('num') || this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
+            this.backUrl = this.$comm.getStorge('YCOrderBackUrl')
         },
         methods: {
+
+
             // 获取页面信息
             getPageData() {
                 let addId = this.$comm.getStorge('selAddressId') || null;
@@ -148,6 +151,7 @@
                     specId: this.specId,
                     price: this.goodsInfo.price,
                     goodsNum: this.num,
+                    goodsName:this.goodsInfo.goodsName,
                     totalPrice: this.totalMoney,
                     phone: this.addressInfo.phone,
                     address: address,
@@ -155,7 +159,7 @@
                     postalCode: this.addressInfo.postalCode
                 }, (res) => {
                     if (this.$comm.isIos()) {
-                        goPay(res.data)
+                        goPay(res.data);
                     } else if (this.$comm.isAndroid()) {
                         let data = res.data;
                         window.location.href = 'http://www.yichuangpt.com/static/goPay.html?appId=' + data.appId + '&prepayId=' + data.prepayid + '&nonceStr=' + data.noncestr + '&timeStamp=' + data.timestamp + '&sign=' + data.sign;

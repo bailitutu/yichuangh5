@@ -81,6 +81,12 @@
     -webkit-border-radius: 0.08rem;
     -moz-border-radius: 0.08rem;
     border-radius: 0.08rem;
+    margin-top: 0;
+}
+/*tab下划线长度*/
+.yd-tab-nav .yd-tab-active:before {
+    width: 20%;
+    margin-left: -10%;
 }
 .one_row{
     width:100%;

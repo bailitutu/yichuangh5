@@ -34,7 +34,7 @@ export default new Router({
             component: goodDetail
         },
         {
-            path: '/presellDetail/:item',
+            path: '/presellDetail',
             name: 'presellDetail',
             component: presellDetail
         },

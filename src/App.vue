@@ -7,21 +7,24 @@
 <script>
     export default {
         name: 'App',
-        watch:{
-            '$route'(to,from){
-                console.log(to);
-                if(to.path == '/back'){
-                    this.$comm.normalBack();
-                    return;
-                }else if(to.path == '/record'){ //跳转交易记录
-                    if(this.$comm.isAndroid()){
-                        window.location.href = 'http://www.yichuangpt.com/static/gotoRecord.html'
-                    }else if(this.$comm.isIos()){
-                        goRecord();
-                    }
-                    return;
-                }
 
+        watch:{
+            '$route':{
+                handler(to, from){
+                    if(to.path == '/back'){
+                        this.$comm.normalBack();
+                    }else if(to.path == '/record'){ //跳转交易记录
+                        if(this.$comm.isAndroid()){
+                            window.location.href = 'http://www.yichuangpt.com/static/gotoRecord.html'
+                        }else if(this.$comm.isIos()){
+                            goRecord();
+                        }
+                    }
+                    this.$comm.setStorge( 'YCBackUrl', from.fullPath)
+
+                },
+                // 深度观察监听
+                deep: true
             }
         }
     }
