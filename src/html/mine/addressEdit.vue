@@ -1,5 +1,12 @@
 <template>
-    <yd-layout title="编辑地址" link="/addressList">
+    <yd-layout >
+        <div class="nav_bar" >
+            <div class="nav_cell" @click.prevent="backPage">
+                <yd-navbar-back-icon></yd-navbar-back-icon>
+            </div>
+            <p class="nav_title">{{ pageType == 0 ? '新增' : '编辑'}}地址</p>
+        </div>
+
         <yd-cell-group class="mt-10">
             <yd-cell-item>
                 <span slot="left">收货人名称：</span>
@@ -73,18 +80,23 @@
             }
         },
         methods: {
+            backPage(){
+                this.$router.back(-1);
+            },
             // 修改地址时获取地址信息
             getAddressDetail(id) {
                 this.$http.post('/userAddress/getOneAddrDateil', {
                     id: id
                 }, (res) => {
-                    console.log(res.data);
                     this.name = res.data.name;
-                    this.isDefault = res.data.isDefault== '1' ? true : false;
+                    this.isDefault = this.$route.query.isDefault == 1 ? true : false;
                     this.phone = res.data.phone;
                     this.detailaddr = res.data.detailaddr;
                     this.postalCode = res.data.postalCode;
                     this.address = res.data.province + ' ' + res.data.city + ' ' + res.data.area;
+                    this.province = res.data.province;
+                    this.city = res.data.city;
+                    this.area = res.data.area;
 
                 })
             },
@@ -148,7 +160,7 @@
                     userId: this.userId,
                     consignee: this.name,
                     postalCode: this.postalCode,
-                    isDefault: this.isDefault ? '1' : false,
+                    isDefault: this.isDefault ? '1' : '0',
                     phone: this.phone,
                     province: this.province,
                     city: this.city,
@@ -178,8 +190,8 @@
                     province: this.province,
                     city: this.city,
                     area: this.area,
-                    detailAddr: this.detailAddr,
-                    isDefault: this.isDefault ? '1' : false,
+                    detailAddr: this.detailaddr,
+                    isDefault: this.isDefault ? '1' : '0',
                 };
                 this.$http.post('/userAddress/updateAdd', postData, (res) => {
                     this.$dialog.toast({
@@ -243,10 +255,31 @@
     .yd-cell-left {
         min-width: 100px;
     }
-
-    .plr-10 {
-        padding: 0 10px;
+    .nav_bar{
+        width:100%;
+        height:1rem;
+        background: #fff;
+        line-height: 1rem;
+        position: relative;
     }
+    .nav_cell{
+        width:1rem;
+        padding-left:0.24rem;
+        position: absolute;
+        top:0;
+        left:0;
+        z-index: 10;
+    }
+    .nav_title{
+        width: 100%;
+        height:1rem;
+        text-align: center;
+        font-size:0.3rem;
+        line-height: 1rem;
+    }
+
+
+
 
 
 </style>

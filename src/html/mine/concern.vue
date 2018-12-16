@@ -11,8 +11,8 @@
                 <img :src="item.headImg" alt="" class="concern_img">
                 <p>{{item.name}}</p>
                 <yd-button size="small" type="primary" class="concern_btn hasBra"
-                           :bgcolor="!item.isFollow ? '#282828' : '#B0B0B0' " color="#fff"
-                           @click.native="concernFn(index,item)"> {{ item.isFollow ? '已关注' : '关注'}}
+                           :bgcolor="item.isFollow == 0 ? '#282828' : '#B0B0B0' " color="#fff"
+                           @click.native="concernFn(index,item)"> {{ item.isFollow == 1 ? '已关注' : '关注'}}
                 </yd-button>
             </li>
         </ul>
@@ -68,7 +68,7 @@
                     userId: this.userId,
                     fansId: fansId
                 }, (res) => {
-                    if (item.isFollow) {
+                    if (item.isFollow == 0) {
                         this.$dialog.toast({
                             mes: '取消关注成功'
                         })

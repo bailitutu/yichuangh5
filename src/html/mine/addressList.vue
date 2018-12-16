@@ -1,7 +1,7 @@
 <template>
     <yd-layout title="地址管理" :link="backUrl">
         <yd-cell-group class="mlr-10" style="background: #f4f4f4;">
-            <yd-cell-item arrow class="list_item" :href="{ path:'/addressEdit',query:{ addressId:item.id ,userId: userId,pageType:1}}" type="link"
+            <yd-cell-item arrow class="list_item" :href="{ path:'/addressEdit',query:{ addressId:item.id ,userId: userId,pageType:1,isDefault:item.isDefault}}" type="link"
                           v-for="(item,index) in addressList" :key="index">
                 <div slot="left">
                     <p> {{item.consignee}} <span class="ml-40">{{item.phone}}</span> <span v-if="item.isDefault == '1'" class="address_dot hasBra c-fff ml-40">默认</span>
