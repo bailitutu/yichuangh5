@@ -13,7 +13,6 @@
         </yd-cell-group>
         <div class="plr-10 mt-10" >
             <yd-button size="large" type="primary" class='foo_btn' bgcolor="#fff" @click.native="addAddress">
-                <!--<yd-icon name="home" size=".6rem" color=""></yd-icon>-->
                 新增地址
             </yd-button>
         </div>
