@@ -20,8 +20,6 @@
                             goRecord();
                         }
                     }
-                    this.$comm.setStorge( 'YCBackUrl', from.fullPath)
-
                 },
                 // 深度观察监听
                 deep: true

@@ -143,7 +143,6 @@
                         title: '',
                         mes: '确认移除？',
                         opts: () => {
-                            console.log(1111)
                             let selectList = this.list.filter(item =>{ return item.selected});
                             console.log(selectList)
                             let carId = selectList[0].id //要移除的id 或数组

@@ -5,7 +5,7 @@
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
             <p class="nav_title">预售详情</p>
-            <div></div>
+            <div style="width:1rem;"></div>
         </div>
 
         <yd-cell-group class="download_item mt-10" >
@@ -27,11 +27,72 @@
             </yd-lightbox>
         </div>
 
-        <yd-tab class="mt-10">
+        <yd-tab class="mt-10" border-color="#f4f4f4" color="#B0B0B0" active-color="#333333">
             <yd-tab-panel label="分享">
-
+                <yd-cell-group>
+                    <yd-cell-item align="top">
+                        <span slot="left">
+                             <div class="share_cell">
+                                <img src="../../assets/head.png" alt="" class="share_img">
+                                <div class="share_content">
+                                    <p class="fs-14 c-33">小仙女</p>
+                                    <div class="share_text c-b0 fs-12">分享至朋友圈</div>
+                                </div>
+                            </div>
+                        </span>
+                        <span slot="right">
+                            201231231231
+                        </span>
+                    </yd-cell-item>
+                </yd-cell-group>
             </yd-tab-panel>
             <yd-tab-panel label="评论">
+                <yd-cell-group>
+                    <yd-cell-item>
+                        <span slot="left">
+                             <div class="share_cell">
+                                <img src="../../assets/head.png" alt="" class="share_img">
+                                 <div class="share_content">
+                                    <p class="fs-14 c-33">小仙女</p>
+                                    <div class="share_text c-b0 fs-12">这衣服不错！收到路况房间埃里克森的房价阿斯顿发生地方啥东风路卡机是的发是的发时代峰峻阿萨德发阿斯顿发就士大夫 阿斯顿减肥</div>
+                                </div>
+                            </div>
+                        </span>
+                        <span slot="right" >
+                            201231231231
+                        </span>
+                    </yd-cell-item>
+                    <yd-cell-item>
+                        <span slot="left">
+                             <div class="share_cell">
+                                <img src="../../assets/head.png" alt="" class="share_img">
+                                 <div class="share_content">
+                                    <p class="fs-14 c-33">小仙女</p>
+                                    <div class="share_text c-b0 fs-12">这衣服不错！收到路况房间埃里克森的房价阿斯顿发生地方啥东风路卡机是的发是的发时代峰峻阿萨德发阿斯顿发就士大夫 阿斯顿减肥</div>
+                                </div>
+                            </div>
+                        </span>
+                        <span slot="right" >
+                            201231231231
+                        </span>
+                    </yd-cell-item>
+                    <yd-cell-item>
+                        <span slot="left">
+                             <div class="share_cell">
+                                <img src="../../assets/head.png" alt="" class="share_img">
+                                 <div class="share_content">
+                                    <p class="fs-14 c-33">小仙女</p>
+                                    <div class="share_text c-b0 fs-12">这衣服不错！收到路况房间埃里克森的房价阿斯顿发生地方啥东风路卡机是的发是的发时代峰峻阿萨德发阿斯顿发就士大夫 阿斯顿减肥</div>
+                                </div>
+                            </div>
+                        </span>
+                        <span slot="right" >
+                            201231231231
+                        </span>
+                    </yd-cell-item>
+                </yd-cell-group>
+            </yd-tab-panel>
+            <yd-tab-panel label="喜欢">
                 <yd-cell-group>
                     <yd-cell-item>
                         <span slot="left">
@@ -40,21 +101,26 @@
                                 <p>小仙女</p>
                             </div>
                         </span>
-                        <span slot="right">
-                            201231231231
-                        </span>
                     </yd-cell-item>
                     <yd-cell-item>
-                        <span slot="left">左边内容二</span>
-                        <span slot="right">右边内容二</span>
+                        <span slot="left">
+                             <div class="share_cell">
+                                <img src="../../assets/head.png" alt="" class="share_img">
+                                <p>小仙女</p>
+                            </div>
+                        </span>
+
+                    </yd-cell-item>
+                    <yd-cell-item>
+                        <span slot="left">
+                             <div class="share_cell">
+                                <img src="../../assets/head.png" alt="" class="share_img">
+                                <p>小仙女</p>
+                            </div>
+                        </span>
+
                     </yd-cell-item>
                 </yd-cell-group>
-            </yd-tab-panel>
-            <yd-tab-panel label="喜欢">
-                <div class="share_cell">
-                    <img src="../../assets/head.png" alt="" class="share_img">
-                    <p>小仙女</p>
-                </div>
 
 
             </yd-tab-panel>
@@ -65,7 +131,7 @@
 
 <script>
     export default {
-        name: "presell-detail",
+        name: "share-presale-detail",
         data() {
             return {
                 userId: '',
@@ -167,7 +233,7 @@
         overflow: hidden;
     }
     .pre_img_cell:nth-child(3n){
-         margin-right:0;
+        margin-right:0;
     }
     .share_cell{
         display: flex;
@@ -179,7 +245,19 @@
         width:0.6rem;
         height:0.6rem;
     }
-    .share_cell p{
+    .share_cell>p{
         padding-left:0.2rem;
+        padding-top:0.1rem;
+    }
+    .share_content{
+        padding-left:0.2rem;
+    }
+    .share_content>p{
+        padding:0.1rem 0 0.04rem;
+    }
+    .share_text{
+        width:100%;
+        white-space: normal;
+        padding:0.02rem 0.1rem 0.2rem 0;
     }
 </style>

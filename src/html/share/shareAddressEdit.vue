@@ -1,6 +1,6 @@
 <template>
-    <yd-layout >
-        <div class="nav_bar" >
+    <yd-layout>
+        <div class="nav_bar">
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
@@ -36,7 +36,8 @@
                 <yd-checkbox v-model="isDefault" size="16"><span style="font-size:14px;">设为默认地址</span></yd-checkbox>
             </div>
         </yd-cell-group>
-        <yd-cityselect v-model="show2" :callback="selAddress" :items="district" :provance="province" :city="city" :area="area" ></yd-cityselect>
+        <yd-cityselect v-model="show2" :callback="selAddress" :items="district" :provance="province" :city="city"
+                       :area="area"></yd-cityselect>
         <div class="prl-10 mt-10">
             <yd-button size="large" type="primary" bgcolor="#fff" color="#282828" @click.native="savahandler"> 保存
             </yd-button>
@@ -52,7 +53,7 @@
     import District from 'ydui-district/dist/gov_province_city_area_id'
 
     export default {
-        name: 'address-edit',
+        name: "share-address-edit",
         data() {
             return {
                 show2: false,
@@ -80,7 +81,7 @@
             }
         },
         methods: {
-            backPage(){
+            backPage() {
                 this.$router.back(-1);
             },
             // 修改地址时获取地址信息
@@ -103,43 +104,42 @@
             // 点击保存
             savahandler() {
                 // 验证
-                if(this.name == ""){
+                if (this.name == "") {
                     this.$dialog.toast({
                         mes: '请填写收货人！',
                         timeout: 1500
                     })
                     return;
                 }
-
-                if(this.phone == ""  ){
+                if (this.phone == "") {
                     this.$dialog.toast({
                         mes: '请填写收货人手机号！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.postalCode == ""){
+                if (this.postalCode == "") {
                     this.$dialog.toast({
                         mes: '请填写邮编！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.postalCode.length != 6){
+                if (this.postalCode.length != 6) {
                     this.$dialog.toast({
                         mes: '邮编错误！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.province == ""){
+                if (this.province == "") {
                     this.$dialog.toast({
                         mes: '请选择地区！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.detailAddr == ""){
+                if (this.detailAddr == "") {
                     this.$dialog.toast({
                         mes: '请填写详细地址！',
                         timeout: 1500
@@ -253,37 +253,39 @@
     .yd-cell-left {
         min-width: 100px;
     }
-    .nav_bar{
-        width:100%;
-        height:1rem;
+
+    .nav_bar {
+        width: 100%;
+        height: 1rem;
         background: #fff;
         line-height: 1rem;
         position: fixed;
-        top:0;
-        left:0;
-        right:0;
+        top: 0;
+        left: 0;
+        right: 0;
         z-index: 100;
     }
-    .nav_cell{
-        width:1rem;
-        padding-left:0.24rem;
+
+    .nav_cell {
+        width: 1rem;
+        padding-left: 0.24rem;
         position: absolute;
-        top:0;
-        left:0;
+        top: 0;
+        left: 0;
         z-index: 10;
     }
-    .nav_title{
+
+    .nav_title {
         width: 100%;
-        height:1rem;
+        height: 1rem;
         text-align: center;
-        font-size:0.3rem;
+        font-size: 0.3rem;
         line-height: 1rem;
     }
-    .edit_item{
-        margin-top:1.2rem;
+
+    .edit_item {
+        margin-top: 1.2rem;
     }
-
-
 
 
 </style>

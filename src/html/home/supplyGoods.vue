@@ -1,6 +1,6 @@
 <template>
     <yd-layout class="page">
-        <yd-navbar title="商品详情" class="page_nav">
+        <yd-navbar slot="top" title="商品详情" class="page_nav">
             <router-link to="/back" slot="left">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </router-link>
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div class="goods_footer"  v-if="isReady">
+        <div class="goods_footer"  v-if="isReady" slot="bottom">
             <yd-button size="large" v-if="goodInfo.isUpperShelf == '0'" bgcolor="#000" color="#fff" shape="angle" class="buy_btn" @click.native="submitFn">
                 上架
             </yd-button>
@@ -73,14 +73,16 @@
         methods: {
             // 获取商品信息
             getGoodDetail() {
+                this.$dialog.loading.open('努力加载中...');
                 this.$http.post('/type/detailSup', {
                     userId: this.userId,
                     supplierGoodsId: this.shopGoodsId
                 }, (res) => {
+                    this.$dialog.loading.close();
                     this.isReady = true;
-                    console.log(222)
                     this.goodInfo = res.data;
                 }, (err) => {
+                    this.$dialog.loading.close();
                     this.$dialog.toast({
                         mes: err.msg,
                         timeout: 1500
@@ -197,9 +199,16 @@
         margin-right: 0.2rem;
         padding-left: 0.4rem;
         background: url("../../assets/good_trans.png") no-repeat center left;
+        background-size: 0.28rem 0.2rem;
+    }
+    .good_attr .good_baotui {
+        display: inline-block;
+        font-size: 12px;
+        margin-right: 0.2rem;
+        padding-left: 0.4rem;
+        background: url("../../assets/baotui_icon.png") no-repeat center left;
         background-size: 0.24rem 0.24rem;
     }
-
     .goods_name {
         white-space: normal;
         line-height: 0.6rem;

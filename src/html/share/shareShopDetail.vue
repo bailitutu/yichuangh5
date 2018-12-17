@@ -49,7 +49,7 @@
 
                 <yd-list theme="2">
                     <yd-list-item v-for="(item, key) in goodList" :key="key" style="position: relative;"
-                                  @click.native="checkGoodsDetail(item.id)">
+                                  @click.native="checkGoodsDetail(item.goodsId)">
                         <img slot="img" :src="item.goodsImg">
                         <span slot="title">{{item.goodsName}}</span>
                         <div slot="other" v-if="!isCheck" @click.stop="downSell(item.goodsId)" class="xiajia_btn">下架
@@ -113,7 +113,7 @@
     import WhitePage from '@/components/whitePage'
 
     export default {
-        name: "shop-detail",
+        name: "share-shop-detail",
         components: {TimeLeft, WhitePage},
         data() {
             return {
@@ -526,3 +526,4 @@
         height: 0.32rem;
     }
 </style>
+

@@ -58,7 +58,7 @@
 
 <script>
     export default {
-        name: 'order-submit',
+        name: "share-order-submit",
         data() {
             return {
                 totalMoney: 0,

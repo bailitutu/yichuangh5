@@ -93,7 +93,7 @@
 
 <script>
     export default {
-        name: "good-detail",
+        name: "share-good-detail",
         data() {
             return {
                 swiperHeight: 0,

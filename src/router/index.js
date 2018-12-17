@@ -16,12 +16,20 @@ import phoneBinding from '@/html/mine/phoneBinding'
 import phoneChange from '@/html/mine/phoneChange'
 import shopDetail from '@/html/mine/shopDetail'
 import shoppingCar from '@/html/mine/shoppingCar'
+import shareGoodDetail from '@/html/share/shareGoodDetail'
+import shareShopDetail from '@/html/share/shareShopDetail'
+import shareAddressSelect from '@/html/share/shareAddressSelect'
+import shareAddressList from '@/html/share/shareAddressList'
+import shareAddressEdit from '@/html/share/shareAddressEdit'
+import sharePaySuccess from '@/html/share/sharePaySuccess'
+import shareOrderSubmit from '@/html/share/shareOrderSubmit'
+import sharePresaleDetail from '@/html/share/sharePresaleDetail'
 
 
 Vue.use(Router)
 
 export default new Router({
-
+    
     routes: [
         {
             path: '/search',
@@ -42,7 +50,7 @@ export default new Router({
             path: '/addressList',
             name: 'addressList',
             component: addressList
-        },{
+        }, {
             path: '/supplyGoods',
             name: 'supplyGoods',
             component: supplyGoods
@@ -94,6 +102,46 @@ export default new Router({
             path: '/shoppingCar',
             name: 'shoppingCar',
             component: shoppingCar
+        },
+        {
+            path: '/shareGoodDetail',
+            name: 'shareGoodDetail',
+            component: shareGoodDetail
+        },
+        {
+            path: '/shareShopDetail',
+            name: 'shareShopDetail',
+            component: shareShopDetail
+        },
+        {
+            path: '/shareAddressSelect',
+            name: 'shareAddressSelect',
+            component: shareAddressSelect
+        },
+        {
+            path: '/shareAddressList',
+            name: 'shareAddressList',
+            component: shareAddressList
+        },
+        {
+            path: '/shareAddressEdit',
+            name: 'shareAddressEdit',
+            component: shareAddressEdit
+        },
+        {
+            path: '/sharePaySuccess',
+            name: 'sharePaySuccess',
+            component: sharePaySuccess
+        },
+        {
+            path: '/shareOrderSubmit',
+            name: 'shareOrderSubmit',
+            component: shareOrderSubmit
+        },
+        {
+            path: '/sharePresaleDetail',
+            name: 'sharePresaleDetail',
+            component: sharePresaleDetail
         }
     ]
 })

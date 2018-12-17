@@ -28,7 +28,7 @@
 
 <script>
     export default {
-        name: 'address-list',
+        name: "share-address-list",
         data() {
             return {
                 addressList:[]
@@ -138,3 +138,4 @@
         margin-bottom: 0.4rem;
     }
 </style>
+

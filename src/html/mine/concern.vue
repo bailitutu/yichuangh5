@@ -53,10 +53,12 @@
         methods: {
             // 获取页面数据
             getData(t) {
+                this.$dialog.loading.open('努力加载中...');
                 this.$http.post('/appUser/findMyAllFollow', {
                     userId: this.userId,
                     type: t
                 }, (res) => {
+                    this.$dialog.loading.close();
                     this.list = res.data
                 })
             },
