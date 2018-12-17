@@ -52,7 +52,7 @@
                                   @click.native="checkGoodsDetail(item.id)">
                         <img slot="img" :src="item.goodsImg">
                         <span slot="title">{{item.goodsName}}</span>
-                        <div slot="other" v-if="!isCheck" @click.stop="downSell(item.goodsId)" class="xiajia_btn">下架
+                        <div slot="other" v-if="!isCheck" @click.stop="downSell(item.id)" class="xiajia_btn">下架
                         </div>
                         <yd-list-other slot="other" style="margin-top:6px;">
                             <div>
