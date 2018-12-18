@@ -4,27 +4,12 @@
             <div class="page_nav_left" @click.stop="backPage">
                 <yd-navbar-back-icon color="#fff"></yd-navbar-back-icon>
             </div>
-            <div class="page_nav_right" v-if="!isCheck">
-                <div class="nav_cell_right">
-                    <span class="share_icon"></span>
-                </div>
-                <div class="nav_cell_right" @click="checkRecord">
-                    <span class="c-fff">交易记录</span>
-                </div>
+            <div class="page_nav_right">
+                <yd-button type="warning" size="small" color="#fff" bgcolor="#F76B1C"
+                           @click.native="$comm.downLoadApp()">APP下载
+                </yd-button>
             </div>
-            <div class="page_nav_right" v-if="isCheck">
-                <div class="nav_cell_right">
-                    <span class="share_icon"></span>
-                </div>
-                <div class="nav_cell_right" @click.stop="connectShop">
-                    <span class="chat_icon"></span>
-                </div>
-                <div class="nav_cell_right">
-                    <yd-button type="warning" style="min-width: 0.8rem;" size="small" @click.native="concernShop">{{
-                        isConcern ? '已关注' : '关注'}}
-                    </yd-button>
-                </div>
-            </div>
+
         </div>
         <div class="shop_top" ref="shoptop"
              :style="{backgroundImage: 'url('+ shopInfo.backgroundImage +')', backgroundSize:'cover',backgroundPosition:'center'}">
@@ -32,33 +17,23 @@
                 <img :src="shopInfo.shopLogo" alt="">
                 <div class="shop_detail c-fff">
                     <h3 class="fs-16">{{shopInfo.shopName}}</h3>
-                    <p class="fs-14">店铺码:{{shopInfo.shopCode}}</p>
+                    <!--<p class="fs-14">店铺码:{{shopInfo.shopCode}}</p>-->
                     <p class="fs-14 " style="white-space: normal;">{{shopInfo.shopInfo}}</p>
                 </div>
-            </div>
-            <div class="shop_right" v-show="!isCheck">
-                <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn" @click.native="upperFn">上架
-                </yd-button>
-                <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn" @click.native="presellFn">预售
-                </yd-button>
             </div>
         </div>
         <yd-tab border-color="#f4f4f4" color="#B0B0B0" active-color="#333333">
             <yd-tab-panel label="商品" :style="{ height: scrollHeight + 'px'}"
                           style="overflow-y:auto;padding:0.1rem 0.2rem;">
-
                 <yd-list theme="2">
                     <yd-list-item v-for="(item, key) in goodList" :key="key" style="position: relative;"
-                                  @click.native="checkGoodsDetail(item.goodsId)">
+                                  @click.native="checkGoodsDetail(item.id)">
                         <img slot="img" :src="item.goodsImg">
                         <span slot="title">{{item.goodsName}}</span>
-                        <div slot="other" v-if="!isCheck" @click.stop="downSell(item.goodsId)" class="xiajia_btn">下架
-                        </div>
                         <yd-list-other slot="other" style="margin-top:6px;">
                             <div>
                                 <span class="list-price  c-money"><em>¥</em>{{item.price}}</span>
-                                <span class="list-del-price  c-money">佣 <em>¥</em>{{parseInt(item.commission)}}</span>
-                                <span class="fs-12 c-b0" style="margin-left:4px;">{{item.count || '000'}}人付款</span>
+                                <span class="fs-12 c-b0" style="margin-left:4px;">{{item.count || '0'}}人付款</span>
                             </div>
                         </yd-list-other>
 
@@ -76,7 +51,6 @@
                         style="position: relative;">
                         <div class="pre_inner">
                             <time-left :endTime="cell.endTime"></time-left>
-                            <!--<p class="c-money tac pre_time">剩余时间：75:23:00</p>-->
                             <img class="pre_img" :src="cell.firstImg">
                             <p class="fs-14 c-60" style="padding:0.1rem 0.2rem;">{{cell.designName}}</p>
                             <div class="fs-12 two_row pre_info" style="padding:0.1rem 0.2rem;">
@@ -92,15 +66,11 @@
                                     <span class="fs-12 c-b0">{{cell.likeCount}}</span>
                                 </div>
                             </div>
-
                         </div>
                     </li>
                 </ul>
-
-                <p v-if="presellList.length > 0 ? true :false" class="tac fs-12 c-b0" style="padding:0.1rem;">
-                    没有数据啦~</p>
+                <p v-if="presellList.length > 0 ? true :false" class="tac fs-12 c-b0" style="padding:0.1rem;">没有数据啦~</p>
                 <white-page v-if="presellList.length ==  0 ? true :false"></white-page>
-
             </yd-tab-panel>
         </yd-tab>
     </div>
@@ -117,8 +87,6 @@
         components: {TimeLeft, WhitePage},
         data() {
             return {
-                isCheck: false, //是否是从商品详情页跳转过来的
-                isConcern: false,//是否关注了当前店铺
                 scrollHeight: 0,
                 bgImg: 'https://appyichuang.oss-cn-hangzhou.aliyuncs.com/img/test/9c6fba1d-9e30-4de8-a0a3-288ef891687a-1544779381566',
                 shopInfo: {}, //店铺信息
@@ -128,8 +96,6 @@
         },
         created() {
             this.shopId = this.$comm.getUrlKey('shopId') || '230849995971104768';
-            this.isCheck = this.$comm.getUrlKey('isCheck') ? true : false;
-            this.userId = this.$comm.getUrlKey('userId') || ''
             if (this.isCheck) {
                 this.getConcerShop();
             }
@@ -143,67 +109,8 @@
         methods: {
             // 返回
             backPage() {
-                if (this.isCheck) {
-                    this.$router.back(-1);
-                } else {
-                    this.$comm.normalBack();
-                }
+                this.$router.back(-1);
             },
-            // 查看交易记录
-            checkRecord() {
-                this.$router.push({path: '/record'})
-            },
-            // 联系店主
-            connectShop() {
-                let shopPhone = this.shopInfo.phone;
-                if (this.$comm.isAndroid()) {
-                    window.location.href = 'http://www.yichuangpt.com/static/gochat.html?phone=' + shopPhone;
-                } else if (this.$comm.isIos()) {
-                    goChat(shopPhone)
-                }
-            },
-            // 查询是否已关注店铺
-            getConcerShop() {
-                this.$http.post('/appUser/isFollow', {
-                    userId: this.userId,
-                    fansId: this.shopId
-                }, (res) => {
-                    if (res.data == '0') { //0 为未关注，1为已关注
-                        this.isConcern = false;
-                    } else {
-                        this.isConcern = true;
-                    }
-                })
-            },
-            // 关注/取消关注店铺
-            concernShop() {
-                this.$http.post('/shop/followShop', {
-                    userId: this.userId,
-                    fansId: this.shopId
-                }, (res) => {
-                    if (!this.isConcern) {
-                        // 去关注店铺
-                        this.$dialog.toast({
-                            mes: '关注成功！',
-                            timeout: 1500
-                        })
-                        this.isConcern = true;
-                        return;
-
-                    } else {
-                        //去取消店铺
-                        this.$dialog.toast({
-                            mes: '取消成功！',
-                            timeout: 1500
-                        })
-                        this.isConcern = false;
-                        return;
-
-                    }
-                })
-            },
-
-
             // 获取店铺信息
             getShopInfo() {
                 this.$http.post('/appUser/findUserById', {
@@ -234,52 +141,13 @@
                     this.presellList = res.data
                 })
             },
-            // 下架商品
-            downSell(id) {
-                this.$http.post('/shop/commodityShelves', {
-                    shopGoodsId: id
-                }, (res) => {
-                    this.$dialog.toast({
-                        mes: '下架成功！',
-                        timeout: 1500
-                    })
-                    this.getGoodsData()
-                }, () => {
-                    this.$dialog.toast({
-                        mes: '下架失败，请重试！',
-                        timeout: 1500
-                    })
-                })
-            },
-            // 前往上架
-            upperFn() {
-                if (this.$comm.isAndroid()) {
-                    window.location.href = 'http://www.yichuangpt.com/static/gotoUpdate.html?userId=' + this.shopId
-                } else if (this.$comm.isIos()) {
-                    goUpdate()
-                }
-            },
-            // 前往发布预售页面
-            presellFn() {
-                if (this.$comm.isAndroid()) {
-                    window.location.href = 'http://www.yichuangpt.com/static/gotoPresale.html?userId=' + this.shopId
-                } else if (this.$comm.isIos()) {
-                    goPresell()
-                }
-            },
             // 查看商品详情
             checkGoodsDetail(id) {
-                let userid = this.isCheck ? this.userId : this.shopId;
-                this.$router.push({path: '/goodDetail', query: {userId: userid, shopGoodsId: id, isH5: 1}})
+                this.$router.push({path: '/shareGoodDetail', query: {shopGoodsId: id}})
             },
             // 查看预售商品发布详情
             checkPresell(id) {
-                let userid = this.isCheck ? this.userId : this.shopId;
-                if (this.$comm.isAndroid()) {
-                    window.location.href = 'http://www.yichuangpt.com/static/presellDetail.html?userId=' + userid + '&preSaleId=' + id;
-                } else if (this.$comm.isIos()) {
-                    goPresellDetail(id)
-                }
+                this.$router.push({path: '/sharePresaleDetail', query: {preSaleId: id}});
             }
         }
     }

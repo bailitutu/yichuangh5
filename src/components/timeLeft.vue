@@ -17,7 +17,7 @@
         computed: {
             showTimeLeft() {
                 if (this.timeLeft < 0) {
-                    return '已结束'
+                    return '预售已结束'
                 } else {
                     let hour = 0;
                     let minute = 0;

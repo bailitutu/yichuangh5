@@ -44,7 +44,7 @@
             <yd-button size="large" v-if="goodInfo.isUpperShelf == '0'" bgcolor="#000" color="#fff" shape="angle" class="buy_btn" @click.native="submitFn">
                 上架
             </yd-button>
-            <yd-button v-else  size="large"  bgcolor="#000" color="#fff" shape="angle" class="buy_btn" @click.native="hasUpper">
+            <yd-button v-else   size="large"  bgcolor="#000" color="#fff" shape="angle" class="buy_btn" @click.native="hasUpper">
                 已上架
             </yd-button>
         </div>
@@ -56,7 +56,7 @@
         name: "supply-goods",
         data() {
             return {
-                isReady:false,
+                isReady: false,
                 swiperHeight: 0,
                 userId: '',
                 goodInfo: {},
@@ -65,9 +65,9 @@
         },
         created() {
             this.swiperHeight = window.innerWidth + 'px';
-            this.shopGoodsId = this.$comm.getUrlKey('supplierGoodsId') || '233177474844987392';
+            this.shopGoodsId = this.$comm.getUrlKey('supplierGoodsId') || '233086779744456704';
             this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
-            this.shopCode = this.$comm.getUrlKey('shopCode') || '224418465157615616';
+            this.shopCode = this.$comm.getUrlKey('shopCode') || '';
             this.getGoodDetail();
         },
         methods: {
@@ -94,23 +94,22 @@
                 this.$dialog.confirm({
                     mes: '确认上架该商品？',
                     opts: () => {
-                        if (this.goodInfo.goods) {
-                            this.$http.post('/shop/upperShop', {
-                                shopCode: this.shopCode,
-                                goodsId: this.shopGoodsId
-                            }, (res) => {
-                                this.$dialog.toast({
-                                    mes: '上架成功！',
-                                    timeout: 1500
-                                })
-                                return;
-                            }, (err) => {
-                                this.$dialog.toast({
-                                    mes: '上架失败，请重试！',
-                                    timeout: 1500
-                                })
+                        this.$http.post('/shop/upperShop', {
+                            shopCode: this.shopCode,
+                            goodsId: this.goodInfo.spec.supplierGoodsId
+                        }, (res) => {
+                            this.$dialog.toast({
+                                mes: '上架成功！',
+                                timeout: 1500
                             })
-                        }
+                            this.goodInfo.isUpperShelf = '1'
+                            return;
+                        }, (err) => {
+                            this.$dialog.toast({
+                                mes: '上架失败，请重试！',
+                                timeout: 1500
+                            })
+                        })
                     }
                 })
             },

@@ -28,9 +28,17 @@ function apiAxios(method, url, params, response, error) {
         if (res.data.code == '0') {
             response(res.data);
         } else {
+            if(!res.data){
+                res.data = {
+                    msg: '系统异常！'
+                }
+            }
             error ? error(res.data) : function () {};
         }
     }).catch(function (err) {
+        if(!err.msg){
+            err.msg = '系统异常!'
+        }
         error ? error(err) : function () {
             alert('系统异常')
         };

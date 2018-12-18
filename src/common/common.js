@@ -15,10 +15,18 @@ function isIos() {
 // 常规返回
 function normalBack() {
     if (isAndroid()) {
-        alert('正常返回')
         window.location.href = 'http://www.yichuangpt.com/static/gotoAndroid.html'
     } else if (isIos()) {
         goBack();
+    }
+}
+
+// APP下载
+function downLoadApp(){
+    if (isAndroid()) {
+        window.location.href = 'https://www.baidu.com/?tn=22073068_2_oem_dg'
+    } else if (isIos()) {
+        window.location.href = 'https://www.baidu.com/?tn=22073068_2_oem_dg'
     }
 }
 
@@ -36,12 +44,13 @@ export default {
     getStorge: function (key) {
         return JSON.parse(localStorage.getItem(key))
     },
-    removeStorge: function () {
+    removeStorge: function (key) {
         localStorage.removeItem(key)
     },
     clearStorge: function () {
         window.localStorage.clear();
-    }
+    },
+    downLoadApp: downLoadApp
 }
 
 

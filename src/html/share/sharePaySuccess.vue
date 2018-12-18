@@ -7,14 +7,13 @@
             <h3 class="tac c-33 mt-10 success_title">支付成功</h3>
             <p class="fs-14 mt-10 success_tip">快去下载衣创App 查看订单进度吧~</p>
         </div>
-
         <yd-cell-group class="bottom_item" slot="bottom">
             <yd-cell-item>
                 <div slot="left" class="logo_item">
                     <img src="../../assets/login_logo.png" class="logo_icon" alt="">
                     <p class="fs-16 c-fff ml-10" >衣创</p>
                 </div>
-                <yd-button slot="right" size="small" bgcolor="#F76B1C" color="#fff">APP下载</yd-button>
+                <yd-button slot="right" size="small" bgcolor="#F76B1C" color="#fff" @click.native="$comm.downLoadApp()">APP下载</yd-button>
             </yd-cell-item>
 
         </yd-cell-group>

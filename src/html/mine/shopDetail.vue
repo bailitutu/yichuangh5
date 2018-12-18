@@ -57,8 +57,8 @@
                         <yd-list-other slot="other" style="margin-top:6px;">
                             <div>
                                 <span class="list-price  c-money"><em>¥</em>{{item.price}}</span>
-                                <span class="list-del-price  c-money">佣 <em>¥</em>{{parseInt(item.commission)}}</span>
-                                <span class="fs-12 c-b0" style="margin-left:4px;">{{item.count || '000'}}人付款</span>
+                                <span class="list-del-price  c-money" v-if="!isCheck">佣 <em>¥</em>{{parseInt(item.commission)}}</span>
+                                <span class="fs-12 c-b0" style="margin-left:4px;">{{item.count || '0'}}人付款</span>
                             </div>
                         </yd-list-other>
 
@@ -129,7 +129,7 @@
         created() {
             this.shopId = this.$comm.getUrlKey('shopId') || '230849995971104768';
             this.isCheck = this.$comm.getUrlKey('isCheck') ? true : false;
-            this.userId = this.$comm.getUrlKey('userId') || ''
+            this.userId = this.$comm.getUrlKey('userId') || '';
             if (this.isCheck) {
                 this.getConcerShop();
             }
@@ -236,27 +236,36 @@
             },
             // 下架商品
             downSell(id) {
-                this.$http.post('/shop/commodityShelves', {
-                    shopGoodsId: id
-                }, (res) => {
-                    this.$dialog.toast({
-                        mes: '下架成功！',
-                        timeout: 1500
-                    })
-                    this.getGoodsData()
-                }, () => {
-                    this.$dialog.toast({
-                        mes: '下架失败，请重试！',
-                        timeout: 1500
-                    })
+                this.$dialog.confirm({
+                    title: '',
+                    mes: '确定下架该商品？',
+                    opts: () => {
+                        this.$http.post('/shop/commodityShelves', {
+                            shopGoodsId: id
+                        }, (res) => {
+                            this.$dialog.toast({
+                                mes: '下架成功！',
+                                timeout: 1500
+                            })
+                            this.getGoodsData()
+                        }, () => {
+                            this.$dialog.toast({
+                                mes: '下架失败，请重试！',
+                                timeout: 1500
+                            })
+                        })
+                    }
                 })
             },
             // 前往上架
             upperFn() {
                 if (this.$comm.isAndroid()) {
-                    window.location.href = 'http://www.yichuangpt.com/static/gotoUpdate.html?userId=' + this.shopId
+                    window.location.href = 'http://www.yichuangpt.com/static/gotoUpdate.html?userId=' + this.shopId + '&shopCode='+ this.shopInfo.shopCode
                 } else if (this.$comm.isIos()) {
-                    goUpdate()
+                    goUpdate({
+                        shopCode: this.shopInfo.shopCode,
+                        shopId: this.shopId
+                    })
                 }
             },
             // 前往发布预售页面

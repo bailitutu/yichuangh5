@@ -16,6 +16,7 @@ import phoneBinding from '@/html/mine/phoneBinding'
 import phoneChange from '@/html/mine/phoneChange'
 import shopDetail from '@/html/mine/shopDetail'
 import shoppingCar from '@/html/mine/shoppingCar'
+import carOrderSubmit from '@/html/mine/carOrderSubmit'
 import shareGoodDetail from '@/html/share/shareGoodDetail'
 import shareShopDetail from '@/html/share/shareShopDetail'
 import shareAddressSelect from '@/html/share/shareAddressSelect'
@@ -102,6 +103,11 @@ export default new Router({
             path: '/shoppingCar',
             name: 'shoppingCar',
             component: shoppingCar
+        },
+        {
+            path: '/carOrderSubmit',
+            name: 'carOrderSubmit',
+            component: carOrderSubmit
         },
         {
             path: '/shareGoodDetail',

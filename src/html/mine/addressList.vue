@@ -1,5 +1,5 @@
 <template>
-    <yd-layout>
+    <div>
         <div class="nav_bar" >
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
@@ -23,7 +23,7 @@
                 新增地址
             </yd-button>
         </div>
-    </yd-layout>
+    </div>
 </template>
 
 <script>

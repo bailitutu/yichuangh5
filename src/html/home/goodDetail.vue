@@ -1,6 +1,6 @@
 <template>
-    <yd-layout>
-        <yd-navbar title="商品详情" class="page_nav" slot="top">
+    <div>
+        <yd-navbar title="商品详情" class="page_nav" >
             <router-link to="" @click.native="backFn" slot="left">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </router-link>
@@ -42,16 +42,16 @@
                 <img v-for="(cell,ind) in goodInfo.goodsInfoImg" :key="ind" :src="cell" alt="">
             </div>
         </div>
-        <yd-popup v-model="showSelect" position="bottom" height="60%">
-            <div class="sel_good_img" v-show="showSelect">
+        <yd-popup class="attr_section" v-model="showSelect" position="bottom" height="60%">
+            <div class="sel_good_img" v-show="showSelect" v-if="goodInfo.goodsImg">
                 <img :src="goodInfo.goodsImg[0]" class="hasBra" alt="">
             </div>
-            <div class="sel_good_info">
+            <div class="sel_good_info" v-show="showSelect">
                 <p class="c-money fs-14">￥<span class="fs-16">{{buyGoodsInfo.price}}</span></p>
                 <p class="fs-14 c-9b">库存：{{buyGoodsInfo.stock}}</p>
             </div>
-            <p class="fs-16 c-28 plr-12">规格分类</p>
-            <ul class="attr_list" v-if="goodInfo.detail">
+            <p class="fs-16 c-28 plr-12" v-show="showSelect">规格分类</p>
+            <ul class="attr_list" v-if="goodInfo.detail" v-show="showSelect">
                 <li v-for="(att,atti) in goodInfo.detail" :key="atti">
                     <yd-button type="primary" size="small" bgcolor="#f4f4f4" color="#333333"
                                @click.native="selectAttr(atti)" class="attr_btn" :class=" att.selected ? 'active': ''">
@@ -60,21 +60,18 @@
                 </li>
             </ul>
 
-            <div class="sel_good_footer">
-                <yd-cell-group>
-                    <yd-cell-item>
-                        <span slot="left">购买数量</span>
-                        <yd-spinner slot="right" max="100" unit="1" min="1" width="1.6rem" height="0.45rem"
-                                    v-model="buyNumber"></yd-spinner>
-                    </yd-cell-item>
-                </yd-cell-group>
+            <div class="sel_good_footer" v-show="showSelect">
+                <div class="sel_good_cell">
+                    <span class="fs-14">购买数量</span>
+                    <yd-spinner  max="100" unit="1" min="1" width="1.6rem" height="0.45rem"
+                                v-model="buyNumber"></yd-spinner>
+                </div>
                 <yd-button size="large" shape="angle" bgcolor="#000" class="submit_btn" color="#fff"
-                           :disabled="buyGoodsInfo.stock == '0'"
                            @click.native="submitFn">确定
                 </yd-button>
             </div>
         </yd-popup>
-        <yd-flexbox slot="bottom" class="goods_footer">
+        <yd-flexbox class="goods_footer">
             <yd-flexbox-item class="connect_cell" @click.native="connctShop()">
                 <img src="../../assets/connct_shop.png" alt="">
                 <p class="fs-12">联系店主</p>
@@ -88,7 +85,7 @@
                 </yd-button>
             </yd-flexbox-item>
         </yd-flexbox>
-    </yd-layout>
+    </div>
 </template>
 
 <script>
@@ -105,9 +102,9 @@
                 buyType: 1,
             }
         },
-        created() {
+        mounted() {
             this.swiperHeight = window.innerWidth + 'px'; //设置轮播图高度
-            this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '231225779655151616';
+            this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '220333521498148864';
             this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
             this.getGoodDetail();
         },
@@ -190,7 +187,7 @@
                     return;
                 }
                 let totalPrice = 0;
-                totalPrice = Math.floor(parseInt(this.buyNumber) * this.buyGoodsInfo.price * 100) / 100;
+                totalPrice = Math.floor(parseInt(this.buyNumber) * parseFloat(this.buyGoodsInfo.price) * 100) / 100;
 
                 // 判断是加入购物车还是立即购买
                 if (this.buyType == 1) {
@@ -259,6 +256,8 @@
     }
 </style>
 <style scoped>
+
+
     .shop_icon {
         height: 100%;
         width: 1rem;
@@ -377,16 +376,22 @@
         right: 0;
         z-index: 100;
     }
-
+    .attr_section{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-content: stretch;
+        align-items:center;
+    }
     .goods_footer {
         border-top: 1px solid #f4f4f4;
         height: 1.02rem;
         background: #fff;
         position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 10;
+        bottom:0;
+        left:0;
+        right:0;
+        z-index: 1000;
     }
 
     .connect_cell {
@@ -418,6 +423,8 @@
 
     .submit_btn {
         height: 1rem;
+        border:none;
+        outline: none;
     }
 
     /*选择规格弹窗*/
@@ -439,7 +446,15 @@
         width: 1.8rem;
         height: 1.8rem;
     }
-
+    .sel_good_cell{
+        display: flex;
+        justify-content: space-between;
+        height:1rem;
+        padding:0 0.24rem;
+        background: #fff;
+        align-items: center;
+        align-content: center;
+    }
     .sel_good_info {
         padding: 0 2.6rem;
         background: #fff;
@@ -482,10 +497,11 @@
 
     .sel_good_footer {
         border-top: 1px solid #f4f4f4;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        position:absolute;
+        bottom:0;
+        left:0;
+        right:0;
+        z-index: 1;
         background: #000;
     }
 

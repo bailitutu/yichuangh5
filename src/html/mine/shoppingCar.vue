@@ -16,19 +16,19 @@
                     </div>
                 </div>
                 <div class="car_right">
-                    <yd-spinner max="100" unit="1" width="1.6rem" height="0.45rem" v-model="item.number"></yd-spinner>
+                    <yd-spinner max="100" unit="1" width="1.6rem" height="0.45rem" v-model="item.number"  :val="item.id" :callback="numChange"></yd-spinner>
                 </div>
             </li>
         </ul>
 
         <white-page v-if="list.length > 0 ? false :true"  noText="空空如也~"></white-page>
 
-        <div class="car_footer">
+        <div class="car_footer" slot="bottom">
             <div class="car_tool">
-                <!--<yd-checkbox v-model="selectAll" size="20" @change.native="selAll" color="#606060"-->
-                             <!--style="font-size:0.28rem;" shape="circle">-->
-                    <!--全选-->
-                <!--</yd-checkbox>-->
+                <yd-checkbox v-model="selectAll" size="20" @change.native="selAll" color="#606060"
+                             style="font-size:0.28rem;" shape="circle">
+                    全选
+                </yd-checkbox>
                 <p></p>
                 <yd-button type="primary" bgcolor="#333" color="#fff" class="yc_btn" @click.native="delHandle">删除
                 </yd-button>
@@ -55,15 +55,14 @@
             }
         },
         computed: {
-
             allMoney () {
                 let allPrice = 0
                 this.list.map((item) => {
                     if (item.selected) {
-                        allPrice += Math.floor(parseFloat(item.price * 100 * item.number)) / 100
+                        allPrice += Math.floor(parseFloat(item.price) * 100 * parseFloat(item.number)) / 100
                     }
-                })
-                return allPrice
+                });
+                return allPrice.toFixed(2)
             },
             hasSelect () {
                 return this.list.filter(item => item.selected)
@@ -117,25 +116,37 @@
             },
             // 选择某一项;
             selectItem (i) {
-
                 // 单选模式
-                this.list.map(function(item){
-                    item.selected = false;
-                })
-
+                // this.list.map(function(item){
+                //     item.selected = false;
+                // })
                 this.list[i].selected = !this.list[i].selected;
 
             },
-
-
-            // // 全选/反选
-            // selAll () {
-            //     this.list.forEach((item) => {
-            //         item.selected = !this.selectAll
-            //     })
-            // },
-
-
+            // 全选/反选
+            selAll () {
+                this.list.forEach((item) => {
+                    item.selected = !this.selectAll
+                })
+            },
+            // 商品数量加减
+            numChange(goodId,val){
+                this.$http.post('/myCays/editCarInfo',{
+                    carId:goodId,
+                    num:val
+                },(res)=>{
+                    this.$dialog.toast({
+                        mes: '修改成功！',
+                        timeout: '1000'
+                    });
+                    return;
+                },(err)=>{
+                    this.$dialog.toast({
+                        mes:err.msg,
+                        timeout:1500
+                    })
+                })
+            },
             // 删除  carId 是指  最外层id
             delHandle () {
                 if (this.hasSelect.length > 0) {
@@ -144,8 +155,7 @@
                         mes: '确认移除？',
                         opts: () => {
                             let selectList = this.list.filter(item =>{ return item.selected});
-                            console.log(selectList)
-                            let carId = selectList[0].id //要移除的id 或数组
+                            let carId = selectList[0].id ;//要移除的id 或数组
                             // 发送删除请求
                             this.$http.post('/myCays/delOneCar',{
                                 carId:carId,
@@ -183,15 +193,8 @@
                         opts: () => {
                             // 提交结算订单
                             let selectList = this.list.filter((item)=>{ return item.selected == true});
-                            let goodsId = selectList[0].goodsId //要移除的id 或数组
-                            let specId = selectList[0].specId //要移除的id 或数组
-                            let goodsNum = selectList[0].number //要移除的id 或数组
-                            this.$router.push({ path:'/orderSubmit',query:{ userId: this.userId, goodsId : goodsId,specId:specId,num:goodsNum }});
-                            this.$comm.setStorge('YCOrderBackUrl',this.$route.fullPath);
-                            this.$comm.setStorge('preOrderGoodsId',goodsId);
-                            this.$comm.setStorge('preOrderSpecId',specId);
-                            this.$comm.setStorge('preOrderGoodsNum',goodsNum);
-                            this.$comm.setStorge('preOrderUserId',this.userId);
+                            this.$comm.setStorge('subOrderList',selectList);
+                            this.$router.push({ path:'carOrderSubmit',query:{ userId: this.userId}});
                         }
                     })
                 } else if(!this.list.length){
@@ -217,6 +220,7 @@
 <style scoped>
     .car_list {
         padding: 0 0.24rem;
+        margin-bottom:0.2rem;
     }
 
     .car_list > li {
@@ -312,11 +316,6 @@
         width: 100%;
         height: 2rem;
         background: #fff;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
     }
 
     .car_tool, .car_end {

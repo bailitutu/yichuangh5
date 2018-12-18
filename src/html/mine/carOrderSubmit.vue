@@ -1,13 +1,11 @@
 <template>
     <yd-layout >
-        <div class="nav_bar" >
+        <div class="nav_bar" slot="top" >
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
             <p class="nav_title">订单详情</p>
         </div>
-
-
         <div class="address_item" v-if="!hasAddress">
             <yd-button type="primary" @click.native="goSelect" size="large" style="margin-top:4px;" shape="angle"
                        bgcolor="#fff" color="#333">
@@ -25,26 +23,24 @@
             </yd-cell-item>
         </yd-cell-group>
 
-        <ul class="good_list">
-            <li>
+        <ul class="good_list" v-if="orderInfoList.length > 0 ? true :false">
+            <li v-for="(item,index) in orderInfoList" :key="index">
                 <div class="car_center">
                     <div class="goods_img">
-                        <img :src="goodsInfo.goodsImg" alt="">
+                        <img :src="item.goodsImg" alt="">
                     </div>
                     <div class="goods_detail">
-                        <div class="one_row">{{goodsInfo.goodsName}}</div>
-                        <p class="fs-12 c-b0"> {{goodsInfo.spec}} </p>
-                        <span class="c-b0">￥{{ goodsInfo.price}}</span>
+                        <div class="one_row">{{item.goodsName}}</div>
+                        <p class="fs-12 c-b0" v-if="item.supplierGoodsDetail"> {{item.supplierGoodsDetail.spec || ''}} </p>
+                        <div class="price_num"><span class="c-money">￥{{ item.price}}</span><span class="fs-14 c-33">X{{item.number}}</span></div>
                     </div>
                 </div>
             </li>
         </ul>
-
-
-        <div class="car_footer">
+        <div class="car_footer" slot="bottom">
             <div class="car_tool ">
                 <p class="fs-14 c-28">数量</p>
-                <span class="c-28 fs-14">{{num}}</span>
+                <span class="c-28 fs-14">{{totalNum}}</span>
             </div>
             <div class="car_end">
                 <p class="fs-16 c-money">￥{{ totalMoney || 0 }}</p>
@@ -58,21 +54,18 @@
 
 <script>
     export default {
-        name: "share-order-submit",
+        name: "car-order-submit",
         data() {
             return {
                 totalMoney: 0,
                 hasAddress: false,
                 addressInfo: {},
-                goodsInfo: {},
-                num: 1
+                orderInfoList:[],
+                totalNum: 0
             }
         },
         created() {
-            this.userId = this.$comm.getStorge('YCuserId') || '224418465157615616';
-            this.goodsId = this.$comm.getStorge('preOrderGoodsId') || '231225779655151616';
-            this.specId = this.$comm.getStorge('preOrderSpecId') || '';
-            this.num = this.$comm.getStorge('preOrderGoodsNum') || '';
+            this.userId = this.$comm.getUrlKey('userId') || this.$comm.getStorge('preOrderUserId') || '224418465157615616';
             this.getPageData();
         },
         methods: {
@@ -82,7 +75,7 @@
             },
             // 获取页面信息
             getPageData() {
-                let addId = this.$comm.getStorge('selShareAddressId') || null;
+                let addId = this.$comm.getStorge('selAddressId') || null;
                 if (!addId) {
                     this.getDefaultAddress()
                 } else {
@@ -130,12 +123,18 @@
             },
             // 获取订单信息
             getOrderInfo() {
-                this.$http.post('/supplierGoodsDetail/getDetailBySpecId', {
-                    detailId: this.specId
-                }, (res) => {
-                    this.goodsInfo = res.data;
-                    this.totalMoney = (Math.floor(parseFloat(this.goodsInfo.price) * 100 * parseFloat (this.num)) / 100).toFixed(2);
+                this.orderInfoList = this.$comm.getStorge('subOrderList')
+                console.log(this.orderInfoList);
+                let totalPrice = 0;
+                let totalNum = 0;
+                let carts = [];
+                this.orderInfoList.map((item)=>{
+                    carts.push(item.id);
+                    totalNum += parseFloat(item.number);
+                    totalPrice += Math.floor(parseFloat(item.price) * 100 * parseFloat(item.number)) / 100;
                 })
+                this.totalNum = totalNum;
+                this.totalMoney = totalPrice.toFixed(2);
             },
             // 选择收货地址
             goSelect() {
@@ -153,68 +152,23 @@
                 }
 
                 let address = this.addressInfo.province + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
-                this.$http.post('/order/createShopOrder', {
-                    goodsId: this.goodsId,
-                    userId: this.userId,
-                    specId: this.specId,
-                    price: this.goodsInfo.price,
-                    goodsNum: this.num,
-                    goodsName: this.goodsInfo.goodsName,
+                this.$http.post('/myCays/clearCarts', {
+                    carts: this.carts,
                     totalPrice: this.totalMoney,
                     phone: this.addressInfo.phone,
-                    address: address,
+                    addr: address,
                     consignee: this.addressInfo.consignee,
                     postalCode: this.addressInfo.postalCode
                 }, (res) => {
-                    console.log(res);
-                    let data = res.data;
-                    let that = this;
-                    // 调起微信支付
-                    function onBridgeReady() {
-                        WeixinJSBridge.invoke(
-                            'getBrandWCPayRequest', {
-                                "appId": data.appId,     //公众号名称，由商户传入
-                                "timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数
-                                "nonceStr": data.nonceStr, //随机串
-                                "package": data.package, //????
-                                "signType": "MD5",         //微信签名方式：
-                                "paySign": data.sign //微信签名
-                            },
-                            function (res) {
-                                if (res.err_msg == "get_brand_wcpay_request:ok") {
-                                    //支付成功后跳转的页面
-                                    that.$router.push({path:'/sharePaySuccess'})
-                                } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-                                    that.$dialog.toast({
-                                        mes: '支付取消！',
-                                        timeout: 1500
-                                    })
-                                } else if (res.err_msg == "get_brand_wcpay_request:fail") {
-                                    that.$dialog.toast({
-                                        mes: '支付失败！',
-                                        timeout: 1500
-                                    })
-                                    WeixinJSBridge.call('closeWindow');
-                                } //使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok,但并不保证它绝对可靠。
-                            }
-                        );
+                    if (this.$comm.isIos()) {
+                        goPay(res.data);
+                    } else if (this.$comm.isAndroid()) {
+                        let data = res.data;
+                        window.location.href = 'http://www.yichuangpt.com/static/goPay.html?appId=' + data.appId + '&prepayId=' + data.prepayid + '&nonceStr=' + data.noncestr + '&timeStamp=' + data.timestamp + '&sign=' + data.sign;
                     }
-
-                    if (typeof WeixinJSBridge == "undefined") {
-                        if (document.addEventListener) {
-                            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-                        } else if (document.attachEvent) {
-                            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-                            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-                        }
-                    } else {
-                        onBridgeReady();
-                    }
-
-                    // window.location.href = 'http://www.yichuangpt.com/static/goPay.html?appId=' + data.appId + '&prepayId=' + data.prepayid + '&nonceStr=' + data.noncestr + '&timeStamp=' + data.timestamp + '&sign=' + data.sign;
                 }, () => {
                     this.$dialog.toast({
-                        mes: '下单失败，请重试!'
+                        mes: '下单失败，请重试！'
                     })
                     return;
                 })
@@ -282,6 +236,7 @@
 
     .good_list {
         width: 100%;
+        margin-bottom:2.2rem;
     }
 
     .good_list > li {
@@ -296,7 +251,14 @@
         overflow: hidden;
 
     }
-
+    .price_num{
+        width:100%;
+        padding:0.1rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items:center;
+        align-content: center;
+    }
     .car_center {
         height: 100%;
         width: 100%;
@@ -330,7 +292,7 @@
 
     .car_footer {
         width: 100%;
-        height: 2rem;
+        height:2rem;
         background: #fff;
         position: fixed;
         bottom: 0;
@@ -376,3 +338,4 @@
         font-size: 0.32rem;
     }
 </style>
+

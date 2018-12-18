@@ -1,5 +1,5 @@
 <template>
-    <yd-layout>
+    <div>
         <div class="nav_bar">
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
@@ -7,7 +7,7 @@
             <p class="nav_title">地址选择</p>
         </div>
 
-        <yd-cell-group class="mlr-10 list_sec">
+        <yd-cell-group class="list_sec">
             <yd-cell-item class="list_item" @click.native="selectHandle(item)"
                           v-for="(item,index) in addressList" :key="index">
                 <div slot="left">
@@ -26,7 +26,7 @@
                 地址管理
             </yd-button>
         </div>
-    </yd-layout>
+    </div>
 </template>
 
 <script>
@@ -113,13 +113,12 @@
         font-size: 0.3rem;
         line-height: 1rem;
     }
-
     .plr-10 {
         padding: 0 10px;
     }
 
     .list_sec {
-        margin-top: 1rem;
+        margin: 1rem 0.24rem 0;
         background: #f4f4f4;
         overflow: hidden;
     }

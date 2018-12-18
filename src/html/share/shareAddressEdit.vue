@@ -213,7 +213,7 @@
                 this.$dialog.confirm({
                     mes: '确认删除？',
                     opts: () => {
-                        this.$dialog.loading.open('');
+                        this.$dialog.loading.open('请稍候~');
                         this.$http.post('/userAddress/delAddress', {
                             id: this.addressId,
                         }, () => {
@@ -223,7 +223,7 @@
                                 timeout: 1500,
                                 icon: 'success',
                                 callback: () => {
-                                    this.$router.history.go(-1);
+                                    this.$router.back(-1);
                                 }
                             })
                         })

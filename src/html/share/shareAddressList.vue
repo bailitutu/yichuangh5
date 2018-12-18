@@ -35,18 +35,13 @@
             }
         },
         created() {
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
+            this.userId = this.$comm.getUrlKey('userId') || '';
             this.getAddressList();
-            this.isH5 = this.$comm.getUrlKey('isH5')|| undefined;
         },
         methods: {
             // 页面回跳
             backPage(){
-                if(this.isH5){
-                    this.$router.back(-1);
-                }else{
-                    this.$comm.normalBack();
-                }
+                this.$router.back(-1);
             },
             // 获取地址列表
             getAddressList() {
@@ -58,7 +53,7 @@
             },
             // 进行添加地址
             addAddress() {
-                this.$router.push({path: 'addressEdit', query: {userId: this.userId}})
+                this.$router.push({path: 'shareAddressEdit', query: {userId: this.userId}})
             }
         }
     }

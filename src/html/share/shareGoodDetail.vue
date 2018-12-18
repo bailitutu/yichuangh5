@@ -1,16 +1,27 @@
 <template>
-    <yd-layout>
-        <yd-navbar title="商品详情" class="page_nav" slot="top">
+    <div>
+        <yd-navbar title="商品详情" class="page_nav" >
             <router-link to="" @click.native="backFn" slot="left">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </router-link>
             <router-link v-if="goodInfo.shop" slot="right"
-                         :to="{ path:'/shopDetail',query:{ isCheck: 1, shopId: goodInfo.shop.shopId,userId:userId}}">
+                         :to="{ path:'/shareShopDetail',query:{  shopId: goodInfo.shop.shopId}}">
                 <span class="shop_icon"></span>
             </router-link>
         </yd-navbar>
+        <div class="bottom_item">
+            <div class="download_item">
+                <div slot="left" class="logo_item">
+                    <img src="../../assets/login_logo.png" class="logo_icon" alt="">
+                    <p class="fs-16 c-fff ml-10" >衣创</p>
+                </div>
+                <yd-button slot="right" size="small" bgcolor="#F76B1C" color="#fff" @click.native="$comm.downLoadApp()">APP下载</yd-button>
+            </div>
+
+        </div>
+
         <yd-slider autoplay="30000" pagination-color="#fff" pagination-activecolor="#fff" style="margin-top:1rem;"
-                   :style="{height:swiperHeight}">
+                   :style="{height:swiperHeight}" v-if="goodInfo.goodsImg">
             <yd-slider-item v-for="(item,index) in goodInfo.goodsImg" :key="index">
                 <a>
                     <img :src="item">
@@ -38,10 +49,11 @@
             <div class="good_detail_title tac">
                 <span class="fs-14">详情</span>
             </div>
-            <div class="good_detail_img">
+            <div class="good_detail_img" v-if="goodInfo.goodsInfoImg">
                 <img v-for="(cell,ind) in goodInfo.goodsInfoImg" :key="ind" :src="cell" alt="">
             </div>
         </div>
+        <!--选择商品-->
         <yd-popup v-model="showSelect" position="bottom" height="60%">
             <div class="sel_good_img" v-show="showSelect">
                 <img :src="goodInfo.goodsImg[0]" class="hasBra" alt="">
@@ -74,21 +86,70 @@
                 </yd-button>
             </div>
         </yd-popup>
-        <yd-flexbox slot="bottom" class="goods_footer">
-            <yd-flexbox-item class="connect_cell" @click.native="connctShop()">
-                <img src="../../assets/connct_shop.png" alt="">
-                <p class="fs-12">联系店主</p>
-            </yd-flexbox-item>
-            <yd-flexbox-item>
-                <yd-button size="large" bgcolor="#fff" color="#000" class="addCar_btn" @click.native="addCar">加入购物车
-                </yd-button>
-            </yd-flexbox-item>
-            <yd-flexbox-item>
-                <yd-button size="large" bgcolor="#000" color="#fff" class="buy_btn" @click.native="buyNow">立即购买
-                </yd-button>
-            </yd-flexbox-item>
-        </yd-flexbox>
-    </yd-layout>
+        <!--登录-->
+        <yd-popup v-model="showLogin" position="center" width="80%" >
+            <div class="bg-fff login_sec">
+                <p  class="fs-16 c-28 tac login_title" >账号登录 </p>
+                <p class="fs-14 c-28 tac login_title">(用于订单管理及物流跟踪)</p>
+                <div class="login_section">
+                    <div class="change_item">
+                        <span class="icon_phone"></span>
+                        <yd-input  type="number" v-model="loginPhone" required regex="mobile" placeholder="请输入手机号"></yd-input>
+                    </div>
+                </div>
+                <div class="login_section">
+                    <div class="change_item">
+                        <span class="icon_pass"></span>
+                        <yd-input  type="password" v-model="loginPass" placeholder="请输入密码"></yd-input>
+                    </div>
+                </div>
+
+                <yd-button bgcolor="#000" class="login_btn" color="#fff" size="large" @click.native="loginFn">登录</yd-button>
+                <yd-button bgcolor="#fff" style="border:1px solid #f4f4f4;" class="login_btn" color="#333" size="large" @click.native="goReg">注册</yd-button>
+            </div>
+        </yd-popup>
+
+        <!--注册-->
+        <yd-popup v-model="showReg" position="center" width="80%" >
+            <div class="bg-fff login_sec">
+                <p  class="fs-16 c-28 tac login_title" >账号注册 </p>
+                <p class="fs-14 c-28 tac login_title">(用于订单管理及物流跟踪)</p>
+                <div class="login_section">
+                    <div class="change_item">
+                        <span class="icon_phone"></span>
+                        <yd-input  type="number" v-model="regPhone" required regex="mobile"  placeholder="请输入手机号"></yd-input>
+                    </div>
+                </div>
+                <div class="login_section">
+                    <div class="change_item">
+                        <yd-input  type="number" v-model="regCode"  max="6" placeholder="请输入验证码"></yd-input>
+                        <yd-sendcode  v-model="hasSend"
+                                     @click.native="sendCode"
+                                     type="warning"
+                        ></yd-sendcode>
+                    </div>
+                </div>
+
+                <div class="login_section">
+                    <div class="change_item">
+                        <span class="icon_pass"></span>
+                        <yd-input  type="password" v-model="regPassOne" placeholder="请输入密码"></yd-input>
+                    </div>
+                </div>
+                <div class="login_section">
+                    <div class="change_item">
+                        <span class="icon_pass"></span>
+                        <yd-input  type="password" v-model="regPassTwo" placeholder="请输入密码"></yd-input>
+                    </div>
+                </div>
+
+                <yd-button bgcolor="#000" class="login_btn" color="#fff" size="large" @click.native="registerFn">注册</yd-button>
+                <yd-button bgcolor="#fff" style="border:1px solid #f4f4f4;" class="login_btn" color="#333" size="large" @click.native="goLogin">登录</yd-button>
+            </div>
+        </yd-popup>
+
+        <yd-button size="small" class="buy_btn" bgcolor="#000" color="#fff" shape="circle" @click.native="buyNow"> 购买</yd-button>
+    </div>
 </template>
 
 <script>
@@ -97,28 +158,34 @@
         data() {
             return {
                 swiperHeight: 0,
-                userId: '',
+                YCuserId: '',
                 goodInfo: {},
-                showSelect: false,//选择规格
+                showSelect: false, //选择规格
                 buyGoodsInfo: {},
                 buyNumber: 1,
                 buyType: 1,
+                showLogin: false, //登录弹窗
+                showReg:true, //注册弹窗
+                hasSend:false, //是否发送了验证码
+                loginPhone:'',
+                loginPass:'',
+                regPhone:'',
+                regPassOne:'',
+                regPassTwo:'',
+                regCode:'',//验证码
+                returnCode:'' //返回码
+
             }
         },
         created() {
             this.swiperHeight = window.innerWidth + 'px'; //设置轮播图高度
             this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '231225779655151616';
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
             this.getGoodDetail();
         },
         methods: {
             // 返回
             backFn() {
-                if (this.$comm.getUrlKey('isH5')) {
-                    this.$router.back(-1);
-                } else {
-                    this.$comm.normalBack();
-                }
+                this.$router.back(-1);
             },
             // 获取商品信息
             getGoodDetail() {
@@ -128,7 +195,7 @@
                 }, (res) => {
                     this.$dialog.loading.close();
                     this.goodInfo = res.data;
-                    if (this.goodInfo.detail.length > 0) {
+                    if (this.goodInfo.detail && this.goodInfo.detail.length > 0) {
                         this.goodInfo.detail = this.goodInfo.detail.map((item) => {
                             Object.assign(item, {selected: false});
                             return item;
@@ -142,26 +209,175 @@
                     })
                 })
             },
-            // 联系店主 跳转原生
-            connctShop() {
-                let shopPhone = this.goodInfo.shop.shopPhone;
-                if (this.$comm.isAndroid()) {
-                    window.location.href = 'http://www.yichuangpt.com/static/gochat.html?phone=' + shopPhone;
-                } else if (this.$comm.isIos()) {
-                    goChat(shopPhone)
+
+            // 登录
+            loginFn(){
+                // 表单验证
+                if(this.loginPhone == ""){
+                    this.$dialog.toast({
+                        mes: '请填写手机号！',
+                        timeout: 1500
+                    })
+                    return;
                 }
+                if(this.loginPass == ""){
+                    this.$dialog.toast({
+                        mes: '请填写密码！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+
+                this.$http.post('/base/appLogin', {
+                    phone: this.loginPhone,
+                    password: this.loginPass
+                }, (res) => {
+                    this.showLogin = false;
+                    this.$comm.setStorge('YCshareUserId',res.id);
+                    this.YCuserId = res.id;
+                    this.$dialog.toast({
+                        mes: '登录成功！',
+                        timeout: 1000,
+                        callback:()=>{
+                            this.showSelect = true;
+                        }
+                    })
+                }, (err) => {
+                    this.$dialog.toast({
+                        mes: err.msg,
+                        timeout: 1500
+                    })
+                })
             },
-            // 加入购物车
-            addCar() {
-                this.showSelect = true;
-                this.buyType = 1;
-                this.setSelectDefault();
+            // 去注册
+            goReg(){
+                this.showLogin = false;
+                this.showReg = true
             },
+            // 去登录
+            goLogin(){
+                this.showLogin = true;
+                this.showReg = false
+            },
+            // 发送验证码
+            sendCode(){
+
+                if( this.regPhone == ''){
+                    this.$dialog.toast({
+                        mes: '请填写手机号！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+                this.$dialog.loading.open('发送中...');
+                setTimeout(() => {
+                    this.$http.post('/base/getCheckCode',{
+                        phone: this.regPhone,
+                        type:1
+                    },(res)=>{
+                        this.returnCode = this.data.code;
+                        this.hasSend = true;
+                        this.$dialog.loading.close();
+                        this.$dialog.toast({
+                            mes: '已发送,请注意查收',
+                            icon: 'success',
+                            timeout: 1500
+                        })
+                    },()=>{
+                        this.$dialog.loading.close();
+                        this.$dialog.toast({
+                            mes: '发送失败，请稍候重试！',
+                            icon: 'success',
+                            timeout: 1500
+                        })
+                    })
+                }, 300)
+            },
+            // 注册
+            registerFn(){
+                // 表单验证
+                if(this.regPhone == ""){
+                    this.$dialog.toast({
+                        mes: '请填写手机号！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+                if(!this.hasSend){
+                    this.$dialog.toast({
+                        mes: '请先获取验证码！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+                if(this.regCode == ""){
+                    this.$dialog.toast({
+                        mes: '请填写验证码！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+                if(this.regPassOne == "" ){
+                    this.$dialog.toast({
+                        mes: '请填写密码！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+                if(this.regPassTwo == "" ){
+                    this.$dialog.toast({
+                        mes: '请再次输入密码！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+                if(this.regPassOne !== this.regPassTwo ){
+                    this.$dialog.toast({
+                        mes: '两次填写的密码不一致！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+                if(this.regCode != this.returnCode){
+                    this.$dialog.toast({
+                        mes: '验证码错误！',
+                        timeout: 1500
+                    })
+                    return;
+                }
+                this.$http.post('/base/register', {
+                    phone: this.regPhone,
+                    password: this.regPassOne
+                }, () => {
+                    this.showReg = false;
+                    this.$dialog.toast({
+                        mes: '注册成功！',
+                        timeout: 1000,
+                        callback:()=>{
+                            this.showLogin = true;
+                            this.loginPhone = this.regPhone;
+                            this.loginPass = this.regPassOne;
+                        }
+                    })
+                }, (err) => {
+                    this.$dialog.toast({
+                        mes: err.msg,
+                        timeout: 1500
+                    })
+                })
+            },
+
+
             // 立即购买
             buyNow() {
-                this.showSelect = true;
-                this.buyType = 2;
-                this.setSelectDefault();
+                this.YCuserId = this.$comm.getStorge('YCshareUserId') || '';
+                if(!this.YCuserId){
+                    this.showLogin = true;
+                }else{
+                    this.showSelect = true;
+                    this.buyType = 2;
+                    this.setSelectDefault();
+                }
             },
             // 选择商品规格
             selectAttr(i) {
@@ -174,7 +390,7 @@
             },
             // 设置默认选中的规格
             setSelectDefault() {
-                if (!this.buyGoodsInfo.length) {
+                if (this.buyGoodsInfo && this.buyGoodsInfo.length > 0) {
                     this.goodInfo.detail[0].selected = true;
                     this.buyGoodsInfo = this.goodInfo.detail[0];
                 }
@@ -189,47 +405,23 @@
                     });
                     return;
                 }
-                let totalPrice = 0;
-                totalPrice = Math.floor(parseInt(this.buyNumber) * this.buyGoodsInfo.price * 100) / 100;
+                // let totalPrice = (Math.floor(parseInt(this.buyNumber) * parseFloat(this.buyGoodsInfo.price) * 100) / 100).toFixed(2);
+                // 调起支付
+                let goodsId = this.shopGoodsId;
+                let specId = this.buyGoodsInfo.id;
+                let goodsNum = this.buyNumber;
+                this.$router.push({
+                    path: 'shareOrderSubmit',
+                    query: {goodsId: goodsId, specId: specId, num: goodsNum}
+                });
+                this.$comm.setStorge('preOrderGoodsId', goodsId);
+                this.$comm.setStorge('preOrderSpecId', specId);
+                this.$comm.setStorge('preOrderGoodsNum', goodsNum);
+                this.$comm.setStorge('preOrderUserId', this.userId);
 
-                // 判断是加入购物车还是立即购买
-                if (this.buyType == 1) {
-                    this.$http.post('/type/addShoppingCart', {
-                        goodsId: this.shopGoodsId,
-                        userId: this.userId,
-                        number: this.buyNumber,
-                        specId: this.buyGoodsInfo.id,
-                        price: totalPrice,
-                    }, (res) => {
-                        this.$dialog.toast({
-                            mes: '加入购物车成功！',
-                            timeout: '1500'
-                        });
-                        this.showSelect = false;
-                        return;
-                    }, (err) => {
-                        this.$dialog.toast({
-                            mes: err.msg,
-                            timeout: 1500
-                        })
-                    })
-                } else if (this.buyType == 2) {
 
-                    // 跳转原生页面
-                    let goodsId = this.shopGoodsId;
-                    let specId = this.buyGoodsInfo.id;
-                    let goodsNum = this.buyNumber;
-                    // 跳转结算页面
-                    this.$router.push({
-                        path: 'orderSubmit',
-                        query: {userId: this.userId, goodsId: goodsId, specId: specId, num: goodsNum}
-                    });
-                    this.$comm.setStorge('YCOrderBackUrl', this.$route.fullPath);
-                    this.$comm.setStorge('preOrderGoodsId', goodsId);
-                    this.$comm.setStorge('preOrderSpecId', specId);
-                    this.$comm.setStorge('preOrderGoodsNum', goodsNum);
-                    this.$comm.setStorge('preOrderUserId', this.userId);
-                }
+
+
 
             }
 
@@ -265,6 +457,39 @@
         display: inline-block;
         background: url("../../assets/dianpu.png") no-repeat 0.4rem center;
         background-size: 0.48rem 0.48rem;
+    }
+    .bottom_item{
+        position: fixed;
+        top:1rem;
+        left:0;
+        right:0;
+        z-index: 100;
+        background-color:rgba(40,40,40,0.5);
+        height:1rem;
+        padding:0 0.3rem;
+    }
+    .download_item{
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background:rgba(40,40,40,0.1);
+    }
+    .logo_item{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+    }
+
+    .logo_icon{
+        width:0.6rem;
+        height:0.6rem;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
     }
 
     .good_info {
@@ -331,11 +556,12 @@
 
     .good_detail {
         background: #fff;
-        margin: 0.2rem 0.24rem 1.2rem;
+        margin: 0.2rem 0.24rem 0.2rem;
         -webkit-border-radius: 4px;
         -moz-border-radius: 4px;
         border-radius: 4px;
         overflow: hidden;
+        border-color:#fff;
     }
 
     .good_detail_title {
@@ -378,42 +604,15 @@
         z-index: 100;
     }
 
-    .goods_footer {
-        border-top: 1px solid #f4f4f4;
-        height: 1.02rem;
-        background: #fff;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 10;
-    }
-
-    .connect_cell {
-        width: 2rem;
-        flex: none;
-        text-align: center;
-    }
-
-    .connect_cell img {
-        width: 0.44rem;
-        height: 0.4rem;
-    }
-
-    .connect_cell p {
-        text-align: center;
-        color: #939393;
-    }
-
-    .addCar_btn {
-        border: 1px solid #000;
-        height: 0.7rem;
-        width: 2.4rem;
-    }
 
     .buy_btn {
-        width: 2.4rem;
-        height: 0.7rem;
+        width: 1rem;
+        height: 1rem;
+        padding:0;
+        position: fixed;
+        bottom:1.2rem;
+        right:0.24rem;
+        z-index: 100;
     }
 
     .submit_btn {
@@ -489,4 +688,43 @@
         background: #000;
     }
 
+    /*登录弹窗*/
+    .login_sec{
+        padding:0.2rem 0.4rem ;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+    .login_title{
+        padding:0.1rem ;
+    }
+    .change_item{
+        border:1px solid #f4f4f4;
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        align-items: center;
+        margin-bottom:0.2rem;
+        padding:0.2rem;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+    .change_item .icon_phone{
+        width: 0.6rem;
+        height:0.6rem;
+        background: url('../../assets/icon_phone.png') no-repeat center left;
+        background-size: 0.34rem 0.5rem;
+        margin-right:0.2rem;
+    }
+    .change_item .icon_pass{
+        width: 0.6rem;
+        height:0.6rem;
+        background: url('../../assets/icon_pass.png') no-repeat center left;
+        background-size: 0.48rem 0.5rem;
+        margin-right:0.2rem;
+    }
+    .login_btn{
+        margin-bottom:0.2rem;
+    }
 </style>

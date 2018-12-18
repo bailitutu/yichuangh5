@@ -11,8 +11,17 @@ import '@/common/reset.css'
 import Api from '@/common/api.js'
 import myFilter from './filter'
 import comm from '@/common/common.js'
-// import Vuex from 'vuex'
-// import store  from './store'
+//引入fastClick
+import FastClick from 'fastclick'
+//初始化FastClick实例。在页面的DOM文档加载完成后
+FastClick.attach(document.body)
+FastClick.prototype.onTouchEnd = function(event) {
+    if(event.target.hasAttribute("type") && event.target.getAttribute("type") == "text") {
+        event.preventDefault();
+        return false;
+    }
+}
+
 
 Vue.prototype.$http = Api
 Vue.prototype.$comm = comm

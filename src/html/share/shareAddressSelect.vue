@@ -1,5 +1,5 @@
 <template>
-    <yd-layout>
+    <div>
         <div class="nav_bar" >
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
@@ -7,7 +7,7 @@
             <p class="nav_title">地址选择</p>
         </div>
 
-        <yd-cell-group class="mlr-10 list_sec" >
+        <yd-cell-group class="list_sec" >
             <yd-cell-item class="list_item" @click.native="selectHandle(item)"
                           v-for="(item,index) in addressList" :key="index">
                 <div slot="left">
@@ -23,7 +23,7 @@
                 地址管理
             </yd-button>
         </div>
-    </yd-layout>
+    </div>
 </template>
 
 <script>
@@ -38,17 +38,12 @@
         },
         created(){
             this.userId = this.$comm.getUrlKey('userId') || '';
-            this.pageType = this.$comm.getUrlKey('pageType') || 0;
             this.getAddressList();
         },
         methods: {
             // 页面回跳
             backPage(){
-                if( this.pageType == '1' ){
-                    this.$comm.normalBack();
-                }else{
-                    this.$router.back(-1);
-                }
+                this.$router.back(-1);
             },
             // 获取地址列表
             getAddressList() {
@@ -60,12 +55,12 @@
             },
             // 选择地址
             selectHandle(item){
-                this.$comm.setStorge('selAddressId', item.id);
+                this.$comm.setStorge('selShareAddressId', item.id);
                 this.$router.back(-1);
             },
             // 进入地址管理
             addressManage() {
-                this.$router.push({path: 'addressList', query: {userId:this.userId,isH5: '1'}})
+                this.$router.push({path: 'shareAddressList', query: {userId:this.userId}})
             }
         }
     }
@@ -104,7 +99,7 @@
         padding: 0 10px;
     }
     .list_sec{
-        margin-top:1rem;
+        margin:1rem 0.24rem 0;
         background: #f4f4f4;
         overflow: hidden;
     }
