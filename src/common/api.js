@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 let http = axios.create({
+    // baseURL: 'http://192.168.10.53/api',
     baseURL: 'http://www.yichuangpt.com/api',
     withCredentials: false,
     headers: {

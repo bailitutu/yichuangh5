@@ -124,7 +124,6 @@
             // 获取订单信息
             getOrderInfo() {
                 this.orderInfoList = this.$comm.getStorge('subOrderList')
-                console.log(this.orderInfoList);
                 let totalPrice = 0;
                 let totalNum = 0;
                 let carts = [];
@@ -150,8 +149,7 @@
                     })
                     return;
                 }
-
-                let address = this.addressInfo.province + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
+                let address = this.addressInfo.provinceName + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
                 this.$http.post('/myCays/clearCarts', {
                     carts: this.carts,
                     totalPrice: this.totalMoney,

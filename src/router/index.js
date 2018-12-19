@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import goodDetail from '@/html/home/goodDetail'
-import presellDetail from '@/html/home/presellDetail'
 import search from '@/html/home/search'
 import supplyGoods from '@/html/home/supplyGoods'
 import addressList from '@/html/mine/addressList'
@@ -41,11 +40,7 @@ export default new Router({
             name: 'goodDetail',
             component: goodDetail
         },
-        {
-            path: '/presellDetail',
-            name: 'presellDetail',
-            component: presellDetail
-        },
+
         {
             path: '/addressList',
             name: 'addressList',

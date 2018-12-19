@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="shop_top" ref="shoptop"
-             :style="{backgroundImage: 'url('+ shopInfo.backgroundImage +')', backgroundSize:'cover',backgroundPosition:'center'}">
+             :style="{backgroundImage: 'url('+ shopInfo.shopBackground +')', backgroundSize:'cover',backgroundPosition:'center'}">
             <div class="shop_info">
                 <img :src="shopInfo.shopLogo" alt="">
                 <div class="shop_detail c-fff">
@@ -130,6 +130,7 @@
         created() {
             this.shopId = this.$comm.getUrlKey('shopId') || '230849995971104768';
             this.isCheck = this.$comm.getUrlKey('isCheck') == '1' ? true : false ;
+            this.isBanner = this.$comm.getUrlKey('isBanner') == '1' ? true : false ;
             this.userId = this.$comm.getUrlKey('userId') || '';
             if (this.isCheck) {
                 this.getConcerShop();
@@ -144,7 +145,11 @@
         methods: {
             // 返回
             backPage() {
-                if (this.isCheck) { //h5查看页面
+                if( this.isBanner){ //首页轮播图进入
+                  this.$comm.normalBack();
+                  return;
+                }
+                if (this.isCheck && !this.isBanner) { //h5查看页面
                     this.$router.back(-1);
                 }else{
                     this.$comm.normalBack();
@@ -228,8 +233,8 @@
                 this.$http.post('/appUser/findUserById', {
                     userId: this.shopId
                 }, (res) => {
-                    if (!res.data.backgroundImage) {
-                        res.data.backgroundImage = this.bgImg;
+                    if (!res.data.shopBackground) {
+                        res.data.shopBackground = this.bgImg;
                     }
                     this.shopInfo = res.data;
 

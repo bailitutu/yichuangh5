@@ -152,7 +152,7 @@
                     return;
                 }
 
-                let address = this.addressInfo.province + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
+                let address = this.addressInfo.provinceName + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
                 this.$http.post('/order/createShopOrder', {
                     goodsId: this.goodsId,
                     userId: this.userId,

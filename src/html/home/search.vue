@@ -62,7 +62,7 @@
                 this.$http.post('/search/list', {
                     userId: this.userId
                 }, (res) => {
-                    this.historyList = res.data;
+                    this.historyList = [...res.data]  ;
                 })
             },
             // 点击搜索历史

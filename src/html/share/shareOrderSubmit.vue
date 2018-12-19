@@ -154,8 +154,6 @@
                 }
 
                 let address = this.addressInfo.provinceName + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
-
-
                 this.$http.post('/order/createShopOrder', {
                     code:this.userCode,
                     goodsId: this.goodsId,

@@ -53,14 +53,19 @@
       },
       // 关注和取消关注
       concernFn (index, item) {
-        if (item.isFollow == 1) {
+        if (item.isFollow == 1) { //去取消关注
+
+          let fansId = this.userId;
+          let userId = item.id;
+
           this.list[index].isFollow = 0;
-        } else {
+        } else { //去关注
+
+          let fansId = item.id;
+          let userId = this.userId;
           this.list[index].isFollow = 1;
         }
 
-        let fansId = item.id;
-        let userId = this.userId;
         this.$http.post('/shop/followShop', {
           userId: userId,
           fansId: fansId

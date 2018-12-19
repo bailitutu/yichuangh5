@@ -26,7 +26,7 @@
             }
         },
         created(){
-            this.userId = this.$comm.getUrlKey('userId') || ''
+            this.userId = this.$comm.getUrlKey('userId') || '230849995971104768'
         },
         methods:{
             submitFn(){
