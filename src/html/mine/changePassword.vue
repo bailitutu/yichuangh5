@@ -20,7 +20,7 @@
         </yd-cell-group>
 
         <div style="margin:0 0.7rem;">
-            <yd-button type="primary" size="large" bgcolor="#333333" color="#fff">确定</yd-button>
+            <yd-button type="primary" size="large" bgcolor="#333333" color="#fff" @click.native="submitFn">确定</yd-button>
         </div>
     </yd-layout>
 </template>

@@ -10,7 +10,7 @@
             <yd-cell-item class="change_item">
                 <span slot="left" class="phone_label">+86</span>
                 <input slot="right" type="password" placeholder="请输入新手机号码">
-                <yd-input slot="right" v-value="newPhone"  regx="mobile" :show-success-icon="false" :show-error-icon="false" placeholder="请输入原手机号码"></yd-input>
+                <yd-input slot="right" v-model="newPhone"  regx="mobile" :show-success-icon="false" :show-error-icon="false" placeholder="请输入原手机号码"></yd-input>
             </yd-cell-item>
         </yd-cell-group>
         <yd-cell-group class="change_section">
@@ -53,14 +53,22 @@
         },
         methods: {
             sendCode () {
+
+              if(this.newPhone == '' ){
+                this.$dialog.toast({
+                  mes: '请先输入新手机号！',
+                  timeout: 1500
+                })
+                return;
+              }
                 this.$dialog.loading.open('发送中...');
 
                 setTimeout(() => {
                     this.$http.post('/base/getCheckCode',{
-                        phone:this.newPhone,
+                        phone: this.newPhone,
                         type:0
                     },(res)=>{
-                        this.returnCode = this.data.code;
+                        this.returnCode = res.data.code;
                         this.hasSend = true;
                         this.$dialog.loading.close();
                         this.$dialog.toast({
@@ -72,9 +80,9 @@
                         this.$dialog.loading.close();
                         this.$dialog.toast({
                             mes: '发送失败，请稍候重试！',
-                            icon: 'success',
                             timeout: 1500
                         })
+                      return;
                     })
                 }, 300)
             },
@@ -103,11 +111,14 @@
                     },(res)=>{
                         this.$dialog.loading.close()
                         this.$dialog.toast({mes: '修改成功！', icon: 'success', timeout: 1000})
-                    },()=>{
+                    },(err)=>{
                         this.$dialog.loading.close();
+                        let errmsg = '修改失败，请稍候重试！';
+                        if(err.msg){
+                          errmsg = err.msg
+                        }
                         this.$dialog.toast({
-                            mes: '修改失败，请稍候重试！',
-                            icon: 'success',
+                            mes: errmsg,
                             timeout: 1500
                         })
                     })

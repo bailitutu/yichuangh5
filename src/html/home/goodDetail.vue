@@ -152,13 +152,17 @@
             addCar() {
                 this.showSelect = true;
                 this.buyType = 1;
-                this.setSelectDefault();
+                if( this.buyGoodsInfo == {} ){
+                  this.setSelectDefault();
+                }
             },
             // 立即购买
             buyNow() {
                 this.showSelect = true;
                 this.buyType = 2;
-                this.setSelectDefault();
+                if( this.buyGoodsInfo == {} ){
+                  this.setSelectDefault();
+                }
             },
             // 选择商品规格
             selectAttr(i) {

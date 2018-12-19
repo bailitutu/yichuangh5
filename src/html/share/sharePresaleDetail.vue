@@ -4,8 +4,8 @@
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
-            <p class="nav_title">
-                <time-left :endTime="presaleInfo.endTime"></time-left>
+            <p class="nav_title" v-if="presaleInfo.preSale">
+                <time-left :endTime="presaleInfo.preSale.endTime"></time-left>
             </p>
             <div style="width:1rem;"></div>
         </div>
@@ -63,7 +63,7 @@
                             </div>
                         </span>
                         <span slot="right">
-                            201231231231
+                          {{ command.createTime}}
                         </span>
                     </yd-cell-item>
                 </yd-cell-group>
@@ -106,7 +106,7 @@
             }
         },
         created() {
-            this.preSaleId = this.$comm.getUrlKey('preSaleId') || '232643015359991808';
+            this.preSaleId = this.$comm.getUrlKey('preSaleId') || '224409962628124672';
             this.pageType = this.$comm.getUrlKey('pageType') || '';
             console.log(this.preSaleId)
             if(!this.pageType){ //预售
@@ -135,7 +135,6 @@
                     preSaleId: this.preSaleId
                 }, (res) => {
                     this.$dialog.loading.close();
-                    console.log(res)
                     this.presaleInfo = res.data;
                 })
             },
@@ -144,7 +143,7 @@
                 this.$dialog.loading.open('努力加载中~');
                 this.$http.post('/originality/detail', {
                     userId: '1111111',
-                    preSaleId: this.preSaleId
+                    id: this.preSaleId
                 }, (res) => {
                     this.$dialog.loading.close();
                     this.presaleInfo = res.data;
@@ -162,7 +161,6 @@
                     status: status,
                     type: type
                 }, (res) => {
-                    console.log(res);
                     this.presaleInfo = res.data;
                     switch (status) {
                         case 1:

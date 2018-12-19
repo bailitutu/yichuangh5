@@ -118,6 +118,7 @@
         data() {
             return {
                 isCheck: false, //是否是从商品详情页跳转过来的
+                isBanner: false, //是否是从banner 图跳转过来的
                 isConcern: false,//是否关注了当前店铺
                 scrollHeight: 0,
                 bgImg: 'https://appyichuang.oss-cn-hangzhou.aliyuncs.com/img/test/9c6fba1d-9e30-4de8-a0a3-288ef891687a-1544779381566',
@@ -128,7 +129,7 @@
         },
         created() {
             this.shopId = this.$comm.getUrlKey('shopId') || '230849995971104768';
-            this.isCheck = this.$comm.getUrlKey('isCheck') ? true : false;
+            this.isCheck = this.$comm.getUrlKey('isCheck') == '1' ? true : false ;
             this.userId = this.$comm.getUrlKey('userId') || '';
             if (this.isCheck) {
                 this.getConcerShop();
@@ -143,9 +144,9 @@
         methods: {
             // 返回
             backPage() {
-                if (this.isCheck) {
+                if (this.isCheck) { //h5查看页面
                     this.$router.back(-1);
-                } else {
+                }else{
                     this.$comm.normalBack();
                 }
             },
@@ -154,11 +155,11 @@
                 if(this.$comm.isAndroid()){
 
                 }else if(this.$comm.isIos()){
-                   let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc9353d09a0d1f197&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect';
-                    console.log(url);
-                   return;
+                   // let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc9353d09a0d1f197&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect';
+                   //  console.log(url);
+                   // return;
 
-                        let info = {
+                    let info = {
                         title:this.shopInfo.shopName,
                         imgUrl:this.shopInfo.shopLogo,
                         url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1870dbca1644b15f&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect',

@@ -65,7 +65,6 @@
             // 选择地址
             selectHandle(item) {
                 if (this.pageType == '1') {
-                    this.$comm.normalBack();
                     if (this.$comm.isAndroid()) {
                         window.location.href = 'http://www.yichuangpt.com/static/gotoSt.html?addrId=' + item.id
                     } else if (this.$comm.isIos()) {

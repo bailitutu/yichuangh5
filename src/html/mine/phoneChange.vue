@@ -47,25 +47,23 @@
             // 发送验证码
             sendCode () {
                 this.$dialog.loading.open('发送中...');
-
                 setTimeout(() => {
                     this.$http.post('/base/getCheckCode',{
                         phone:this.bindPhone,
-                        type:0
-                    },(res)=>{
-                        this.returnCode = this.data.code;
+                        type: 0
+                    },(res) =>{
+                        this.returnCode = res.data.code;
                         this.hasSend = true;
                         this.$dialog.loading.close();
                         this.$dialog.toast({
                             mes: '已发送,请注意查收',
                             icon: 'success',
                             timeout: 1500
-                        })
-                    },()=>{
+                        });
+                    },() => {
                         this.$dialog.loading.close();
                         this.$dialog.toast({
                             mes: '发送失败，请稍候重试！',
-                            icon: 'success',
                             timeout: 1500
                         })
                     })
@@ -88,7 +86,7 @@
                     return;
                 }
                 this.$router.push({path: '/phoneBinding',query:{ phone: this.bindPhone}})
-            },
+            }
 
         }
     }

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 let http = axios.create({
-    // baseURL: 'http://mock.eolinker.com/7LLxP4be2df0fac56f24034039684974bc6e07b4f34d54e?uri=',
     baseURL: 'http://www.yichuangpt.com/api',
     withCredentials: false,
     headers: {
@@ -25,7 +24,7 @@ function apiAxios(method, url, params, response, error) {
         data: method === 'POST' || method === 'PUT' ? params : null,
         params: method === 'GET' || method === 'DELETE' ? params : null,
     }).then(function (res) {
-        if (res.data.code == '0') {
+        if (res.data &&　res.data.code == 0) {
             response(res.data);
         } else {
             if(!res.data){
@@ -33,15 +32,20 @@ function apiAxios(method, url, params, response, error) {
                     msg: '系统异常！'
                 }
             }
-            error ? error(res.data) : function () {};
+            if(error){
+              error(res.data)
+            }
         }
     }).catch(function (err) {
         if(!err.msg){
             err.msg = '系统异常!'
         }
-        error ? error(err) : function () {
-            alert('系统异常')
-        };
+        if(error){
+          error(err)
+        }else{
+          alert('系统异常')
+        }
+        return;
     })
 }
 

@@ -109,11 +109,8 @@
             this.getShopInfo();
             this.getGoodsData();
             this.getPreSellData();
-            this.getOpenId()
         },
         methods: {
-
-
             // 返回
             backPage() {
                 this.$router.back(-1);
