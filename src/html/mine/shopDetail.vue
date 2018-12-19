@@ -5,7 +5,7 @@
                 <yd-navbar-back-icon color="#fff"></yd-navbar-back-icon>
             </div>
             <div class="page_nav_right" v-if="!isCheck">
-                <div class="nav_cell_right">
+                <div class="nav_cell_right" @click.stop="shareShop">
                     <span class="share_icon"></span>
                 </div>
                 <div class="nav_cell_right" @click="checkRecord">
@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="page_nav_right" v-if="isCheck">
-                <div class="nav_cell_right">
+                <div class="nav_cell_right"  @click.stop="shareShop">
                     <span class="share_icon"></span>
                 </div>
                 <div class="nav_cell_right" @click.stop="connectShop">
@@ -147,6 +147,24 @@
                     this.$router.back(-1);
                 } else {
                     this.$comm.normalBack();
+                }
+            },
+            // 分享店铺
+            shareShop(){
+                if(this.$comm.isAndroid()){
+
+                }else if(this.$comm.isIos()){
+                   let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc9353d09a0d1f197&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect';
+                    console.log(url);
+                   return;
+
+                        let info = {
+                        title:this.shopInfo.shopName,
+                        imgUrl:this.shopInfo.shopLogo,
+                        url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1870dbca1644b15f&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect',
+                        conntent:this.shopInfo.shopInfo
+                    };
+                    goShare(info);
                 }
             },
             // 查看交易记录

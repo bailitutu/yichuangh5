@@ -1,6 +1,6 @@
 <template>
     <div>
-        <yd-navbar title="商品详情" class="page_nav" >
+        <yd-navbar title="商品详情" class="page_nav">
             <router-link to="" @click.native="backFn" slot="left">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </router-link>
@@ -13,9 +13,11 @@
             <div class="download_item">
                 <div slot="left" class="logo_item">
                     <img src="../../assets/login_logo.png" class="logo_icon" alt="">
-                    <p class="fs-16 c-fff ml-10" >衣创</p>
+                    <p class="fs-16 c-fff ml-10">衣创</p>
                 </div>
-                <yd-button slot="right" size="small" bgcolor="#F76B1C" color="#fff" @click.native="$comm.downLoadApp()">APP下载</yd-button>
+                <yd-button slot="right" size="small" bgcolor="#F76B1C" color="#fff" @click.native="$comm.downLoadApp()">
+                    APP下载
+                </yd-button>
             </div>
 
         </div>
@@ -81,49 +83,53 @@
                     </yd-cell-item>
                 </yd-cell-group>
                 <yd-button size="large" shape="angle" bgcolor="#000" class="submit_btn" color="#fff"
-                           :disabled="buyGoodsInfo.stock == '0'"
                            @click.native="submitFn">确定
                 </yd-button>
             </div>
         </yd-popup>
         <!--登录-->
-        <yd-popup v-model="showLogin" position="center" width="80%" >
+        <yd-popup v-model="showLogin" position="center" width="80%">
             <div class="bg-fff login_sec">
-                <p  class="fs-16 c-28 tac login_title" >账号登录 </p>
+                <p class="fs-16 c-28 tac login_title">账号登录 </p>
                 <p class="fs-14 c-28 tac login_title">(用于订单管理及物流跟踪)</p>
                 <div class="login_section">
                     <div class="change_item">
                         <span class="icon_phone"></span>
-                        <yd-input  type="number" v-model="loginPhone" required regex="mobile" placeholder="请输入手机号"></yd-input>
+                        <yd-input class="change_input" type="number" v-model="loginPhone" required regex="mobile"
+                                  placeholder="请输入手机号"></yd-input>
                     </div>
                 </div>
                 <div class="login_section">
                     <div class="change_item">
                         <span class="icon_pass"></span>
-                        <yd-input  type="password" v-model="loginPass" placeholder="请输入密码"></yd-input>
+                        <yd-input class="change_input" type="password" v-model="loginPass" placeholder="请输入密码"></yd-input>
                     </div>
                 </div>
 
-                <yd-button bgcolor="#000" class="login_btn" color="#fff" size="large" @click.native="loginFn">登录</yd-button>
-                <yd-button bgcolor="#fff" style="border:1px solid #f4f4f4;" class="login_btn" color="#333" size="large" @click.native="goReg">注册</yd-button>
+                <yd-button bgcolor="#000" class="login_btn" color="#fff" size="large" @click.native="loginFn">登录
+                </yd-button>
+                <yd-button bgcolor="#fff" style="border:1px solid #f4f4f4;" class="login_btn" color="#333" size="large"
+                           @click.native="goReg">注册
+                </yd-button>
             </div>
         </yd-popup>
 
         <!--注册-->
-        <yd-popup v-model="showReg" position="center" width="80%" >
+        <yd-popup v-model="showReg" position="center" width="80%">
             <div class="bg-fff login_sec">
-                <p  class="fs-16 c-28 tac login_title" >账号注册 </p>
+                <p class="fs-16 c-28 tac login_title">账号注册 </p>
                 <p class="fs-14 c-28 tac login_title">(用于订单管理及物流跟踪)</p>
                 <div class="login_section">
                     <div class="change_item">
                         <span class="icon_phone"></span>
-                        <yd-input  type="number" v-model="regPhone" required regex="mobile"  placeholder="请输入手机号"></yd-input>
+                        <yd-input class="change_input" type="number" v-model="regPhone" required regex="mobile"
+                                  placeholder="请输入手机号"></yd-input>
                     </div>
                 </div>
                 <div class="login_section">
                     <div class="change_item">
-                        <yd-input  type="number" v-model="regCode"  max="6" placeholder="请输入验证码"></yd-input>
-                        <yd-sendcode  v-model="hasSend"
+                        <yd-input class="change_input" type="number" v-model="regCode" max="6" placeholder="请输入验证码"></yd-input>
+                        <yd-sendcode v-model="hasSend"
                                      @click.native="sendCode"
                                      type="warning"
                         ></yd-sendcode>
@@ -133,22 +139,25 @@
                 <div class="login_section">
                     <div class="change_item">
                         <span class="icon_pass"></span>
-                        <yd-input  type="password" v-model="regPassOne" placeholder="请输入密码"></yd-input>
+                        <yd-input class="change_input" type="password" v-model="regPassOne" placeholder="请输入密码"></yd-input>
                     </div>
                 </div>
                 <div class="login_section">
                     <div class="change_item">
                         <span class="icon_pass"></span>
-                        <yd-input  type="password" v-model="regPassTwo" placeholder="请输入密码"></yd-input>
+                        <yd-input class="change_input" type="password" v-model="regPassTwo" placeholder="请输入密码"></yd-input>
                     </div>
                 </div>
 
-                <yd-button bgcolor="#000" class="login_btn" color="#fff" size="large" @click.native="registerFn">注册</yd-button>
-                <yd-button bgcolor="#fff" style="border:1px solid #f4f4f4;" class="login_btn" color="#333" size="large" @click.native="goLogin">登录</yd-button>
+                <yd-button bgcolor="#000" class="login_btn" color="#fff" size="large" @click.native="registerFn">注册
+                </yd-button>
+                <yd-button bgcolor="#fff" style="border:1px solid #f4f4f4;" class="login_btn" color="#333" size="large"
+                           @click.native="goLogin">登录
+                </yd-button>
             </div>
         </yd-popup>
-
-        <yd-button size="small" class="buy_btn" bgcolor="#000" color="#fff" shape="circle" @click.native="buyNow"> 购买</yd-button>
+        <yd-button size="small" class="buy_btn" bgcolor="#000" color="#fff" shape="circle" @click.native="buyNow"> 购买
+        </yd-button>
     </div>
 </template>
 
@@ -165,15 +174,15 @@
                 buyNumber: 1,
                 buyType: 1,
                 showLogin: false, //登录弹窗
-                showReg:true, //注册弹窗
-                hasSend:false, //是否发送了验证码
-                loginPhone:'',
-                loginPass:'',
-                regPhone:'',
-                regPassOne:'',
-                regPassTwo:'',
-                regCode:'',//验证码
-                returnCode:'' //返回码
+                showReg: false, //注册弹窗
+                hasSend: false, //是否发送了验证码
+                loginPhone: '',
+                loginPass: '',
+                regPhone: '',
+                regPassOne: '',
+                regPassTwo: '',
+                regCode: '',//验证码
+                returnCode: '' //返回码
 
             }
         },
@@ -211,16 +220,16 @@
             },
 
             // 登录
-            loginFn(){
+            loginFn() {
                 // 表单验证
-                if(this.loginPhone == ""){
+                if (this.loginPhone == "") {
                     this.$dialog.toast({
                         mes: '请填写手机号！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.loginPass == ""){
+                if (this.loginPass == "") {
                     this.$dialog.toast({
                         mes: '请填写密码！',
                         timeout: 1500
@@ -233,12 +242,12 @@
                     password: this.loginPass
                 }, (res) => {
                     this.showLogin = false;
-                    this.$comm.setStorge('YCshareUserId',res.id);
+                    this.$comm.setStorge('YCshareUserId', res.data.id);
                     this.YCuserId = res.id;
                     this.$dialog.toast({
                         mes: '登录成功！',
                         timeout: 1000,
-                        callback:()=>{
+                        callback: () => {
                             this.showSelect = true;
                         }
                     })
@@ -250,19 +259,19 @@
                 })
             },
             // 去注册
-            goReg(){
+            goReg() {
                 this.showLogin = false;
                 this.showReg = true
             },
             // 去登录
-            goLogin(){
+            goLogin() {
                 this.showLogin = true;
                 this.showReg = false
             },
             // 发送验证码
-            sendCode(){
+            sendCode() {
 
-                if( this.regPhone == ''){
+                if (this.regPhone == '') {
                     this.$dialog.toast({
                         mes: '请填写手机号！',
                         timeout: 1500
@@ -271,10 +280,10 @@
                 }
                 this.$dialog.loading.open('发送中...');
                 setTimeout(() => {
-                    this.$http.post('/base/getCheckCode',{
+                    this.$http.post('/base/getCheckCode', {
                         phone: this.regPhone,
-                        type:1
-                    },(res)=>{
+                        type: 1
+                    }, (res) => {
                         this.returnCode = this.data.code;
                         this.hasSend = true;
                         this.$dialog.loading.close();
@@ -283,7 +292,7 @@
                             icon: 'success',
                             timeout: 1500
                         })
-                    },()=>{
+                    }, () => {
                         this.$dialog.loading.close();
                         this.$dialog.toast({
                             mes: '发送失败，请稍候重试！',
@@ -294,51 +303,51 @@
                 }, 300)
             },
             // 注册
-            registerFn(){
+            registerFn() {
                 // 表单验证
-                if(this.regPhone == ""){
+                if (this.regPhone == "") {
                     this.$dialog.toast({
                         mes: '请填写手机号！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(!this.hasSend){
+                if (!this.hasSend) {
                     this.$dialog.toast({
                         mes: '请先获取验证码！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.regCode == ""){
+                if (this.regCode == "") {
                     this.$dialog.toast({
                         mes: '请填写验证码！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.regPassOne == "" ){
+                if (this.regPassOne == "") {
                     this.$dialog.toast({
                         mes: '请填写密码！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.regPassTwo == "" ){
+                if (this.regPassTwo == "") {
                     this.$dialog.toast({
                         mes: '请再次输入密码！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.regPassOne !== this.regPassTwo ){
+                if (this.regPassOne !== this.regPassTwo) {
                     this.$dialog.toast({
                         mes: '两次填写的密码不一致！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.regCode != this.returnCode){
+                if (this.regCode != this.returnCode) {
                     this.$dialog.toast({
                         mes: '验证码错误！',
                         timeout: 1500
@@ -353,7 +362,7 @@
                     this.$dialog.toast({
                         mes: '注册成功！',
                         timeout: 1000,
-                        callback:()=>{
+                        callback: () => {
                             this.showLogin = true;
                             this.loginPhone = this.regPhone;
                             this.loginPass = this.regPassOne;
@@ -371,9 +380,9 @@
             // 立即购买
             buyNow() {
                 this.YCuserId = this.$comm.getStorge('YCshareUserId') || '';
-                if(!this.YCuserId){
+                if (!this.YCuserId) {
                     this.showLogin = true;
-                }else{
+                } else {
                     this.showSelect = true;
                     this.buyType = 2;
                     this.setSelectDefault();
@@ -390,7 +399,7 @@
             },
             // 设置默认选中的规格
             setSelectDefault() {
-                if (this.buyGoodsInfo && this.buyGoodsInfo.length > 0) {
+                if (this.buyGoodsInfo) {
                     this.goodInfo.detail[0].selected = true;
                     this.buyGoodsInfo = this.goodInfo.detail[0];
                 }
@@ -405,7 +414,6 @@
                     });
                     return;
                 }
-                // let totalPrice = (Math.floor(parseInt(this.buyNumber) * parseFloat(this.buyGoodsInfo.price) * 100) / 100).toFixed(2);
                 // 调起支付
                 let goodsId = this.shopGoodsId;
                 let specId = this.buyGoodsInfo.id;
@@ -418,10 +426,6 @@
                 this.$comm.setStorge('preOrderSpecId', specId);
                 this.$comm.setStorge('preOrderGoodsNum', goodsNum);
                 this.$comm.setStorge('preOrderUserId', this.userId);
-
-
-
-
 
             }
 
@@ -437,7 +441,10 @@
     .yd-slider-item img, .yd-slider-item a {
         height: 100%;
     }
-
+    .yd-input>input{
+        min-height:0.4rem;
+        line-height: 0.38rem;
+    }
     .yd-slider-pagination {
         bottom: 1.1rem;
     }
@@ -458,35 +465,38 @@
         background: url("../../assets/dianpu.png") no-repeat 0.4rem center;
         background-size: 0.48rem 0.48rem;
     }
-    .bottom_item{
+
+    .bottom_item {
         position: fixed;
-        top:1rem;
-        left:0;
-        right:0;
+        top: 1rem;
+        left: 0;
+        right: 0;
         z-index: 100;
-        background-color:rgba(40,40,40,0.5);
-        height:1rem;
-        padding:0 0.3rem;
+        background-color: rgba(40, 40, 40, 0.5);
+        height: 1rem;
+        padding: 0 0.3rem;
     }
-    .download_item{
+
+    .download_item {
         display: flex;
         justify-content: space-between;
         align-content: center;
         align-items: center;
         width: 100%;
         height: 100%;
-        background:rgba(40,40,40,0.1);
+        background: rgba(40, 40, 40, 0.1);
     }
-    .logo_item{
+
+    .logo_item {
         display: flex;
         justify-content: space-between;
         align-items: center;
         align-content: center;
     }
 
-    .logo_icon{
-        width:0.6rem;
-        height:0.6rem;
+    .logo_icon {
+        width: 0.6rem;
+        height: 0.6rem;
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%;
@@ -561,7 +571,7 @@
         -moz-border-radius: 4px;
         border-radius: 4px;
         overflow: hidden;
-        border-color:#fff;
+        border-color: #fff;
     }
 
     .good_detail_title {
@@ -604,14 +614,13 @@
         z-index: 100;
     }
 
-
     .buy_btn {
         width: 1rem;
         height: 1rem;
-        padding:0;
+        padding: 0;
         position: fixed;
-        bottom:1.2rem;
-        right:0.24rem;
+        bottom: 1.2rem;
+        right: 0.24rem;
         z-index: 100;
     }
 
@@ -689,42 +698,51 @@
     }
 
     /*登录弹窗*/
-    .login_sec{
-        padding:0.2rem 0.4rem ;
+    .login_sec {
+        padding: 0.2rem 0.4rem;
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         border-radius: 5px;
     }
-    .login_title{
-        padding:0.1rem ;
+
+    .login_title {
+        padding: 0.1rem;
     }
-    .change_item{
-        border:1px solid #f4f4f4;
+
+    .change_item {
+        height:1.04rem;
+        border: 1px solid #f4f4f4;
         display: flex;
         justify-content: space-between;
         align-content: center;
         align-items: center;
-        margin-bottom:0.2rem;
-        padding:0.2rem;
+        margin-bottom: 0.2rem;
+        padding: 0.2rem;
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         border-radius: 5px;
     }
-    .change_item .icon_phone{
+
+    .change_item .icon_phone {
         width: 0.6rem;
-        height:0.6rem;
+        height: 0.6rem;
         background: url('../../assets/icon_phone.png') no-repeat center left;
         background-size: 0.34rem 0.5rem;
-        margin-right:0.2rem;
+        margin-right: 0.2rem;
     }
-    .change_item .icon_pass{
+
+    .change_item .icon_pass {
         width: 0.6rem;
-        height:0.6rem;
+        height: 0.6rem;
         background: url('../../assets/icon_pass.png') no-repeat center left;
         background-size: 0.48rem 0.5rem;
-        margin-right:0.2rem;
+        margin-right: 0.2rem;
     }
-    .login_btn{
-        margin-bottom:0.2rem;
+    .change_item .change_input{
+        height:0.6rem;
+        line-height: 0.6rem;
+    }
+    .login_btn {
+        margin-bottom: 0.2rem;
     }
 </style>

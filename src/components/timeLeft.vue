@@ -10,7 +10,7 @@
         },
         data() {
             return {
-                timeLeft: '00.00.00',
+                timeLeft: '',
                 bindIntervalEvent: ''
             }
         },
@@ -36,6 +36,7 @@
             this.bindIntervalEvent = setInterval(this.intervalEvent, 1000)
         },
         methods: {
+            // 获取剩余时间
             getLeftTime() {
                 let endT = new Date(this.endTime).getTime();
                 let nowT = new Date().getTime();

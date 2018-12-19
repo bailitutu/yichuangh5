@@ -23,8 +23,7 @@
             </div>
         </div>
         <yd-tab border-color="#f4f4f4" color="#B0B0B0" active-color="#333333">
-            <yd-tab-panel label="商品" :style="{ height: scrollHeight + 'px'}"
-                          style="overflow-y:auto;padding:0.1rem 0.2rem;">
+            <yd-tab-panel label="商品" :style="{ height: scrollHeight + 'px'}" class="tabLabel">
                 <yd-list theme="2">
                     <yd-list-item v-for="(item, key) in goodList" :key="key" style="position: relative;"
                                   @click.native="checkGoodsDetail(item.id)">
@@ -91,13 +90,18 @@
                 bgImg: 'https://appyichuang.oss-cn-hangzhou.aliyuncs.com/img/test/9c6fba1d-9e30-4de8-a0a3-288ef891687a-1544779381566',
                 shopInfo: {}, //店铺信息
                 goodList: [], //商品列表
-                presellList: [] //预售列表
+                presellList: [], //预售列表
+                urlCode:'',
             }
         },
         created() {
-            this.shopId = this.$comm.getUrlKey('shopId') || '230849995971104768';
+            this.shopId = this.$comm.getUrlKey('state') || '230849995971104768';
+            this.userCode = this.$comm.getUrlKey('code') || '';
             if (this.isCheck) {
                 this.getConcerShop();
+            }
+            if(this.urlCode){
+                this.$comm.setStorge('userCode',this.userCode)
             }
         },
         mounted() {
@@ -105,8 +109,11 @@
             this.getShopInfo();
             this.getGoodsData();
             this.getPreSellData();
+            this.getOpenId()
         },
         methods: {
+
+
             // 返回
             backPage() {
                 this.$router.back(-1);
@@ -218,25 +225,6 @@
         align-items: center;
     }
 
-    .page_nav_right .nav_cell_right {
-        padding: 0 0.2rem;
-    }
-
-    .share_icon {
-        height: 0.88rem;
-        width: 0.4rem;
-        display: block;
-        background: url("../../assets/share_2.png") no-repeat center;
-        background-size: 0.4rem 0.4rem;
-    }
-
-    .chat_icon {
-        height: 0.88rem;
-        width: 0.4rem;
-        display: block;
-        background: url("../../assets/pinglun_2.png") no-repeat center;
-        background-size: 0.4rem 0.4rem;
-    }
 
     /*店铺信息*/
     .shop_top {
@@ -273,51 +261,20 @@
 
     .shop_info .shop_detail {
         display: flex;
+        padding: 0.24rem 0;
         flex: 2;
         flex-direction: column;
         justify-content: space-between;
         align-content: stretch;
         align-items: flex-start;
         margin-left: 1px;
-
     }
-
-    .shop_right {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-        padding: 0.24rem;
-    }
-
-    .shop_right .shop_btn {
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        height: 0.8rem;
-        width: 0.8rem;
-        line-height: 0.8rem;
-        font-size: 12px;
-        padding: 0;
-        display: block;
-        margin-bottom: 0.2rem;
-    }
-
-    .xiajia_btn {
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        height: 0.8rem;
-        width: 0.8rem;
-        display: block;
-        position: absolute;
-        right: 0.1rem;
-        bottom: 60px;
-        z-index: 1;
-        background: orange;
-        text-align: center;
-        line-height: 0.8rem;
-        color: #fff;
+    .tabLabel {
+        overflow-y: auto;
+        padding: 0.1rem 0.2rem;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
     }
 
     /*预售列表*/

@@ -30,7 +30,6 @@ import sharePresaleDetail from '@/html/share/sharePresaleDetail'
 Vue.use(Router)
 
 export default new Router({
-    
     routes: [
         {
             path: '/search',

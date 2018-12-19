@@ -1,6 +1,6 @@
 <template>
-    <yd-layout>
-        <div class="nav_bar" slot="top">
+    <div>
+        <div class="nav_bar" >
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
@@ -85,7 +85,7 @@
             </yd-tab-panel>
         </yd-tab>
 
-    </yd-layout>
+    </div>
 </template>
 
 <script>
@@ -106,13 +106,21 @@
             }
         },
         created() {
-            // this.userId = this.$comm.getUrlKey('userId') || '230849995971104768';
             this.preSaleId = this.$comm.getUrlKey('preSaleId') || '232643015359991808';
+            this.pageType = this.$comm.getUrlKey('pageType') || '';
             console.log(this.preSaleId)
-            this.getPresaleData();
-            this.getShareList(1);
-            this.getShareList(2);
-            this.getShareList(3);
+            if(!this.pageType){ //预售
+                this.getPresaleData();
+
+                this.getShareList(1,2);
+                this.getShareList(2,2);
+                this.getShareList(3,2);
+            }else{//创意
+                this.getOriginalData();
+                this.getShareList(1,1);
+                this.getShareList(2,1);
+                this.getShareList(3,1);
+            }
         },
         methods: {
             // 返回
@@ -131,16 +139,28 @@
                     this.presaleInfo = res.data;
                 })
             },
+            // 获取创意详情
+            getOriginalData(){
+                this.$dialog.loading.open('努力加载中~');
+                this.$http.post('/originality/detail', {
+                    userId: '1111111',
+                    preSaleId: this.preSaleId
+                }, (res) => {
+                    this.$dialog.loading.close();
+                    this.presaleInfo = res.data;
+                })
+            },
             /*
             *  获取分享评论喜欢的列表
             *  status:1评论2分享3点赞
+            *  type:预售为2,创意为1
             * */
-            getShareList(status) {
+            getShareList(status,type) {
                 this.$http.post('/preSale/commentInfo', {
                     userId: this.userId,
                     preSaleId: this.preSaleId,
                     status: status,
-                    type: 2 //预售为2
+                    type: type
                 }, (res) => {
                     console.log(res);
                     this.presaleInfo = res.data;
@@ -155,6 +175,7 @@
                             this.likeList = res.data;
                             break;
                         default:
+
                             break;
                     }
 
@@ -171,8 +192,13 @@
         height: 1rem;
         background: #fff;
         line-height: 1rem;
+        position: fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index: 1;
         display: flex;
-        justify-content: s;
+        justify-content: space-between;
     }
 
     .nav_cell {
@@ -192,6 +218,7 @@
         height: 1rem;
         background: #fff;
         width: 100%;
+        margin-top: 1.2rem;
     }
 
     .download_item .user_info {

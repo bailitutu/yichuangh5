@@ -15,7 +15,7 @@
             </yd-button>
         </div>
         <yd-cell-group v-else>
-            <yd-cell-item arrow class="list_item" :href="{ path:'/addressSelect',query:{ userId:userId}}" type="link" >
+            <yd-cell-item arrow class="list_item" :href="{ path:'/shareAddressSelect',query:{ userId:userId}}" type="link" >
                 <div slot="left">
                     <p> {{addressInfo.consignee}} <span class="ml-40">{{addressInfo.phone}}</span></p>
                     <div class="address_detail">{{addressInfo.provinceName + addressInfo.cityName + addressInfo.areaName+addressInfo.detailAddr}}
@@ -74,6 +74,7 @@
             this.specId = this.$comm.getStorge('preOrderSpecId') || '';
             this.num = this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
+            this.userCode = this.$comm.getStorge('userCode') || ''
         },
         methods: {
             // 返回
@@ -139,7 +140,7 @@
             },
             // 选择收货地址
             goSelect() {
-                this.$router.push({path: 'addressSelect', query: {userId: this.userId}})
+                this.$router.push({path: '/shareAddressSelect', query: {userId: this.userId}})
             },
             // 提交订单
             submitFn(){
@@ -152,8 +153,11 @@
                     return;
                 }
 
-                let address = this.addressInfo.province + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
+                let address = this.addressInfo.provinceName + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
+
+
                 this.$http.post('/order/createShopOrder', {
+                    code:this.userCode,
                     goodsId: this.goodsId,
                     userId: this.userId,
                     specId: this.specId,
@@ -164,10 +168,15 @@
                     phone: this.addressInfo.phone,
                     address: address,
                     consignee: this.addressInfo.consignee,
-                    postalCode: this.addressInfo.postalCode
+                    postalCode: this.addressInfo.postalCode,
+                    payType:'WEB'
                 }, (res) => {
-                    console.log(res);
-                    let data = res.data;
+                    console.log(res.data);
+                    // let url = res.data.mwebUrl;
+                    // window.location.href = url;
+                    // return;
+                   let data = res.data;
+
                     let that = this;
                     // 调起微信支付
                     function onBridgeReady() {
@@ -181,6 +190,7 @@
                                 "paySign": data.sign //微信签名
                             },
                             function (res) {
+                                console.log(11112312312313)
                                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                                     //支付成功后跳转的页面
                                     that.$router.push({path:'/sharePaySuccess'})
@@ -193,7 +203,7 @@
                                     that.$dialog.toast({
                                         mes: '支付失败！',
                                         timeout: 1500
-                                    })
+                                    });
                                     WeixinJSBridge.call('closeWindow');
                                 } //使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok,但并不保证它绝对可靠。
                             }
@@ -210,8 +220,6 @@
                     } else {
                         onBridgeReady();
                     }
-
-                    // window.location.href = 'http://www.yichuangpt.com/static/goPay.html?appId=' + data.appId + '&prepayId=' + data.prepayid + '&nonceStr=' + data.noncestr + '&timeStamp=' + data.timestamp + '&sign=' + data.sign;
                 }, () => {
                     this.$dialog.toast({
                         mes: '下单失败，请重试!'

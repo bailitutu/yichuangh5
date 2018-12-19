@@ -2,6 +2,9 @@
     margin: 0;
     padding: 0;
 }
+body,html{
+    -webkit-overflow-scrolling: touch;
+}
 .yd-scrollview:after{
     height:0;
 }
@@ -55,6 +58,9 @@
 }
 .c-status{
     color: #0C7FE7;
+}
+.h_full{
+    height:100%;
 }
 .bg-28{
     background: #282828;
