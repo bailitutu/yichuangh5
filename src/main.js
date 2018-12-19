@@ -11,6 +11,7 @@ import '@/common/reset.css'
 import Api from '@/common/api.js'
 import myFilter from './filter'
 import comm from '@/common/common.js'
+import '@/common/ydui.flexible.js'
 //引入fastClick
 import FastClick from 'fastclick'
 //初始化FastClick实例。在页面的DOM文档加载完成后

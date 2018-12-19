@@ -53,18 +53,25 @@
       },
       // 关注和取消关注
       concernFn (index, item) {
-        if (item.isFollow == 1) { //去取消关注
-
-          let fansId = this.userId;
-          let userId = item.id;
-
-          this.list[index].isFollow = 0;
-        } else { //去关注
-
-          let fansId = item.id;
-          let userId = this.userId;
-          this.list[index].isFollow = 1;
-        }
+        let fansId = item.id;
+        let userId = this.userId;
+        // if (item.isFollow == 1) { //去取消关注
+        //   this.list[index].isFollow = 0;
+        // } else { //去关注
+        //   this.list[index].isFollow = 1;
+        // }
+        //
+        // let fansId = '';
+        // let userId = '';
+        // if (item.isFollow == 1) { //去取消关注
+        //   fansId = item.id;
+        //   userId = this.userId;
+        //   this.list[index].isFollow = 0;
+        // } else { //去关注
+        //   fansId = this.userId;
+        //   userId = item.id;
+        //   this.list[index].isFollow = 1;
+        // }
 
         this.$http.post('/shop/followShop', {
           userId: userId,
@@ -72,13 +79,14 @@
         }, (res) => {
           if (item.isFollow == 0) {
             this.$dialog.toast({
-              mes: '取消关注成功'
+              mes: '关注成功！'
             })
           } else {
             this.$dialog.toast({
-              mes: '关注成功！'
+              mes: '取消关注成功'
             })
           }
+          this.getData(this.pageType);
         })
 
       }
