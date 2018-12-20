@@ -60,6 +60,9 @@
                     userId: this.userId
                 }, (res) => {
                     this.addressList = res.data;
+                    if( res.data.length == 0){
+                        this.$comm.removeStorge( 'selAddressId')
+                    }
                 })
             },
             // 选择地址

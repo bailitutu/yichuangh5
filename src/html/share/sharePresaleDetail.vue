@@ -5,7 +5,7 @@
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
             <p class="nav_title" v-if="presaleInfo.preSale">
-                <time-left :endTime="presaleInfo.preSale.endTime"></time-left>
+                <time-left :endTime="presaleInfo.preSale.endTimeDate"></time-left>
             </p>
             <div style="width:1rem;"></div>
         </div>
@@ -108,7 +108,6 @@
         created() {
             this.preSaleId = this.$comm.getUrlKey('preSaleId') || '224409962628124672';
             this.pageType = this.$comm.getUrlKey('pageType') || '';
-            console.log(this.preSaleId)
             if(!this.pageType){ //预售
                 this.getPresaleData();
 

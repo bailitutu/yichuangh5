@@ -13,7 +13,7 @@
                    :style="{height:swiperHeight}">
             <yd-slider-item v-for="(item,index) in goodInfo.goodsImg" :key="index">
                 <a>
-                    <img :src="item">
+                    <img :src="item" >
                 </a>
             </yd-slider-item>
         </yd-slider>
@@ -39,7 +39,7 @@
                 <span class="fs-14">详情</span>
             </div>
             <div class="good_detail_img">
-                <img v-for="(cell,ind) in goodInfo.goodsInfoImg" :key="ind" :src="cell" alt="">
+                <img v-for="(cell,ind) in goodInfo.goodsInfoImg" :key="ind" src="" v-lazy="cell" alt="">
             </div>
         </div>
         <yd-popup class="attr_section" v-model="showSelect" position="bottom" height="60%">
@@ -63,7 +63,7 @@
             <div class="sel_good_footer" v-show="showSelect">
                 <div class="sel_good_cell">
                     <span class="fs-14">购买数量</span>
-                    <yd-spinner  max="100" unit="1" min="1" width="1.6rem" height="0.45rem"
+                    <yd-spinner  unit="1" min="1" width="1.6rem" height="0.45rem"
                                 v-model="buyNumber"></yd-spinner>
                 </div>
                 <yd-button size="large" shape="angle" bgcolor="#000" class="submit_btn" color="#fff"
@@ -141,6 +141,13 @@
             },
             // 联系店主 跳转原生
             connctShop() {
+                if(this.userId == this.goodInfo.shop.shopId){
+                    this.$dialog.toast({
+                        mes:'这是你自家商品哦~'
+                    })
+                    return;
+                }
+
                 let shopPhone = this.goodInfo.shop.shopPhone;
                 if (this.$comm.isAndroid()) {
                     window.location.href = 'http://www.yichuangpt.com/static/gochat.html?phone=' + shopPhone;
@@ -150,6 +157,13 @@
             },
             // 加入购物车
             addCar() {
+                if(this.goodInfo.shop.isOpen == 0){
+                    this.$dialog.toast({
+                        mes:'该店铺已停封！',
+                        timeout:1500
+                    })
+                    return;
+                }
                 this.showSelect = true;
                 this.buyType = 1;
                 if( this.buyGoodsInfo == {} ){
@@ -158,6 +172,13 @@
             },
             // 立即购买
             buyNow() {
+                if(this.goodInfo.shop.isOpen == 0){
+                    this.$dialog.toast({
+                        mes:'该店铺已停封！',
+                        timeout:1500
+                    })
+                    return;
+                }
                 this.showSelect = true;
                 this.buyType = 2;
                 if( this.buyGoodsInfo == {} ){
@@ -190,8 +211,8 @@
                     });
                     return;
                 }
-                let totalPrice = 0;
-                totalPrice = Math.floor(parseInt(this.buyNumber) * parseFloat(this.buyGoodsInfo.price) * 100) / 100;
+                // let totalPrice = 0;
+                // totalPrice = Math.floor(parseInt(this.buyNumber) * parseFloat(this.buyGoodsInfo.price) * 100) / 100;
 
                 // 判断是加入购物车还是立即购买
                 if (this.buyType == 1) {
@@ -200,13 +221,14 @@
                         userId: this.userId,
                         number: this.buyNumber,
                         specId: this.buyGoodsInfo.id,
-                        price: totalPrice,
+                        price: this.buyGoodsInfo.price
                     }, (res) => {
                         this.$dialog.toast({
                             mes: '加入购物车成功！',
                             timeout: '1500'
                         });
                         this.showSelect = false;
+                        this.getGoodDetail();
                         return;
                     }, (err) => {
                         this.$dialog.toast({
@@ -362,6 +384,7 @@
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         padding: 0.2rem;
+        font-size:0;
     }
 
     .good_detail_img img {

@@ -1,6 +1,6 @@
 <template>
     <yd-layout>
-        <yd-navbar title="店铺名修改">
+        <yd-navbar title="昵称修改">
             <router-link to="/back" slot="left">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </router-link>
@@ -10,7 +10,7 @@
         </yd-navbar>
         <yd-cell-group style='padding:10px;' class="hasBra">
             <yd-cell-item class="input_cell ">
-                <yd-input slot="right"  type="text" v-model="inputValue" placeholder="一个好的店铺名会更受欢迎哦~"></yd-input>
+                <yd-input slot="right"  type="text" v-model="inputValue" placeholder="一个好的昵称能让人更快的记住你"></yd-input>
             </yd-cell-item>
         </yd-cell-group>
     </yd-layout>
@@ -18,7 +18,7 @@
 
 <script>
     export default {
-        name: "change-shop-name",
+        name: "change-name",
         data(){
             return{
                 inputValue:'',
@@ -26,19 +26,19 @@
             }
         },
         created(){
-            this.userId = this.$comm.getUrlKey('userId') || ''
+            this.userId = this.$comm.getUrlKey('userId') || '230849995971104768'
         },
         methods:{
             submitFn(){
                 if(this.inputValue == '' || !this.inputValue ){
                     this.$dialog.toast({
-                        mes:'店铺名不能为空！'
-                    });
+                        mes:'昵称不能为空！'
+                    })
                     return;
                 }
                 this.$http.post('/base/personalCenter',{
                     id:this.userId,
-                    shopName:this.inputValue
+                    name:this.inputValue,
                 },(res)=>{
                     this.$dialog.toast({
                         mes:'修改成功',
@@ -48,6 +48,7 @@
                             this.$comm.normalBack();
                         }
                     })
+
                 },(err)=>{
                     this.$dialog.toast({
                         mes:err.msg,
@@ -73,3 +74,4 @@
         border-radius: 5px;
     }
 </style>
+

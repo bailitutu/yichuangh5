@@ -188,7 +188,6 @@
                                 "paySign": data.sign //微信签名
                             },
                             function (res) {
-                                console.log(11112312312313)
                                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                                     //支付成功后跳转的页面
                                     that.$router.push({path:'/sharePaySuccess'})

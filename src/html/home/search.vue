@@ -4,10 +4,11 @@
             <yd-cell-item>
                 <div slot="left" class="search_cell">
                     <yd-icon name="search" size="15px" class="search_icon"></yd-icon>
-                    <yd-input v-model="searchValue" required :show-success-icon="false" :show-error-icon="false" :show-clear-icon="false"
+                    <yd-input v-model="searchValue" required :show-success-icon="false" :show-error-icon="false"
+                              :show-clear-icon="false"
                               placeholder="寻找你的专属" :onBlur="getSearch"></yd-input>
                 </div>
-                <yd-button slot="right"  size="small" bgcolor="#fff" color="#333" class="cancel_btn"
+                <yd-button slot="right" size="small" bgcolor="#fff" color="#333" class="cancel_btn"
                            @click.native="cancelFn">取消
                 </yd-button>
             </yd-cell-item>
@@ -62,7 +63,19 @@
                 this.$http.post('/search/list', {
                     userId: this.userId
                 }, (res) => {
-                    this.historyList = [...res.data]  ;
+                    if (res.data && res.data.length > 0) {
+                        let resArr = [];
+                        let resObj = {}
+                        for (let i = 0; i < res.data.length; i++) {
+                            if (!resObj[res.data[i].queryKey]) {
+                                resArr.push(res.data[i]);
+                                resObj[res.data[i].queryKey] = true
+                            }
+                        }
+                        this.historyList = resArr;
+                    }else{
+                        this.historyList = []
+                    }
                 })
             },
             // 点击搜索历史
@@ -72,11 +85,11 @@
             },
             // 搜索
             getSearch() {
-                if(this.searchValue == ''){
+                if (this.searchValue == '') {
                     this.isSearch = false;
+                    this.getHistorylist();
                     return;
                 }
-
                 this.$http.post('/search/query', {
                     userId: this.userId,
                     queryKey: this.searchValue
@@ -109,7 +122,7 @@
             },
             // 查看搜索商品详情
             checkGoods(id) {
-                this.$router.push({path: 'goodDetail', query: {userId: this.userId, shopGoodsId: id,isH5:1}})
+                this.$router.push({path: 'goodDetail', query: {userId: this.userId, shopGoodsId: id, isH5: 1}})
             },
             // 取消搜索
             cancelFn() {

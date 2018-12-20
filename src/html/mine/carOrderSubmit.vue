@@ -131,9 +131,11 @@
                     carts.push(item.id);
                     totalNum += parseFloat(item.number);
                     totalPrice += Math.floor(parseFloat(item.price) * 100 * parseFloat(item.number)) / 100;
-                })
+                });
+                this.carts = carts;
                 this.totalNum = totalNum;
                 this.totalMoney = totalPrice.toFixed(2);
+
             },
             // 选择收货地址
             goSelect() {

@@ -35,13 +35,13 @@
         data () {
             return {
                 hasSend: false,
-                bindPhone: '18223423412',
+                bindPhone: '',
                 testCode:'',
                 returnCode: ''
             }
         },
         created(){
-            this.bindPhone = this.$comm.getUrlKey('phone') || '18458893454';
+            this.bindPhone = this.$comm.getUrlKey('phone') || '';
         },
         methods: {
             // 发送验证码

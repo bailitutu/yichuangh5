@@ -26,7 +26,7 @@
             }
         },
         created(){
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616'
+            this.userId = this.$comm.getUrlKey('userId') || ''
         },
         methods:{
             // 提交修改

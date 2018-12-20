@@ -1,16 +1,21 @@
 <template>
-    <yd-layout title="绑定新手机号" link="/changePhone">
+    <div>
+        <div class="nav_bar" >
+            <div class="nav_cell" @click.prevent="backPage">
+                <yd-navbar-back-icon></yd-navbar-back-icon>
+            </div>
+            <p class="nav_title">绑定新手机号</p>
+        </div>
         <div class="change_icon">
             <img src="../../assets/change_icon.png" alt="">
         </div>
-        <div class="phone_tip">
+        <div class="phone_tip" >
             <p>您当前已绑定手机 <span>{{phoneDeal}}</span></p>
         </div>
         <yd-cell-group class="change_section">
             <yd-cell-item class="change_item">
                 <span slot="left" class="phone_label">+86</span>
-                <input slot="right" type="password" placeholder="请输入新手机号码">
-                <yd-input slot="right" v-model="newPhone"  regx="mobile" :show-success-icon="false" :show-error-icon="false" placeholder="请输入原手机号码"></yd-input>
+                <yd-input slot="right" v-model="newPhone"  regx="mobile" :show-success-icon="false" :show-error-icon="false" placeholder="请输入新手机号码"></yd-input>
             </yd-cell-item>
         </yd-cell-group>
         <yd-cell-group class="change_section">
@@ -28,7 +33,7 @@
             <yd-button type="primary" size="large" bgcolor="#333333" color="#fff" @click.native="submitFn">确定
             </yd-button>
         </div>
-    </yd-layout>
+    </div>
 </template>
 
 <script>
@@ -52,8 +57,12 @@
             this.bindPhone = this.$comm.getUrlKey('phone') || '';
         },
         methods: {
+            // 页面回跳
+            backPage() {
+                this.$router.back(-1);
+            },
+            // 发送验证码
             sendCode () {
-
               if(this.newPhone == '' ){
                 this.$dialog.toast({
                   mes: '请先输入新手机号！',
@@ -110,7 +119,14 @@
                         newPhone:this.newPhone
                     },(res)=>{
                         this.$dialog.loading.close()
-                        this.$dialog.toast({mes: '修改成功！', icon: 'success', timeout: 1000})
+                        this.$dialog.toast({mes: '修改成功！', icon: 'success', timeout: 1000});
+                        if(this.$comm.isIos()){
+                            goExit()
+                        }else if(this.$comm.isAndroid()){
+
+                        }
+
+
                     },(err)=>{
                         this.$dialog.loading.close();
                         let errmsg = '修改失败，请稍候重试！';
@@ -128,11 +144,37 @@
     }
 </script>
 <style scoped>
+    .nav_bar{
+        width:100%;
+        height:1rem;
+        background: #fff;
+        line-height: 1rem;
+        position: fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index: 100;
+    }
+    .nav_cell{
+        width:1rem;
+        padding-left:0.24rem;
+        position: absolute;
+        top:0;
+        left:0;
+        z-index: 10;
+    }
+    .nav_title{
+        width: 100%;
+        height:1rem;
+        text-align: center;
+        font-size:0.3rem;
+        line-height: 1rem;
+    }
     .change_icon {
         width: 100%;
         height: auto;
         text-align: center;
-        padding: 0.72rem 0 0.2rem;
+        padding: 1.72rem 0 0.2rem;
     }
 
     .change_icon img {

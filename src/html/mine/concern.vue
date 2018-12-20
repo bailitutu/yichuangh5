@@ -34,8 +34,8 @@
       }
     },
     created () {
-      this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
-      this.pageType = this.$comm.getUrlKey('type') || '2';  //2:关注；1：粉丝
+      this.userId = this.$comm.getUrlKey('userId') || '';
+      this.pageType = this.$comm.getUrlKey('type') || '';  //2:关注；1：粉丝
       this.noDataText = this.pageType == '2' ? '还没有任何关注哦' : '还没有粉丝哦~';
       this.getData(this.pageType);
     },
@@ -53,25 +53,8 @@
       },
       // 关注和取消关注
       concernFn (index, item) {
-        let fansId = item.id;
-        let userId = this.userId;
-        // if (item.isFollow == 1) { //去取消关注
-        //   this.list[index].isFollow = 0;
-        // } else { //去关注
-        //   this.list[index].isFollow = 1;
-        // }
-        //
-        // let fansId = '';
-        // let userId = '';
-        // if (item.isFollow == 1) { //去取消关注
-        //   fansId = item.id;
-        //   userId = this.userId;
-        //   this.list[index].isFollow = 0;
-        // } else { //去关注
-        //   fansId = this.userId;
-        //   userId = item.id;
-        //   this.list[index].isFollow = 1;
-        // }
+        let fansId = this.userId;
+        let userId = item.id ;
 
         this.$http.post('/shop/followShop', {
           userId: userId,

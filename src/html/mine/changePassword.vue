@@ -74,7 +74,7 @@
                     })
                     return;
                 }
-                this.$http.post('/abase/changePassword',{
+                this.$http.post('/base/changePassword',{
                     phone:this.phone,
                     oldPwd:this.oldPwd,
                     newPwd:this.newPwd

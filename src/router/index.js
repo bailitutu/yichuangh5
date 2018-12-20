@@ -9,6 +9,7 @@ import addressSelect from '@/html/mine/addressSelect'
 import changePassword from '@/html/mine/changePassword'
 import changeShopIntro from '@/html/mine/changeShopIntro'
 import changeShopName from '@/html/mine/changeShopName'
+import changeName from '@/html/mine/changeName'
 import concern from '@/html/mine/concern'
 import orderSubmit from '@/html/mine/orderSubmit'
 import phoneBinding from '@/html/mine/phoneBinding'
@@ -66,6 +67,10 @@ export default new Router({
             path: '/changeShopIntro',
             name: 'changeShopIntro',
             component: changeShopIntro
+        }, {
+            path: '/changeName',
+            name: 'changeName',
+            component: changeName
         }, {
             path: '/changeShopName',
             name: 'changeShopName',

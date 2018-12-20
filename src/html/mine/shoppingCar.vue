@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="car_right">
-                    <yd-spinner max="100" unit="1" width="1.6rem" height="0.45rem" v-model="item.number"  :val="item.id" :callback="numChange"></yd-spinner>
+                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" v-model="item.number"  :val="item.id" :callback="numChange"></yd-spinner>
                 </div>
             </li>
         </ul>
@@ -116,12 +116,7 @@
             },
             // 选择某一项;
             selectItem (i) {
-                // 单选模式
-                // this.list.map(function(item){
-                //     item.selected = false;
-                // })
                 this.list[i].selected = !this.list[i].selected;
-
             },
             // 全选/反选
             selAll () {
@@ -155,10 +150,13 @@
                         mes: '确认移除？',
                         opts: () => {
                             let selectList = this.list.filter(item =>{ return item.selected});
-                            let carId = selectList[0].id ;//要移除的id 或数组
+                            let carIdList = [];
+                            selectList.map((item)=>{
+                                carIdList.push(item.id)
+                            }) ;//要移除的id 或数组
                             // 发送删除请求
                             this.$http.post('/myCays/delOneCar',{
-                                carId:carId,
+                                carId:carIdList
                             },()=>{
                                 this.$dialog.toast({
                                     mes:'删除成功',
@@ -181,7 +179,7 @@
             },
             // 查看商品详情
             checkGoodDetai(goodId){
-                this.$router.push({path:'/goodDetail',query:{ goodsId: goodId ,userId: this.userId,isH5: 1  }});
+                this.$router.push({path:'/goodDetail',query:{ shopGoodsId: goodId ,userId: this.userId,isH5: 1  }});
             },
 
             // 前往支付

@@ -21,7 +21,7 @@
                 </div>
                 <div class="nav_cell_right">
                     <yd-button type="warning" style="min-width: 0.8rem;" size="small" @click.native="concernShop">{{
-                        isConcern ? '已关注' : '关注'}}
+                        isConcern == 1 ? '已关注' : '关注'}}
                     </yd-button>
                 </div>
             </div>
@@ -29,7 +29,7 @@
         <div class="shop_top" ref="shoptop"
              :style="{backgroundImage: 'url('+ shopInfo.shopBackground +')', backgroundSize:'cover',backgroundPosition:'center'}">
             <div class="shop_info">
-                <img :src="shopInfo.shopLogo" alt="">
+                <img src="" v-lazy="shopInfo.shopLogo" alt="">
                 <div class="shop_detail c-fff">
                     <h3 class="fs-16">{{shopInfo.shopName}}</h3>
                     <p class="fs-14">店铺码:{{shopInfo.shopCode}}</p>
@@ -75,17 +75,17 @@
                     <li v-for="(cell, pre) in presellList" :key="pre" class="hasBra" @click="checkPresell(cell.id)"
                         style="position: relative;">
                         <div class="pre_inner">
-                            <time-left :endTime="cell.endTime"></time-left>
+                            <time-left :endTime="cell.endTimeDate"></time-left>
                             <!--<p class="c-money tac pre_time">剩余时间：75:23:00</p>-->
                             <img class="pre_img" :src="cell.firstImg">
                             <p class="fs-14 c-60" style="padding:0.1rem 0.2rem;">{{cell.designName}}</p>
-                            <div class="fs-12 two_row pre_info" style="padding:0.1rem 0.2rem;">
+                            <div class="fs-12 one_row pre_info" style="padding:0.1rem 0.2rem;">
                                 {{cell.info}}
                             </div>
                             <div class="pre_detail">
                                 <div>
                                     <img class="pre_head" :src="cell.userImg" alt="">
-                                    <span class="fs-12 c-b0">{{cell.name}}</span>
+                                    <span class="fs-12 c-b0 ml-10">{{cell.name}}</span>
                                 </div>
                                 <div>
                                     <img class="pre_zan" src="../../assets/161.png" alt="">
@@ -128,7 +128,7 @@
             }
         },
         created() {
-            this.shopId = this.$comm.getUrlKey('shopId') || '230849995971104768';
+            this.shopId = this.$comm.getUrlKey('shopId') || '230178710307868672';
             this.isCheck = this.$comm.getUrlKey('isCheck') == '1' ? true : false ;
             this.isBanner = this.$comm.getUrlKey('isBanner') == '1' ? true : false ;
             this.userId = this.$comm.getUrlKey('userId') || '';
@@ -166,7 +166,7 @@
 
                     let info = {
                         title:this.shopInfo.shopName,
-                        imgUrl:this.shopInfo.shopLogo,
+                        imgUrl:'https://appyichuang.oss-cn-hangzhou.aliyuncs.com/img/test/23ece438-1382-4a19-ad60-3802b681dc14-1545126120466',
                         url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1870dbca1644b15f&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect',
                         conntent:this.shopInfo.shopInfo
                     };
@@ -201,9 +201,15 @@
             },
             // 关注/取消关注店铺
             concernShop() {
+                if(this.userId == this.shopId){
+                    this.$dialog.toast({
+                        mes:'无法关注自家的店铺哦~'
+                    })
+                    return;
+                }
                 this.$http.post('/shop/followShop', {
-                    userId: this.userId,
-                    fansId: this.shopId
+                    userId: this.shopId,
+                    fansId: this.userId
                 }, (res) => {
                     if (!this.isConcern) {
                         // 去关注店铺
@@ -235,6 +241,14 @@
                 }, (res) => {
                     if (!res.data.shopBackground) {
                         res.data.shopBackground = this.bgImg;
+                    }
+                    if( res.data.isOpen == 0){
+                        this.$dialog.toast({
+                            mes:'该店铺已停封！',
+                            timeout:1500
+                        })
+                        this.backPage();
+                        return;
                     }
                     this.shopInfo = res.data;
 
