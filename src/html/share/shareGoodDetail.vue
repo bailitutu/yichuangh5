@@ -1,14 +1,15 @@
 <template>
   <div>
-    <yd-navbar title="商品详情" class="page_nav">
-      <router-link to="" @click.native="backFn" slot="left">
+    <div class="nav_bar">
+      <div class="nav_cell" @click.prevent="backFn">
         <yd-navbar-back-icon></yd-navbar-back-icon>
-      </router-link>
-      <router-link v-if="goodInfo.shop" slot="right"
-                   :to="{ path:'/shareShopDetail',query:{  shopId: goodInfo.shop.shopId}}">
+      </div>
+      <p class="nav_title">商品详情</p>
+      <div class="nav_cell_right" v-if="goodInfo.shop" @click="checkShop">
         <span class="shop_icon"></span>
-      </router-link>
-    </yd-navbar>
+      </div>
+    </div>
+
     <div class="bottom_item">
       <div class="download_item">
         <div slot="left" class="logo_item">
@@ -196,6 +197,17 @@
       backFn () {
         this.$router.back(-1);
       },
+        // 跳转店铺
+        checkShop(){
+            if(this.goodInfo.shop.isOpen == 0){
+                this.$dialog.toast({
+                    mes:'该店铺已停封！',
+                    timeout:1500
+                })
+                return;
+            }
+            this.$router.push({ path:'/shopDetail',query:{ isCheck: 1, shopId: this.goodInfo.shop.shopId,userId:this.userId}})
+        },
       // 获取商品信息
       getGoodDetail () {
         this.$dialog.loading.open('努力加载中...');
@@ -463,6 +475,40 @@
   }
 </style>
 <style scoped>
+  .nav_bar{
+    width:100%;
+    height:1rem;
+    background: #fff;
+    line-height: 1rem;
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index: 100;
+  }
+  .nav_cell{
+    width:1rem;
+    padding-left:0.24rem;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: 10;
+  }
+  .nav_title{
+    width: 100%;
+    height:1rem;
+    text-align: center;
+    font-size:0.3rem;
+    line-height: 1rem;
+  }
+  .nav_cell_right{
+    width:1rem;
+    padding-right:0.24rem;
+    position: absolute;
+    top:0;
+    right:0;
+    z-index: 10;
+  }
   .shop_icon {
     height: 100%;
     width: 1rem;

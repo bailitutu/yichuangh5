@@ -32,7 +32,7 @@
         </div>
         <yd-cell-group class="result_item" v-show="isSearch">
             <yd-cell-item v-for="(item,index) in  searchList" :key="index" @click.native="checkGoods(item.shopGoodsId)">
-                <span slot="left" class="fs-14 c-28">{{item.goodsName}}</span>
+                <div slot="left" class="fs-14 c-28 one_row" style="width:100%;" >{{item.goodsName}}</div>
             </yd-cell-item>
         </yd-cell-group>
         <div class="no_page_item" v-show="isSearch && searchList.length == 0">
@@ -122,7 +122,7 @@
             },
             // 查看搜索商品详情
             checkGoods(id) {
-                this.$router.push({path: 'goodDetail', query: {userId: this.userId, shopGoodsId: id, isH5: 1}})
+                this.$router.push({path: '/goodDetail', query: {userId: this.userId, shopGoodsId: id, isH5: 1}})
             },
             // 取消搜索
             cancelFn() {
@@ -133,6 +133,9 @@
     }
 </script>
 <style>
+    .yd-cell-left{
+        width: 100%;
+    }
     .yd-cell-box {
         margin-bottom: 0;
     }
@@ -218,6 +221,10 @@
 
     .result_item {
         margin-top: 1rem;
+        width:100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
     }
 
 </style>

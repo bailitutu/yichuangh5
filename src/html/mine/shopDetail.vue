@@ -179,6 +179,13 @@
             },
             // 联系店主
             connectShop() {
+                if(this.userId = this.shopInfo.id){
+                    this.$dialog.toast({
+                        mes:'这是你自己的店铺！'
+                    })
+                    return;
+                }
+
                 let shopPhone = this.shopInfo.phone;
                 if (this.$comm.isAndroid()) {
                     window.location.href = 'http://www.yichuangpt.com/static/gochat.html?phone=' + shopPhone;
@@ -189,8 +196,8 @@
             // 查询是否已关注店铺
             getConcerShop() {
                 this.$http.post('/appUser/isFollow', {
-                    userId: this.userId,
-                    fansId: this.shopId
+                    userId: this.shopId,
+                    fansId: this.userId
                 }, (res) => {
                     if (res.data == '0') { //0 为未关注，1为已关注
                         this.isConcern = false;

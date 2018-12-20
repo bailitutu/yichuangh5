@@ -1,14 +1,14 @@
 <template>
     <div>
-        <yd-navbar title="商品详情" class="page_nav" >
-            <router-link to="" @click.native="backFn" slot="left">
+        <div class="nav_bar">
+            <div class="nav_cell" @click.prevent="backFn">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
-            </router-link>
-            <router-link v-if="goodInfo.shop" slot="right"
-                         :to="{ path:'/shopDetail',query:{ isCheck: 1, shopId: goodInfo.shop.shopId,userId:userId}}">
+            </div>
+            <p class="nav_title">商品详情</p>
+            <div class="nav_cell_right" v-if="goodInfo.shop" @click="checkShop">
                 <span class="shop_icon"></span>
-            </router-link>
-        </yd-navbar>
+            </div>
+        </div>
         <yd-slider autoplay="30000" pagination-color="#fff" pagination-activecolor="#fff" style="margin-top:1rem;"
                    :style="{height:swiperHeight}">
             <yd-slider-item v-for="(item,index) in goodInfo.goodsImg" :key="index">
@@ -111,11 +111,22 @@
         methods: {
             // 返回
             backFn() {
-                if (this.$comm.getUrlKey('isH5')) {
+                if (this.$comm.getUrlKey('isH5') ) {
                     this.$router.back(-1);
                 } else {
                     this.$comm.normalBack();
                 }
+            },
+            // 跳转店铺
+            checkShop(){
+                if(this.goodInfo.shop.isOpen == 0){
+                    this.$dialog.toast({
+                        mes:'该店铺已停封！',
+                        timeout:1500
+                    })
+                    return;
+                }
+                this.$router.push({ path:'/shopDetail',query:{ isCheck: 1, shopId: this.goodInfo.shop.shopId,userId:this.userId}})
             },
             // 获取商品信息
             getGoodDetail() {
@@ -166,24 +177,20 @@
                 }
                 this.showSelect = true;
                 this.buyType = 1;
-                if( this.buyGoodsInfo == {} ){
-                  this.setSelectDefault();
-                }
+                this.setSelectDefault();
             },
             // 立即购买
             buyNow() {
                 if(this.goodInfo.shop.isOpen == 0){
                     this.$dialog.toast({
-                        mes:'该店铺已停封！',
+                        mes: '该店铺已停封！',
                         timeout:1500
                     })
                     return;
                 }
                 this.showSelect = true;
                 this.buyType = 2;
-                if( this.buyGoodsInfo == {} ){
-                  this.setSelectDefault();
-                }
+                this.setSelectDefault();
             },
             // 选择商品规格
             selectAttr(i) {
@@ -196,7 +203,8 @@
             },
             // 设置默认选中的规格
             setSelectDefault() {
-                if (!this.buyGoodsInfo.length) {
+                let arr = Object.keys(this.buyGoodsInfo);
+                if( arr.length == 0 ){
                     this.goodInfo.detail[0].selected = true;
                     this.buyGoodsInfo = this.goodInfo.detail[0];
                 }
@@ -229,7 +237,7 @@
                         });
                         this.showSelect = false;
                         this.getGoodDetail();
-                        return;
+                        this.buyGoodsInfo = {}
                     }, (err) => {
                         this.$dialog.toast({
                             mes: err.msg,
@@ -283,12 +291,45 @@
 </style>
 <style scoped>
 
-
+    .nav_bar{
+        width:100%;
+        height:1rem;
+        background: #fff;
+        line-height: 1rem;
+        position: fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index: 100;
+    }
+    .nav_cell{
+        width:1rem;
+        padding-left:0.24rem;
+        position: absolute;
+        top:0;
+        left:0;
+        z-index: 10;
+    }
+    .nav_title{
+        width: 100%;
+        height:1rem;
+        text-align: center;
+        font-size:0.3rem;
+        line-height: 1rem;
+    }
+    .nav_cell_right{
+        width:1rem;
+        padding-right:0.24rem;
+        position: absolute;
+        top:0;
+        right:0;
+        z-index: 10;
+    }
     .shop_icon {
-        height: 100%;
+        height: 1rem;
         width: 1rem;
         display: inline-block;
-        background: url("../../assets/dianpu.png") no-repeat 0.4rem center;
+        background: url("../../assets/dianpu.png") no-repeat center center;
         background-size: 0.48rem 0.48rem;
     }
 

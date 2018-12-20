@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height:100%;">
         <div class="nav_bar" >
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
@@ -155,7 +155,7 @@
             * */
             getShareList(status,type) {
                 this.$http.post('/preSale/commentInfo', {
-                    userId: this.userId,
+                    userId: '1111111111111',
                     preSaleId: this.preSaleId,
                     status: status,
                     type: type

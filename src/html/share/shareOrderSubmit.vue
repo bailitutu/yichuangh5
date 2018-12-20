@@ -169,12 +169,7 @@
                     postalCode: this.addressInfo.postalCode,
                     payType:'WEB'
                 }, (res) => {
-                    console.log(res.data);
-                    // let url = res.data.mwebUrl;
-                    // window.location.href = url;
-                    // return;
                    let data = res.data;
-
                     let that = this;
                     // 调起微信支付
                     function onBridgeReady() {
