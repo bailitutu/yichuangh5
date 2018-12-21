@@ -12,13 +12,12 @@
 
         </div>
         <div class="shop_top" ref="shoptop"
-             :style="{backgroundImage: 'url('+ shopInfo.backgroundImage +')', backgroundSize:'cover',backgroundPosition:'center'}">
+             :style="{backgroundImage: 'url('+ shopInfo.shopBackground +')', backgroundSize:'cover',backgroundPosition:'center'}">
             <div class="shop_info">
                 <img :src="shopInfo.shopLogo" alt="">
                 <div class="shop_detail c-fff">
                     <h3 class="fs-16">{{shopInfo.shopName}}</h3>
-                    <!--<p class="fs-14">店铺码:{{shopInfo.shopCode}}</p>-->
-                    <p class="fs-14 " style="white-space: normal;">{{shopInfo.shopInfo}}</p>
+                    <p class="fs-14 mt-10" style="white-space: normal;">{{shopInfo.shopInfo}}</p>
                 </div>
             </div>
         </div>
@@ -91,17 +90,19 @@
                 shopInfo: {}, //店铺信息
                 goodList: [], //商品列表
                 presellList: [], //预售列表
-                urlCode:'',
+                userCode:'',
+                userOpenId:''
             }
         },
         created() {
             this.shopId = this.$comm.getUrlKey('state') || '230849995971104768';
             this.userCode = this.$comm.getUrlKey('code') || '';
+            console.log(this.userCode)
             if (this.isCheck) {
                 this.getConcerShop();
             }
-            if(this.urlCode){
-                this.$comm.setStorge('userCode',this.userCode)
+            if(this.userCode){
+                this.getOpenId();
             }
         },
         mounted() {
@@ -120,11 +121,20 @@
                 this.$http.post('/appUser/findUserById', {
                     userId: this.shopId
                 }, (res) => {
-                    if (!res.data.backgroundImage) {
-                        res.data.backgroundImage = this.bgImg;
+                    if (!res.data.shopBackground) {
+                        res.data.shopBackground = this.bgImg;
                     }
                     this.shopInfo = res.data;
 
+                })
+            },
+            // 获取openId
+            getOpenId(){
+                this.$http.post('/business/GetOpenid', {
+                    str: this.userCode
+                }, (res) => {
+                    console.log(res)
+                    this.$comm.setStorge('YCshareOpenId',res.data.openId)
                 })
             },
             // 获取商品列表
@@ -258,11 +268,11 @@
 
     .shop_info .shop_detail {
         display: flex;
-        padding: 0.24rem 0;
+        padding: 0.1rem 0;
         flex: 2;
         flex-direction: column;
-        justify-content: space-between;
-        align-content: stretch;
+        justify-content: stretch;
+        align-content: flex-start;
         align-items: flex-start;
         margin-left: 1px;
     }

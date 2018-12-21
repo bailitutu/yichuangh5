@@ -9,7 +9,7 @@
         <yd-cell-group class="change_section">
             <yd-cell-item class="change_item">
                 <span slot="left" class="phone_label">+86</span>
-                <yd-input slot="right" :value="bindPhone" :show-success-icon="false" :show-error-icon="false" :show-clear-icon="false" readonly placeholder="请输入原手机号码"></yd-input>
+                <yd-input slot="right" v-model="bindPhone" :show-success-icon="false" :show-error-icon="false" :show-clear-icon="false" readonly ></yd-input>
             </yd-cell-item>
         </yd-cell-group>
         <yd-cell-group class="change_section">
@@ -36,7 +36,7 @@
             return {
                 hasSend: false,
                 bindPhone: '',
-                testCode:'',
+                testCode: '',
                 returnCode: ''
             }
         },
@@ -49,7 +49,7 @@
                 this.$dialog.loading.open('发送中...');
                 setTimeout(() => {
                     this.$http.post('/base/getCheckCode',{
-                        phone:this.bindPhone,
+                        phone: this.bindPhone,
                         type: 0
                     },(res) =>{
                         this.returnCode = res.data.code;

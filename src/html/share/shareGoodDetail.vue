@@ -397,10 +397,7 @@
         } else {
           this.showSelect = true;
           this.buyType = 2;
-          if (this.buyGoodsInfo == {}) {
-            this.setSelectDefault();
-          }
-
+          this.setSelectDefault();
         }
       },
       // 选择商品规格
@@ -414,10 +411,11 @@
       },
       // 设置默认选中的规格
       setSelectDefault () {
-        if (this.buyGoodsInfo) {
-          this.goodInfo.detail[0].selected = true;
-          this.buyGoodsInfo = this.goodInfo.detail[0];
-        }
+          let arr = Object.keys(this.buyGoodsInfo);
+          if( arr.length == 0 ){
+              this.goodInfo.detail[0].selected = true;
+              this.buyGoodsInfo = this.goodInfo.detail[0];
+          }
       },
       // 选择规格完成确认
       submitFn () {

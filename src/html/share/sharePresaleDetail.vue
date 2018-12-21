@@ -1,6 +1,6 @@
 <template>
     <div style="height:100%;">
-        <div class="nav_bar" >
+        <div class="nav_bar">
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
@@ -25,12 +25,12 @@
         <div class="pre_info" v-if="presaleInfo.preSale">
             <p class="fs-14">{{ presaleInfo.preSale.designInfo}}</p>
             <yd-lightbox class="pre_img_list">
-                <yd-lightbox-img class="pre_img_cell" v-for="item, key in presaleInfo.imgs" :key="key"
+                <yd-lightbox-img class="pre_img_cell" v-for="(item, key) in presaleInfo.imgs" :key="key"
                                  :src="item"></yd-lightbox-img>
             </yd-lightbox>
         </div>
 
-        <yd-tab class="mt-10" border-color="#f4f4f4" color="#B0B0B0" active-color="#333333">
+        <yd-tab class="mt-10 shareList" border-color="#f4f4f4" color="#B0B0B0" active-color="#333333">
             <yd-tab-panel label="分享">
                 <yd-cell-group v-if="shareList.length > 0">
                     <yd-cell-item align="top" v-for="( share,index) in shareList" :key="index">
@@ -48,7 +48,7 @@
                         </span>
                     </yd-cell-item>
                 </yd-cell-group>
-                <p class="fs-14 c-b0 tac noData_tip" v-if="shareList.length == 0" >暂无分享~</p>
+                <p class="fs-14 c-b0 tac noData_tip" v-if="shareList.length == 0">暂无分享~</p>
             </yd-tab-panel>
             <yd-tab-panel label="评论">
                 <yd-cell-group v-if="commandList.length > 0">
@@ -67,12 +67,12 @@
                         </span>
                     </yd-cell-item>
                 </yd-cell-group>
-                <p class="fs-14 c-b0 tac noData_tip" v-if="commandList.length == 0" >暂无评论~</p>
+                <p class="fs-14 c-b0 tac noData_tip" v-if="commandList.length == 0">暂无评论~</p>
 
             </yd-tab-panel>
             <yd-tab-panel label="喜欢">
                 <yd-cell-group v-if="likeList.length> 0">
-                    <yd-cell-item v-for="(likes ,lik) in linkList" :key="lik">
+                    <yd-cell-item v-for="(likes ,lik) in likeList" :key="lik">
                         <span slot="left">
                              <div class="share_cell">
                                 <img :src="likes.headImg" alt="" class="share_img">
@@ -81,7 +81,7 @@
                         </span>
                     </yd-cell-item>
                 </yd-cell-group>
-                <p class="fs-14 c-b0 tac noData_tip" v-if="likeList.length == 0" >暂无数据~</p>
+                <p class="fs-14 c-b0 tac noData_tip" v-if="likeList.length == 0">暂无数据~</p>
             </yd-tab-panel>
         </yd-tab>
 
@@ -90,6 +90,7 @@
 
 <script>
     import TimeLeft from '@/components/timeleft'
+
     export default {
         name: "share-presale-detail",
         components: {TimeLeft},
@@ -108,17 +109,16 @@
         created() {
             this.preSaleId = this.$comm.getUrlKey('preSaleId') || '224409962628124672';
             this.pageType = this.$comm.getUrlKey('pageType') || '';
-            if(!this.pageType){ //预售
+            if (!this.pageType) { //预售
                 this.getPresaleData();
-
-                this.getShareList(1,2);
-                this.getShareList(2,2);
-                this.getShareList(3,2);
-            }else{//创意
+                this.getShareList(1, 2);
+                this.getShareList(2, 2);
+                this.getShareList(3, 2);
+            } else {//创意
                 this.getOriginalData();
-                this.getShareList(1,1);
-                this.getShareList(2,1);
-                this.getShareList(3,1);
+                this.getShareList(1, 1);
+                this.getShareList(2, 1);
+                this.getShareList(3, 1);
             }
         },
         methods: {
@@ -126,22 +126,23 @@
             backPage() {
                 this.$router.back(-1);
             },
-            //获取预售详情
+            // 获取预售详情
             getPresaleData() {
                 this.$dialog.loading.open('努力加载中~');
                 this.$http.post('/preSale/detail', {
-                    userId: '1111111',
+                    userId: '11111111111',
                     preSaleId: this.preSaleId
                 }, (res) => {
                     this.$dialog.loading.close();
                     this.presaleInfo = res.data;
+                    console.log(this.presaleInfo)
                 })
             },
             // 获取创意详情
-            getOriginalData(){
+            getOriginalData() {
                 this.$dialog.loading.open('努力加载中~');
                 this.$http.post('/originality/detail', {
-                    userId: '1111111',
+                    userId: '11111111111',
                     id: this.preSaleId
                 }, (res) => {
                     this.$dialog.loading.close();
@@ -153,7 +154,7 @@
             *  status:1评论2分享3点赞
             *  type:预售为2,创意为1
             * */
-            getShareList(status,type) {
+            getShareList(status, type) {
                 this.$http.post('/preSale/commentInfo', {
                     userId: '1111111111111',
                     preSaleId: this.preSaleId,
@@ -161,7 +162,8 @@
                     type: type
                 }, (res) => {
                     this.presaleInfo = res.data;
-                    switch (status) {
+                    switch  (status)
+                    {
                         case 1:
                             this.commandList = res.data;
                             break;
@@ -172,7 +174,6 @@
                             this.likeList = res.data;
                             break;
                         default:
-
                             break;
                     }
 
@@ -190,9 +191,9 @@
         background: #fff;
         line-height: 1rem;
         position: fixed;
-        top:0;
-        left:0;
-        right:0;
+        top: 0;
+        left: 0;
+        right: 0;
         z-index: 1;
         display: flex;
         justify-content: space-between;
@@ -236,7 +237,6 @@
         -moz-border-radius: 50%;
         border-radius: 50%;
     }
-
     .pre_info {
         background: #fff;
         margin-top: 10px;
@@ -303,7 +303,8 @@
         white-space: normal;
         padding: 0.02rem 0.1rem 0.2rem 0;
     }
-    .noData_tip{
-        padding:0.2rem;
+
+    .noData_tip {
+        padding: 0.2rem;
     }
 </style>

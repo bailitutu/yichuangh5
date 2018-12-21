@@ -152,13 +152,19 @@
             },
             // 联系店主 跳转原生
             connctShop() {
+                if(this.goodInfo.shop.isOpen == 0){
+                    this.$dialog.toast({
+                        mes:'该店铺已停封！',
+                        timeout:1500
+                    })
+                    return;
+                }
                 if(this.userId == this.goodInfo.shop.shopId){
                     this.$dialog.toast({
                         mes:'这是你自家商品哦~'
                     })
                     return;
                 }
-
                 let shopPhone = this.goodInfo.shop.shopPhone;
                 if (this.$comm.isAndroid()) {
                     window.location.href = 'http://www.yichuangpt.com/static/gochat.html?phone=' + shopPhone;

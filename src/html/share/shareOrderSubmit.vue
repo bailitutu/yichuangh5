@@ -65,7 +65,8 @@
                 hasAddress: false,
                 addressInfo: {},
                 goodsInfo: {},
-                num: 1
+                num: 1,
+
             }
         },
         created() {
@@ -74,7 +75,7 @@
             this.specId = this.$comm.getStorge('preOrderSpecId') || '';
             this.num = this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
-            this.userCode = this.$comm.getStorge('userCode') || ''
+            this.YCshareOpenId = this.$comm.getStorge('YCshareOpenId') || ''
         },
         methods: {
             // 返回
@@ -155,7 +156,7 @@
 
                 let address = this.addressInfo.provinceName + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
                 this.$http.post('/order/createShopOrder', {
-                    code:this.userCode,
+                    openId: this.YCshareOpenId,
                     goodsId: this.goodsId,
                     userId: this.userId,
                     specId: this.specId,
@@ -197,7 +198,7 @@
                                         timeout: 1500
                                     });
                                     WeixinJSBridge.call('closeWindow');
-                                } //使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok,但并不保证它绝对可靠。
+                                }
                             }
                         );
                     }
@@ -212,9 +213,11 @@
                     } else {
                         onBridgeReady();
                     }
-                }, () => {
+                }, (err) => {
+                    let errMsg = err.msg ? err.msg :'下单失败，请重试!';
                     this.$dialog.toast({
-                        mes: '下单失败，请重试!'
+                        mes:errMsg,
+                        timeout: 1500
                     })
                     return;
                 })

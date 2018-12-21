@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="car_right">
-                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" v-model="item.number"  :val="item.id" :callback="numChange"></yd-spinner>
+                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem"  v-if="item.supplierGoodsDetail != undefined" v-model="item.number"   :val="item" :callback="numChange"></yd-spinner>
                 </div>
             </li>
         </ul>
@@ -125,9 +125,15 @@
                 })
             },
             // 商品数量加减
-            numChange(goodId,val){
+            numChange(item,val){
+                if(item.supplierGoodsDetail.stock < val){
+                    this.$dialog.toast({
+                        mes:'当前库存不足'
+                    });
+                    return ;
+                }
                 this.$http.post('/myCays/editCarInfo',{
-                    carId:goodId,
+                    carId:item.id,
                     num:val
                 },(res)=>{
                     this.$dialog.toast({
@@ -163,9 +169,10 @@
                                     timeout:1500,
                                 })
                                 this.list = this.list.filter(item => !item.selected)
-                            },()=>{
+                            },(err)=>{
+                                let errMsg = err.msg ? err.msg : '修改失败，请重试！'
                                 this.$dialog.toast({
-                                    mes:'修改失败，请重试！',
+                                    mes:errMsg,
                                     timeout:1500,
                                 })
                             })

@@ -32,7 +32,7 @@
         </div>
         <yd-cell-group class="result_item" v-show="isSearch">
             <yd-cell-item v-for="(item,index) in  searchList" :key="index" @click.native="checkGoods(item.shopGoodsId)">
-                <div slot="left" class="fs-14 c-28 one_row" style="width:100%;" >{{item.goodsName}}</div>
+                <div slot="left" class="fs-14 c-28 one_row" style="width:6rem;" >{{item.goodsName}}</div>
             </yd-cell-item>
         </yd-cell-group>
         <div class="no_page_item" v-show="isSearch && searchList.length == 0">
@@ -133,9 +133,6 @@
     }
 </script>
 <style>
-    .yd-cell-left{
-        width: 100%;
-    }
     .yd-cell-box {
         margin-bottom: 0;
     }

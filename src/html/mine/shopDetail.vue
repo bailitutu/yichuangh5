@@ -96,7 +96,6 @@
                         </div>
                     </li>
                 </ul>
-
                 <p v-if="presellList.length > 0 ? true :false" class="tac fs-12 c-b0" style="padding:0.1rem;">
                     没有数据啦~</p>
                 <white-page v-if="presellList.length ==  0 ? true :false"></white-page>
@@ -157,19 +156,17 @@
             },
             // 分享店铺
             shareShop(){
+                let info = {
+                    title:this.shopInfo.shopName,
+                    imgUrl:'https://appyichuang.oss-cn-hangzhou.aliyuncs.com/img/test/23ece438-1382-4a19-ad60-3802b681dc14-1545126120466',
+                    url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc9353d09a0d1f197&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect',
+                    conntent:this.shopInfo.shopInfo
+                };
                 if(this.$comm.isAndroid()){
-
+                    window.location.href = 'http://www.yichuangpt.com/static/goShareShop.html?title='+ info.title +'&imgUrl='+ info.imgUrl +'&url='+ info.url + '&conntent='+ info.conntent
                 }else if(this.$comm.isIos()){
-                   // let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc9353d09a0d1f197&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect';
-                   //  console.log(url);
-                   // return;
-
-                    let info = {
-                        title:this.shopInfo.shopName,
-                        imgUrl:'https://appyichuang.oss-cn-hangzhou.aliyuncs.com/img/test/23ece438-1382-4a19-ad60-3802b681dc14-1545126120466',
-                        url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1870dbca1644b15f&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect',
-                        conntent:this.shopInfo.shopInfo
-                    };
+                    let url = info.url;
+                    console.log(url)
                     goShare(info);
                 }
             },
@@ -185,7 +182,6 @@
                     })
                     return;
                 }
-
                 let shopPhone = this.shopInfo.phone;
                 if (this.$comm.isAndroid()) {
                     window.location.href = 'http://www.yichuangpt.com/static/gochat.html?phone=' + shopPhone;
