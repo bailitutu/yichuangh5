@@ -1,6 +1,6 @@
 <template>
-    <yd-layout >
-        <div class="nav_bar" >
+    <yd-layout>
+        <div class="nav_bar">
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
@@ -15,10 +15,12 @@
             </yd-button>
         </div>
         <yd-cell-group v-else>
-            <yd-cell-item arrow class="list_item" :href="{ path:'/shareAddressSelect',query:{ userId:userId}}" type="link" >
+            <yd-cell-item arrow class="list_item" :href="{ path:'/shareAddressSelect',query:{ userId:userId}}"
+                          type="link">
                 <div slot="left">
                     <p> {{addressInfo.consignee}} <span class="ml-40">{{addressInfo.phone}}</span></p>
-                    <div class="address_detail">{{addressInfo.provinceName + addressInfo.cityName + addressInfo.areaName+addressInfo.detailAddr}}
+                    <div class="address_detail">{{addressInfo.provinceName + addressInfo.cityName +
+                        addressInfo.areaName+addressInfo.detailAddr}}
                     </div>
                 </div>
                 <span slot="right"></span>
@@ -79,7 +81,7 @@
         },
         methods: {
             // 返回
-            backPage(){
+            backPage() {
                 this.$router.back(-1);
             },
             // 获取页面信息
@@ -136,7 +138,7 @@
                     detailId: this.specId
                 }, (res) => {
                     this.goodsInfo = res.data;
-                    this.totalMoney = (Math.floor(parseFloat(this.goodsInfo.price) * 100 * parseFloat (this.num)) / 100).toFixed(2);
+                    this.totalMoney = (Math.floor(parseFloat(this.goodsInfo.price) * 100 * parseFloat(this.num)) / 100).toFixed(2);
                 })
             },
             // 选择收货地址
@@ -144,7 +146,7 @@
                 this.$router.push({path: '/shareAddressSelect', query: {userId: this.userId}})
             },
             // 提交订单
-            submitFn(){
+            submitFn() {
 
                 if (!this.hasAddress) {
                     this.$dialog.toast({
@@ -168,9 +170,9 @@
                     address: address,
                     consignee: this.addressInfo.consignee,
                     postalCode: this.addressInfo.postalCode,
-                    payType:'WEB'
+                    payType: 'WEB'
                 }, (res) => {
-                   let data = res.data;
+                    let data = JSON.parse(res.data);
                     let that = this;
                     // 调起微信支付
                     function onBridgeReady() {
@@ -181,12 +183,12 @@
                                 "nonceStr": data.nonceStr, //随机串
                                 "package": data.package, //????
                                 "signType": "MD5",         //微信签名方式：
-                                "paySign": data.sign //微信签名
+                                "paySign": data.paySign //微信签名
                             },
                             function (res) {
                                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                                     //支付成功后跳转的页面
-                                    that.$router.push({path:'/sharePaySuccess'})
+                                    that.$router.push({path: '/sharePaySuccess'})
                                 } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
                                     that.$dialog.toast({
                                         mes: '支付取消！',
@@ -214,9 +216,9 @@
                         onBridgeReady();
                     }
                 }, (err) => {
-                    let errMsg = err.msg ? err.msg :'下单失败，请重试!';
+                    let errMsg = err.msg ? err.msg : '下单失败，请重试!';
                     this.$dialog.toast({
-                        mes:errMsg,
+                        mes: errMsg,
                         timeout: 1500
                     })
                     return;
@@ -227,28 +229,31 @@
 </script>
 
 <style scoped>
-    .nav_bar{
-        width:100%;
-        height:1rem;
+    .nav_bar {
+        width: 100%;
+        height: 1rem;
         background: #fff;
         line-height: 1rem;
         position: relative;
     }
-    .nav_cell{
-        width:1rem;
-        padding-left:0.24rem;
+
+    .nav_cell {
+        width: 1rem;
+        padding-left: 0.24rem;
         position: absolute;
-        top:0;
-        left:0;
+        top: 0;
+        left: 0;
         z-index: 10;
     }
-    .nav_title{
+
+    .nav_title {
         width: 100%;
-        height:1rem;
+        height: 1rem;
         text-align: center;
-        font-size:0.3rem;
+        font-size: 0.3rem;
         line-height: 1rem;
     }
+
     .address_item {
         height: 52px;
         width: 100%;
