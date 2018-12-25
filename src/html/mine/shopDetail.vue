@@ -127,10 +127,10 @@
             }
         },
         created() {
-            this.shopId = this.$comm.getUrlKey('shopId') || '230178710307868672';
+            this.shopId = this.$comm.getUrlKey('shopId') || '230849995971104768';
             this.isCheck = this.$comm.getUrlKey('isCheck') == '1' ? true : false ;
             this.isBanner = this.$comm.getUrlKey('isBanner') == '1' ? true : false ;
-            this.userId = this.$comm.getUrlKey('userId') || '';
+            this.userId = this.$comm.getUrlKey('userId') || '230178710307868672';
             if (this.isCheck) {
                 this.getConcerShop();
             }
@@ -176,7 +176,8 @@
             },
             // 联系店主
             connectShop() {
-                if(this.userId = this.shopInfo.id){
+
+                if(this.userId == this.shopId){
                     this.$dialog.toast({
                         mes:'这是你自己的店铺！'
                     })

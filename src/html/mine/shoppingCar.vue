@@ -130,6 +130,7 @@
                     this.$dialog.toast({
                         mes:'当前库存不足'
                     });
+                    // item.number = item.supplierGoodsDetail.stock+  item.number
                     return ;
                 }
                 this.$http.post('/myCays/editCarInfo',{

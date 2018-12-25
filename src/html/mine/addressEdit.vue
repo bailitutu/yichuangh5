@@ -110,7 +110,6 @@
                     })
                     return;
                 }
-
                 if(this.phone == ""  ){
                     this.$dialog.toast({
                         mes: '请填写收货人手机号！',

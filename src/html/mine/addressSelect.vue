@@ -61,7 +61,7 @@
                 }, (res) => {
                     this.addressList = res.data;
                     if( res.data.length == 0){
-                        this.$comm.removeStorge( 'selAddressId')
+                        this.$comm.removeStorge( 'selAddressId'); //地址删光的情况下
                     }
                 })
             },

@@ -97,7 +97,6 @@
         created() {
             this.shopId = this.$comm.getUrlKey('state') || '230849995971104768';
             this.userCode = this.$comm.getUrlKey('code') || '';
-            console.log(this.userCode)
             if (this.isCheck) {
                 this.getConcerShop();
             }
@@ -130,8 +129,8 @@
             },
             // 获取openId
             getOpenId(){
-                this.$http.post('/business/GetOpenid', {
-                    str: this.userCode
+                this.$http.post('/weixin/getOpenId', {
+                    code: this.userCode
                 }, (res) => {
                     console.log(res)
                     this.$comm.setStorge('YCshareOpenId',res.data.openId)

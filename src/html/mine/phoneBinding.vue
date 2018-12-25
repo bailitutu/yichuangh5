@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="nav_bar" >
+        <div class="nav_bar">
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
@@ -9,13 +9,14 @@
         <div class="change_icon">
             <img src="../../assets/change_icon.png" alt="">
         </div>
-        <div class="phone_tip" >
+        <div class="phone_tip">
             <p>您当前已绑定手机 <span>{{phoneDeal}}</span></p>
         </div>
         <yd-cell-group class="change_section">
             <yd-cell-item class="change_item">
                 <span slot="left" class="phone_label">+86</span>
-                <yd-input slot="right" v-model="newPhone"  regx="mobile" :show-success-icon="false" :show-error-icon="false" placeholder="请输入新手机号码"></yd-input>
+                <yd-input slot="right" v-model="newPhone" regx="mobile" :show-success-icon="false"
+                          :show-error-icon="false" placeholder="请输入新手机号码"></yd-input>
             </yd-cell-item>
         </yd-cell-group>
         <yd-cell-group class="change_section">
@@ -39,21 +40,21 @@
 <script>
     export default {
         name: "phone-binding",
-        data () {
+        data() {
             return {
                 hasSend: false,
-                newPhone:'',
+                newPhone: '',
                 bindPhone: '',
-                returnCode:'',
-                testCode:''
+                returnCode: '',
+                testCode: ''
             }
         },
         computed: {
-            phoneDeal () {
+            phoneDeal() {
                 return this.bindPhone.substr(0, 3) + '****' + this.bindPhone.substr(7)
             }
         },
-        created(){
+        created() {
             this.bindPhone = this.$comm.getUrlKey('phone') || '';
         },
         methods: {
@@ -62,21 +63,20 @@
                 this.$router.back(-1);
             },
             // 发送验证码
-            sendCode () {
-              if(this.newPhone == '' ){
-                this.$dialog.toast({
-                  mes: '请先输入新手机号！',
-                  timeout: 1500
-                })
-                return;
-              }
+            sendCode() {
+                if (this.newPhone == '') {
+                    this.$dialog.toast({
+                        mes: '请先输入新手机号！',
+                        timeout: 1500
+                    })
+                    return;
+                }
                 this.$dialog.loading.open('发送中...');
-
                 setTimeout(() => {
-                    this.$http.post('/base/getCheckCode',{
+                    this.$http.post('/base/getCheckCode', {
                         phone: this.newPhone,
-                        type:0
-                    },(res)=>{
+                        type: 0
+                    }, (res) => {
                         this.returnCode = res.data.code;
                         this.hasSend = true;
                         this.$dialog.loading.close();
@@ -85,26 +85,26 @@
                             icon: 'success',
                             timeout: 1500
                         })
-                    },()=>{
+                    }, () => {
                         this.$dialog.loading.close();
                         this.$dialog.toast({
                             mes: '发送失败，请稍候重试！',
                             timeout: 1500
                         })
-                      return;
+                        return;
                     })
                 }, 300)
             },
             // 提交修改
-            submitFn () {
-                if(this.returnCode == '' ){
+            submitFn() {
+                if (this.returnCode == '') {
                     this.$dialog.toast({
                         mes: '请先获取验证码！',
                         timeout: 1500
                     })
                     return;
                 }
-                if(this.testCode == '' || this.testCode.length != 6 || this.returnCode != this.testCode ){
+                if (this.testCode == '' || this.testCode.length != 6 || this.returnCode != this.testCode) {
                     this.$dialog.toast({
                         mes: '验证码错误！',
                         timeout: 1500
@@ -113,25 +113,28 @@
                 }
                 this.$dialog.loading.open('正在提交...');
                 setTimeout(() => {
-
-                    this.$http.post('/base/changePhone',{
-                        oldPhone:this.bindPhone,
-                        newPhone:this.newPhone
-                    },(res)=>{
+                    this.$http.post('/base/changePhone', {
+                        oldPhone: this.bindPhone,
+                        newPhone: this.newPhone
+                    }, (res) => {
                         this.$dialog.loading.close()
-                        this.$dialog.toast({mes: '修改成功！', icon: 'success', timeout: 1000});
-                        if(this.$comm.isIos()){
-                            goExit()
-                        }else if(this.$comm.isAndroid()){
-
-                        }
-
-
-                    },(err)=>{
+                        this.$dialog.toast({
+                            mes: '修改成功！',
+                            icon: 'success',
+                            timeout: 1500,
+                            callback: () => {
+                                if (this.$comm.isIos()) {
+                                    goExit()
+                                } else if (this.$comm.isAndroid()) {
+                                    window.location.href = 'http://www.yichuangpt.com/static/gotoLogin.html';
+                                }
+                            }
+                        });
+                    }, (err) => {
                         this.$dialog.loading.close();
                         let errmsg = '修改失败，请稍候重试！';
-                        if(err.msg){
-                          errmsg = err.msg
+                        if (err.msg) {
+                            errmsg = err.msg
                         }
                         this.$dialog.toast({
                             mes: errmsg,
@@ -144,32 +147,35 @@
     }
 </script>
 <style scoped>
-    .nav_bar{
-        width:100%;
-        height:1rem;
+    .nav_bar {
+        width: 100%;
+        height: 1rem;
         background: #fff;
         line-height: 1rem;
         position: fixed;
-        top:0;
-        left:0;
-        right:0;
+        top: 0;
+        left: 0;
+        right: 0;
         z-index: 100;
     }
-    .nav_cell{
-        width:1rem;
-        padding-left:0.24rem;
+
+    .nav_cell {
+        width: 1rem;
+        padding-left: 0.24rem;
         position: absolute;
-        top:0;
-        left:0;
+        top: 0;
+        left: 0;
         z-index: 10;
     }
-    .nav_title{
+
+    .nav_title {
         width: 100%;
-        height:1rem;
+        height: 1rem;
         text-align: center;
-        font-size:0.3rem;
+        font-size: 0.3rem;
         line-height: 1rem;
     }
+
     .change_icon {
         width: 100%;
         height: auto;
