@@ -41,8 +41,6 @@
                 </div>
             </li>
         </ul>
-
-
         <div class="car_footer">
             <div class="car_tool ">
                 <p class="fs-14 c-28">数量</p>
@@ -67,8 +65,7 @@
                 hasAddress: false,
                 addressInfo: {},
                 goodsInfo: {},
-                num: 1,
-
+                num: 1
             }
         },
         created() {
@@ -155,7 +152,6 @@
                     })
                     return;
                 }
-
                 let address = this.addressInfo.provinceName + this.addressInfo.cityName + this.addressInfo.areaName + this.addressInfo.detailAddr;
                 this.$http.post('/order/createShopOrder', {
                     openId: this.YCshareOpenId,
@@ -171,8 +167,8 @@
                     consignee: this.addressInfo.consignee,
                     postalCode: this.addressInfo.postalCode,
                     payType: 'WEB'
-                }, (res) => {
-                    let data = JSON.parse(res.data);
+                }, (resData) => {
+                    let data = resData.data;
                     let that = this;
                     // 调起微信支付
                     function onBridgeReady() {
@@ -183,9 +179,11 @@
                                 "nonceStr": data.nonceStr, //随机串
                                 "package": data.package, //????
                                 "signType": "MD5",         //微信签名方式：
-                                "paySign": data.paySign //微信签名
+                                "paySign": data.paySign, //微信签名
+                                'jsApiList': ['chooseWXPay']
                             },
                             function (res) {
+                                alert( JSON.stringify(res))
                                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                                     //支付成功后跳转的页面
                                     that.$router.push({path: '/sharePaySuccess'})
