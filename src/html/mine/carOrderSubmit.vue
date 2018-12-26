@@ -160,15 +160,17 @@
                     consignee: this.addressInfo.consignee,
                     postalCode: this.addressInfo.postalCode
                 }, (res) => {
+                    console.log(res)
                     if (this.$comm.isIos()) {
                         goPay(res.data);
                     } else if (this.$comm.isAndroid()) {
                         let data = res.data;
                         window.location.href = 'http://www.yichuangpt.com/static/goPay.html?appId=' + data.appId + '&prepayId=' + data.prepayid + '&nonceStr=' + data.noncestr + '&timeStamp=' + data.timestamp + '&sign=' + data.sign;
                     }
-                }, () => {
+                }, (err) => {
+                    let errMsg = err.msg ? err.msg : '下单失败，请重试！'
                     this.$dialog.toast({
-                        mes: '下单失败，请重试！'
+                        mes:errMsg
                     })
                     return;
                 })

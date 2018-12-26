@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="car_right">
-                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem"  v-if="item.supplierGoodsDetail != undefined" v-model="item.number"   :val="item" :callback="numChange"></yd-spinner>
+                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.allStock" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id" :callback="numChange"></yd-spinner>
                 </div>
             </li>
         </ul>
@@ -100,7 +100,8 @@
                     this.$dialog.loading.close();
                     if(res.data.length> 0){
                         this.list =  res.data.map( (item) =>{
-                            item.selected = false
+                            item.selected = false;
+                            item.allStock = Math.floor(item.supplierGoodsDetail.stock) +  Math.floor(item.number);
                             return item;
                         })
                     }else{
@@ -125,30 +126,52 @@
                 })
             },
             // 商品数量加减
-            numChange(item,val){
-                if(item.supplierGoodsDetail.stock < val){
-                    this.$dialog.toast({
-                        mes:'当前库存不足'
-                    });
-                    // item.number = item.supplierGoodsDetail.stock+  item.number
-                    return ;
-                }
+            numChange(itemId,val){
+                console.log(itemId,val);
+
+                this.list.forEach((item)=>{
+                    if(item.id == itemId){
+                        if(val == item.allStock){
+                            this.$dialog.confirm({
+                                mes:'当前库存商品只有'+ item.allStock +'件哦~',
+                                timeout:1500,
+                                opts:()=>{
+                                    this.changeGoodNumber(itemId,val);
+                                }
+                            });
+                        }else{
+                            this.changeGoodNumber(itemId,val);
+                        }
+                    }
+                })
+                return;
+
+
+            },
+
+            // 修改商品数量
+            changeGoodNumber(id ,num){
                 this.$http.post('/myCays/editCarInfo',{
-                    carId:item.id,
-                    num:val
+                    carId:id,
+                    num:num
                 },(res)=>{
                     this.$dialog.toast({
                         mes: '修改成功！',
-                        timeout: '1000'
+                        timeout: '1000',
+                        callback:()=>{
+                            this.getCarList();
+                        }
                     });
                     return;
                 },(err)=>{
+                    let errMsg = err.msg ? err.msg :'商品库存发生改变，修改失败！';
                     this.$dialog.toast({
-                        mes:err.msg,
+                        mes:errMsg,
                         timeout:1500
                     })
                 })
             },
+
             // 删除  carId 是指  最外层id
             delHandle () {
                 if (this.hasSelect.length > 0) {

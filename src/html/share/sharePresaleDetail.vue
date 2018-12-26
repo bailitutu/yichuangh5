@@ -7,6 +7,9 @@
             <p class="nav_title" v-if="presaleInfo.preSale">
                 <time-left :endTime="presaleInfo.preSale.endTimeDate"></time-left>
             </p>
+            <p class="nav_title" v-if="presaleInfo.originality">
+                {{ presaleInfo.originality.name}}
+            </p>
             <div style="width:1rem;"></div>
         </div>
 
@@ -22,8 +25,15 @@
             </yd-cell-item>
         </yd-cell-group>
 
-        <div class="pre_info" v-if="presaleInfo.preSale">
+        <div class="pre_info" v-if="presaleInfo.preSale ">
             <p class="fs-14">{{ presaleInfo.preSale.designInfo}}</p>
+            <yd-lightbox class="pre_img_list">
+                <yd-lightbox-img class="pre_img_cell" v-for="(item, key) in presaleInfo.imgs" :key="key"
+                                 :src="item"></yd-lightbox-img>
+            </yd-lightbox>
+        </div>
+        <div class="pre_info" v-if=" presaleInfo.originality">
+            <p class="fs-14">{{ presaleInfo.originality.info}}</p>
             <yd-lightbox class="pre_img_list">
                 <yd-lightbox-img class="pre_img_cell" v-for="(item, key) in presaleInfo.imgs" :key="key"
                                  :src="item"></yd-lightbox-img>
