@@ -30,7 +30,7 @@ function apiAxios(method, url, params, response, error) {
         } else {
             if(!res.data){
                 res.data = {
-                    msg: '系统异常！'
+                    msg: '系统出问题了！'
                 }
             }
             if(error){
@@ -39,12 +39,12 @@ function apiAxios(method, url, params, response, error) {
         }
     }).catch(function (err) {
         if(!err.msg){
-            err.msg = '系统异常!'
+            err.msg = '系统出问题了!'
         }
         if(error){
           error(err)
         }else{
-          alert('系统异常')
+          alert('系统出问题了')
         }
         return;
     })

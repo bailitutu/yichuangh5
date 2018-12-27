@@ -88,7 +88,7 @@
             }
         },
         created(){
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
+            this.userId = this.$comm.getUrlKey('userId') || '235310783729373184';
             this.getCarList();
         },
         methods: {
@@ -100,9 +100,15 @@
                 },(res)=>{
                     this.$dialog.loading.close();
                     if(res.data.length> 0){
-                        this.list =  res.data.map( (item) =>{
-                            item.selected = false;
-                            item.allStock = Math.floor(item.supplierGoodsDetail.stock) +  Math.floor(item.number);
+                        // let carList = res.data.filter(()=> {
+                        //     return item.supplierGoodsDetail ;
+                        // })
+
+                        this.list =  res.data.map((item) =>{
+                            if(item.supplierGoodsDetail){
+                                item.selected = false;
+                                item.allStock = Math.floor(item.supplierGoodsDetail.stock) +  Math.floor(item.number);
+                            }
                             return item;
                         })
                     }else{
