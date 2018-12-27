@@ -10,7 +10,6 @@
             <p class="nav_title" v-if="presaleInfo.originality">
                 {{ presaleInfo.originality.name}}
             </p>
-            <div style="width:1rem;"></div>
         </div>
 
         <yd-cell-group class="download_item mt-10">
@@ -25,7 +24,7 @@
             </yd-cell-item>
         </yd-cell-group>
 
-        <div class="pre_info" v-if="presaleInfo.preSale ">
+        <div class="pre_info" v-if="presaleInfo.preSale">
             <p class="fs-14">{{ presaleInfo.preSale.designInfo}}</p>
             <yd-lightbox class="pre_img_list">
                 <yd-lightbox-img class="pre_img_cell" v-for="(item, key) in presaleInfo.imgs" :key="key"
@@ -35,8 +34,8 @@
         <div class="pre_info" v-if=" presaleInfo.originality">
             <p class="fs-14">{{ presaleInfo.originality.info}}</p>
             <yd-lightbox class="pre_img_list">
-                <yd-lightbox-img class="pre_img_cell" v-for="(item, key) in presaleInfo.imgs" :key="key"
-                                 :src="item"></yd-lightbox-img>
+                <yd-lightbox-img class="pre_img_cell" v-for="(ori, oriKey) in presaleInfo.imgs" :key="oriKey"
+                                 :src="ori"></yd-lightbox-img>
             </yd-lightbox>
         </div>
 
@@ -145,7 +144,6 @@
                 }, (res) => {
                     this.$dialog.loading.close();
                     this.presaleInfo = res.data;
-                    console.log(this.presaleInfo)
                 })
             },
             // 获取创意详情
@@ -171,9 +169,7 @@
                     status: status,
                     type: type
                 }, (res) => {
-                    this.presaleInfo = res.data;
-                    switch  (status)
-                    {
+                    switch (status) {
                         case 1:
                             this.commandList = res.data;
                             break;
@@ -186,7 +182,6 @@
                         default:
                             break;
                     }
-
                 })
 
             }
@@ -247,6 +242,7 @@
         -moz-border-radius: 50%;
         border-radius: 50%;
     }
+
     .pre_info {
         background: #fff;
         margin-top: 10px;
