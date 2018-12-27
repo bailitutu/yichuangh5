@@ -160,7 +160,6 @@
                     consignee: this.addressInfo.consignee,
                     postalCode: this.addressInfo.postalCode
                 }, (res) => {
-                    console.log(res)
                     if (this.$comm.isIos()) {
                         goPay(res.data);
                     } else if (this.$comm.isAndroid()) {

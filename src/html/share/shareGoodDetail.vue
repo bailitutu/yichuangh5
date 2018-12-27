@@ -77,7 +77,7 @@
                 <yd-cell-group>
                     <yd-cell-item>
                         <span slot="left">购买数量</span>
-                        <yd-spinner slot="right" max="100" unit="1" min="1" width="1.6rem" height="0.45rem"
+                        <yd-spinner slot="right" :max="numLimit" unit="1" min="1" :callback="tipNumber" width="1.6rem" height="0.45rem"
                                     v-model="buyNumber"></yd-spinner>
                     </yd-cell-item>
                 </yd-cell-group>
@@ -175,6 +175,7 @@
                 showSelect: false, //选择规格
                 buyGoodsInfo: {},
                 buyNumber: 1,
+                numLimit:'',
                 buyType: 1,
                 showLogin: false, //登录弹窗
                 showReg: false, //注册弹窗
@@ -221,6 +222,10 @@
                 }, (res) => {
                     this.$dialog.loading.close();
                     this.goodInfo = res.data;
+                    if(this.goodInfo.goods && this.goodInfo.goods.type == '1' ){ //限购商品只能买一件
+                        this.numLimit = 1;
+                        this.buyNumber = 1;
+                    }
                     if (this.goodInfo.detail && this.goodInfo.detail.length > 0) {
                         this.goodInfo.detail = this.goodInfo.detail.map((item) => {
                             Object.assign(item, {selected: false});
@@ -398,8 +403,18 @@
                     this.showLogin = true;
                 } else {
                     this.showSelect = true;
+                    this.tipNumber();
                     this.buyType = 2;
                     this.setSelectDefault();
+                }
+            },
+            // 特价商品只能买一件
+            tipNumber(){
+                if(this.numLimit){
+                    this.$dialog.toast({
+                        mes:'特价商品只能购买一件~',
+                        timeout:1000
+                    })
                 }
             },
             // 选择商品规格

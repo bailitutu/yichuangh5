@@ -65,9 +65,9 @@
         },
         created() {
             this.swiperHeight = window.innerWidth + 'px';
-            this.shopGoodsId = this.$comm.getUrlKey('supplierGoodsId') || '233086779744456704';
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
-            this.shopCode = this.$comm.getUrlKey('shopCode') || '';
+            this.shopGoodsId = this.$comm.getUrlKey('supplierGoodsId') || '238096800551145472';
+            this.userId = this.$comm.getUrlKey('userId') || '230849995971104768';
+            this.shopCode = this.$comm.getUrlKey('shopCode') || '230849995971104768';
             this.getGoodDetail();
         },
         methods: {

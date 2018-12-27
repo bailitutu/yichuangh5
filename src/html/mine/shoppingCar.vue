@@ -16,7 +16,8 @@
                     </div>
                 </div>
                 <div class="car_right">
-                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.allStock" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id" :callback="numChange"></yd-spinner>
+                    <!--<yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.allStock" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id" :callback="numChange"></yd-spinner>-->
+                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.type == '1' ? 1 : item.allStock" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id"></yd-spinner>
                 </div>
             </li>
         </ul>
@@ -125,12 +126,21 @@
                     item.selected = !this.selectAll
                 })
             },
-            // 商品数量加减
-            numChange(itemId,val){
-                console.log(itemId,val);
-
+            // 商品数量加减 (去掉)
+      /*      numChange(itemId,val){
                 this.list.forEach((item)=>{
                     if(item.id == itemId){
+                        if( item.type == '1' ){
+                            this.$dialog.toast({
+                                mes:'特价商品只能买一件哦~',
+                                timeout: 1000,
+                                opts:()=>{
+                                    item.number = 1;
+                                }
+                            });
+                            return;
+                        }
+
                         if(val == item.allStock){
                             this.$dialog.confirm({
                                 mes:'当前库存商品只有'+ item.allStock +'件哦~',
@@ -145,11 +155,9 @@
                     }
                 })
                 return;
+            },*/
 
-
-            },
-
-            // 修改商品数量
+          /*  // 修改商品数量
             changeGoodNumber(id ,num){
                 this.$http.post('/myCays/editCarInfo',{
                     carId:id,
@@ -159,7 +167,7 @@
                         mes: '修改成功！',
                         timeout: '1000',
                         callback:()=>{
-                            this.getCarList();
+
                         }
                     });
                     return;
@@ -170,7 +178,7 @@
                         timeout:1500
                     })
                 })
-            },
+            },*/
 
             // 删除  carId 是指  最外层id
             delHandle () {
