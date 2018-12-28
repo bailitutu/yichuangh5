@@ -69,8 +69,8 @@
             }
         },
         created() {
-            this.userId = this.$comm.getStorge('YCuserId') || '224418465157615616';
-            this.goodsId = this.$comm.getStorge('preOrderGoodsId') || '231225779655151616';
+            this.userId = this.$comm.getStorge('YCuserId') || '';
+            this.goodsId = this.$comm.getStorge('preOrderGoodsId') || '';
             this.specId = this.$comm.getStorge('preOrderSpecId') || '';
             this.goodsType =  this.$comm.getStorge('preOrderGoodsType') || '0';
             this.num = this.$comm.getStorge('preOrderGoodsNum') || '';

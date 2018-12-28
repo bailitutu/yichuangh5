@@ -106,7 +106,7 @@
         mounted() {
             this.swiperHeight = window.innerWidth + 'px'; //设置轮播图高度
             this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '238112524891983872';
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
+            this.userId = this.$comm.getUrlKey('userId') || '230178710307868672';
             this.getGoodDetail();
         },
         methods: {
@@ -247,6 +247,7 @@
                         goodsId: this.shopGoodsId,
                         userId: this.userId,
                         number: this.buyNumber,
+                        type: this.goodInfo.goods ? this.goodInfo.goods.type : '0',
                         specId: this.buyGoodsInfo.id,
                         price: this.buyGoodsInfo.price
                     }, (res) => {

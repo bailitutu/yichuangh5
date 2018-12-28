@@ -66,14 +66,14 @@
                 addressInfo: {},
                 goodsInfo: {},
                 num: 1,
-                goodsType:''
+                goodsType: ''
             }
         },
         created() {
-            this.userId = this.$comm.getUrlKey('userId') || this.$comm.getStorge('preOrderUserId') || '224418465157615616';
-            this.goodsId = this.$comm.getUrlKey('goodsId') || this.$comm.getStorge('preOrderGoodsId') || '231225779655151616';
-            this.specId = this.$comm.getUrlKey('specId') || this.$comm.getStorge('preOrderSpecId') || '';
-            this.goodsType = this.$comm.getUrlKey('goodsType') || this.$comm.getStorge('preOrderGoodsType') || '0';
+            this.userId = this.$comm.getStorge('preOrderUserId') || '';
+            this.goodsId = this.$comm.getStorge('preOrderGoodsId') || '';
+            this.specId = this.$comm.getStorge('preOrderSpecId') || '';
+            this.goodsType = this.$comm.getStorge('preOrderGoodsType') || '0';
             this.num = this.$comm.getUrlKey('num') || this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
         },

@@ -16,8 +16,8 @@
                     </div>
                 </div>
                 <div class="car_right">
-                    <!--<yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.allStock" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id" :callback="numChange"></yd-spinner>-->
-                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.type == '1' ? 1 : item.allStock" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id"></yd-spinner>
+                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.type == '1' ? 1 : item.allStock"  v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id" :callback="numChange"></yd-spinner>
+                    <!--<yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.type == '1' ? 1 : item.allStock" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id"></yd-spinner>-->
                 </div>
             </li>
         </ul>
@@ -133,7 +133,7 @@
                 })
             },
             // 商品数量加减 (去掉)
-      /*      numChange(itemId,val){
+            numChange(itemId,val){
                 this.list.forEach((item)=>{
                     if(item.id == itemId){
                         if( item.type == '1' ){
@@ -161,30 +161,30 @@
                     }
                 })
                 return;
-            },*/
+            },
 
-          /*  // 修改商品数量
+            // 修改商品数量
             changeGoodNumber(id ,num){
-                this.$http.post('/myCays/editCarInfo',{
-                    carId:id,
-                    num:num
+                this.$dialog.loading.open('请稍候...');
+                this.$http.post('/type/updateShoppingCartNumber',{
+                    id:id,
+                    number:num
                 },(res)=>{
+                    this.$dialog.loading.close();
                     this.$dialog.toast({
                         mes: '修改成功！',
-                        timeout: '1000',
-                        callback:()=>{
-
-                        }
+                        timeout: '1000'
                     });
                     return;
                 },(err)=>{
-                    let errMsg = err.msg ? err.msg :'商品库存发生改变，修改失败！';
+                    this.$dialog.loading.close();
+                    let errMsg = err.msg ? err.msg :'修改失败！';
                     this.$dialog.toast({
                         mes:errMsg,
                         timeout:1500
                     })
                 })
-            },*/
+            },
 
             // 删除  carId 是指  最外层id
             delHandle () {
