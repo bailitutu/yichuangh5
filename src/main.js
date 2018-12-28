@@ -26,8 +26,6 @@ FastClick.prototype.onTouchEnd = function(event) {
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {
     preLoad: 1,    //预加载高度的比例
-    // error: 'http://cdn.uehtml.com/201402/1392662591495_1140x0.gif',  //图像的src加载失败
-    // loading: 'http://cdn.uehtml.com/201402/1392662591495_1140x0.gif', //src的图像加载
     attempt: 1,  //尝试计数
     listenEvents: [ 'scroll', 'mousewheel' ]
 });
