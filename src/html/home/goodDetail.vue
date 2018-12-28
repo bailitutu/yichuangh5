@@ -268,6 +268,7 @@
                     let goodsId = this.shopGoodsId;
                     let specId = this.buyGoodsInfo.id;
                     let goodsNum = this.buyNumber;
+                    let goodsType = this.goodInfo.goods ? this.goodInfo.goods.type : '0';
                     // 跳转结算页面
                     this.$router.push({
                         path: 'orderSubmit',
@@ -276,6 +277,7 @@
                     this.$comm.setStorge('YCOrderBackUrl', this.$route.fullPath);
                     this.$comm.setStorge('preOrderGoodsId', goodsId);
                     this.$comm.setStorge('preOrderSpecId', specId);
+                    this.$comm.setStorge('preOrderGoodsType', goodsType);
                     this.$comm.setStorge('preOrderGoodsNum', goodsNum);
                     this.$comm.setStorge('preOrderUserId', this.userId);
                 }

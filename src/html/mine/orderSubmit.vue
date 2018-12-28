@@ -65,13 +65,15 @@
                 hasAddress: false,
                 addressInfo: {},
                 goodsInfo: {},
-                num: 1
+                num: 1,
+                goodsType:''
             }
         },
         created() {
             this.userId = this.$comm.getUrlKey('userId') || this.$comm.getStorge('preOrderUserId') || '224418465157615616';
             this.goodsId = this.$comm.getUrlKey('goodsId') || this.$comm.getStorge('preOrderGoodsId') || '231225779655151616';
             this.specId = this.$comm.getUrlKey('specId') || this.$comm.getStorge('preOrderSpecId') || '';
+            this.goodsType = this.$comm.getUrlKey('goodsType') || this.$comm.getStorge('preOrderGoodsType') || '0';
             this.num = this.$comm.getUrlKey('num') || this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
         },
@@ -159,9 +161,10 @@
                     specId: this.specId,
                     price: this.goodsInfo.price,
                     goodsNum: this.num,
-                    goodsName:this.goodsInfo.goodsName,
+                    goodsName: this.goodsInfo.goodsName,
                     totalPrice: this.totalMoney,
                     phone: this.addressInfo.phone,
+                    goodsType: this.goodsType,
                     address: address,
                     consignee: this.addressInfo.consignee,
                     postalCode: this.addressInfo.postalCode
@@ -173,7 +176,7 @@
                         window.location.href = 'http://www.yichuangpt.com/static/goPay.html?appId=' + data.appId + '&prepayId=' + data.prepayid + '&nonceStr=' + data.noncestr + '&timeStamp=' + data.timestamp + '&sign=' + data.sign;
                     }
                 }, (err) => {
-                    let errMsg = err.msg ? err.msg : '下单失败，请重试！'
+                    let errMsg = err.msg ? err.msg : '下单失败，请重试！';
                     this.$dialog.toast({
                         mes: errMsg,
                         timeout:1500

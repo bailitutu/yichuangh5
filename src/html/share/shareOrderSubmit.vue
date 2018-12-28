@@ -72,6 +72,7 @@
             this.userId = this.$comm.getStorge('YCuserId') || '224418465157615616';
             this.goodsId = this.$comm.getStorge('preOrderGoodsId') || '231225779655151616';
             this.specId = this.$comm.getStorge('preOrderSpecId') || '';
+            this.goodsType =  this.$comm.getStorge('preOrderGoodsType') || '0';
             this.num = this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
             this.YCshareOpenId = this.$comm.getStorge('YCshareOpenId') || ''
@@ -158,6 +159,7 @@
                     goodsId: this.goodsId,
                     userId: this.userId,
                     specId: this.specId,
+                    goodsType: this.goodsType,
                     price: this.goodsInfo.price,
                     goodsNum: this.num,
                     goodsName: this.goodsInfo.goodsName,

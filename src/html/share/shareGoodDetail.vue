@@ -448,12 +448,14 @@
                 let goodsId = this.shopGoodsId;
                 let specId = this.buyGoodsInfo.id;
                 let goodsNum = this.buyNumber;
+                let goodsType = this.goodInfo.goods ? this.goodInfo.goods.type : '0';
                 this.$router.push({
                     path: 'shareOrderSubmit',
                     query: {goodsId: goodsId, specId: specId, num: goodsNum}
                 });
                 this.$comm.setStorge('preOrderGoodsId', goodsId);
                 this.$comm.setStorge('preOrderSpecId', specId);
+                this.$comm.setStorge('preOrderGoodsType', goodsType);
                 this.$comm.setStorge('preOrderGoodsNum', goodsNum);
                 this.$comm.setStorge('preOrderUserId', this.userId);
 
