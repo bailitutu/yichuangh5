@@ -241,9 +241,6 @@
                     });
                     return;
                 }
-                // let totalPrice = 0;
-                // totalPrice = Math.floor(parseInt(this.buyNumber) * parseFloat(this.buyGoodsInfo.price) * 100) / 100;
-
                 // 判断是加入购物车还是立即购买
                 if (this.buyType == 1) {
                     this.$http.post('/type/addShoppingCart', {
@@ -258,7 +255,6 @@
                             timeout: '1500'
                         });
                         this.showSelect = false;
-                        this.getGoodDetail();
                         this.buyGoodsInfo = {}
                     }, (err) => {
                         this.$dialog.toast({
