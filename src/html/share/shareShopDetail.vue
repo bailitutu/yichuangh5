@@ -132,7 +132,6 @@
                 this.$http.post('/weixin/getOpenId', {
                     code: this.userCode
                 }, (res) => {
-                    console.log(res)
                     this.$comm.setStorge('YCshareOpenId',res.data.openId)
                 })
             },

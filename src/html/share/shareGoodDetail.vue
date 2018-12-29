@@ -77,7 +77,7 @@
                 <yd-cell-group>
                     <yd-cell-item>
                         <span slot="left">购买数量</span>
-                        <yd-spinner slot="right" :max="numLimit" unit="1" min="1" :callback="tipNumber" width="1.6rem" height="0.45rem"
+                        <yd-spinner slot="right"  :max="numLimit" unit="1" min="1" :callback="tipNumber" width="1.6rem" height="0.45rem"
                                     v-model="buyNumber"></yd-spinner>
                     </yd-cell-item>
                 </yd-cell-group>
@@ -128,7 +128,7 @@
                 </div>
                 <div class="login_section">
                     <div class="change_item">
-                        <yd-input class="change_input" type="number" v-model="regCode" max="6"
+                        <yd-input class="change_input" type="number" v-model="regCode"  max="6"
                                   placeholder="请输入验证码"></yd-input>
                         <yd-sendcode v-model="hasSend"
                                      @click.native="sendCode"
@@ -211,7 +211,7 @@
                 }
                 this.$router.push({
                     path: '/shopDetail',
-                    query: {isCheck: 1, shopId: this.goodInfo.shop.shopId, userId: this.userId}
+                    query: {isCheck: 1, shopId: this.goodInfo.shop.shopId, userId: this.YCuserId}
                 })
             },
             // 获取商品信息
@@ -265,12 +265,15 @@
                 }, (res) => {
                     this.showLogin = false;
                     this.$comm.setStorge('YCshareUserId', res.data.id);
-                    this.YCuserId = res.id;
+                    this.YCuserId = res.data.id;
                     this.$dialog.toast({
                         mes: '登录成功！',
                         timeout: 1000,
                         callback: () => {
                             this.showSelect = true;
+                            this.tipNumber();
+                            this.buyType = 2;
+                            this.setSelectDefault()
                         }
                     })
                 }, (err) => {
@@ -457,7 +460,7 @@
                 this.$comm.setStorge('preOrderSpecId', specId);
                 this.$comm.setStorge('preOrderGoodsType', goodsType);
                 this.$comm.setStorge('preOrderGoodsNum', goodsNum);
-                this.$comm.setStorge('preOrderUserId', this.userId);
+                this.$comm.setStorge('preOrderUserId', this.YCuserId);
 
             }
 

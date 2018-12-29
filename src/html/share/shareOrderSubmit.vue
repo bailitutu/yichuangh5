@@ -70,7 +70,7 @@
             }
         },
         created() {
-            this.userId = this.$comm.getStorge('YCuserId') || '';
+            this.userId = this.$comm.getStorge('preOrderUserId') || '';
             this.goodsId = this.$comm.getStorge('preOrderGoodsId') || '';
             this.specId = this.$comm.getStorge('preOrderSpecId') || '';
             this.goodsType =  this.$comm.getStorge('preOrderGoodsType') || '0';

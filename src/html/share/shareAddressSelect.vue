@@ -37,7 +37,7 @@
             }
         },
         created(){
-            this.userId = this.$comm.getUrlKey('userId') || '';
+            this.userId = this.$comm.getStorge('preOrderUserId') || '';
             this.getAddressList();
         },
         methods: {
