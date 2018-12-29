@@ -65,7 +65,8 @@
                 hasAddress: false,
                 addressInfo: {},
                 goodsInfo: {},
-                num: 1
+                num: 1,
+                goodsType:''
             }
         },
         created() {

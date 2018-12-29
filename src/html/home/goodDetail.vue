@@ -256,7 +256,6 @@
                             timeout: '1500'
                         });
                         this.showSelect = false;
-                        this.buyGoodsInfo = {}
                     }, (err) => {
                         this.$dialog.toast({
                             mes: err.msg,

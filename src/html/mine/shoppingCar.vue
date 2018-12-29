@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="car_right">
-                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.type == '1' ? 1 : item.allStock"  v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id" :callback="numChange"></yd-spinner>
+                    <yd-spinner  unit="1" width="1.6rem" height="0.45rem" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id" :callback="numChange"></yd-spinner>
                     <!--<yd-spinner  unit="1" width="1.6rem" height="0.45rem" :max="item.type == '1' ? 1 : item.allStock" v-if="item.supplierGoodsDetail" v-model="item.number"   :val="item.id"></yd-spinner>-->
                 </div>
             </li>
@@ -107,7 +107,6 @@
                         this.list = carList.map((item) =>{
                             if(item.supplierGoodsDetail){
                                 item.selected = false;
-                                item.allStock = Math.floor(item.supplierGoodsDetail.stock) +  Math.floor(item.number);
                             }
                             return item;
                         })
@@ -132,35 +131,32 @@
                     item.selected = !this.selectAll
                 })
             },
-            // 商品数量加减 (去掉)
+            // 商品数量加减
             numChange(itemId,val){
                 this.list.forEach((item)=>{
                     if(item.id == itemId){
-                        if( item.type == '1' ){
+                        if( item.type == '1' &&  val > 1){
                             this.$dialog.toast({
                                 mes:'特价商品只能买一件哦~',
                                 timeout: 1000,
-                                opts:()=>{
+                                callback:()=>{
                                     item.number = 1;
                                 }
                             });
                             return;
-                        }
-
-                        if(val == item.allStock){
+                        }else if(item.supplierGoodsDetail && val > item.supplierGoodsDetail.stock){
                             this.$dialog.confirm({
-                                mes:'当前库存商品只有'+ item.allStock +'件哦~',
+                                mes:'当前库存商品只有'+ item.supplierGoodsDetail.stock +'件哦~',
                                 timeout:1500,
                                 opts:()=>{
-                                    this.changeGoodNumber(itemId,val);
+                                    item.number = item.supplierGoodsDetail.stock;
                                 }
                             });
-                        }else{
+                        }else if( item.type != '1'){
                             this.changeGoodNumber(itemId,val);
                         }
                     }
-                })
-                return;
+                });
             },
 
             // 修改商品数量
