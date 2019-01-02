@@ -74,6 +74,8 @@
             this.goodsId = this.$comm.getStorge('preOrderGoodsId') || '';
             this.specId = this.$comm.getStorge('preOrderSpecId') || '';
             this.goodsType =  this.$comm.getStorge('preOrderGoodsType') || '0';
+            this.storeName = this.$comm.getStorge('preOrderStoreName') || '';
+            this.storePhone = this.$comm.getStorge('preOrderStorePhone') || '';
             this.num = this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
             this.YCshareOpenId = this.$comm.getStorge('YCshareOpenId') || ''
@@ -160,7 +162,11 @@
                     goodsId: this.goodsId,
                     userId: this.userId,
                     specId: this.specId,
+                    spec: this.goodsInfo.spec,
                     goodsType: this.goodsType,
+                    photoPath: this.goodsInfo.goodsImg,
+                    storePhone: this.storePhone,
+                    storeName: this.storeName,
                     price: this.goodsInfo.price,
                     goodsNum: this.num,
                     goodsName: this.goodsInfo.goodsName,

@@ -245,11 +245,16 @@
                 if (this.buyType == 1) {
                     this.$http.post('/type/addShoppingCart', {
                         goodsId: this.shopGoodsId,
+                        goodsName: this.goodInfo.goods ? this.goodInfo.goods.goodsName : '',
                         userId: this.userId,
                         number: this.buyNumber,
                         type: this.goodInfo.goods ? this.goodInfo.goods.type : '0',
                         specId: this.buyGoodsInfo.id,
-                        price: this.buyGoodsInfo.price
+                        price: this.buyGoodsInfo.price,
+                        spec: this.buyGoodsInfo.spec,
+                        photoPath: this.goodInfo.goodsImg ? this.goodInfo.goodsImg[0] : '',
+                        storeName: this.goodInfo.shop ? this.goodInfo.shop.shopName : '',
+                        storePhone: this.goodInfo.shop ? this.goodInfo.shop.shopPhone : ''
                     }, (res) => {
                         this.$dialog.toast({
                             mes: '加入购物车成功！',
@@ -269,17 +274,20 @@
                     let specId = this.buyGoodsInfo.id;
                     let goodsNum = this.buyNumber;
                     let goodsType = this.goodInfo.goods ? this.goodInfo.goods.type : '0';
+                    let shopName = this.goodInfo.shop ? this.goodInfo.shop.shopName : '';
+                    let shopPhone = this.goodInfo.shop ? this.goodInfo.shop.shopPhone : '';
                     // 跳转结算页面
                     this.$router.push({
                         path: 'orderSubmit',
                         query: {userId: this.userId, goodsId: goodsId, specId: specId, num: goodsNum}
                     });
-                    this.$comm.setStorge('YCOrderBackUrl', this.$route.fullPath);
                     this.$comm.setStorge('preOrderGoodsId', goodsId);
                     this.$comm.setStorge('preOrderSpecId', specId);
                     this.$comm.setStorge('preOrderGoodsType', goodsType);
                     this.$comm.setStorge('preOrderGoodsNum', goodsNum);
                     this.$comm.setStorge('preOrderUserId', this.userId);
+                    this.$comm.setStorge('preOrderStoreName', shopName);
+                    this.$comm.setStorge('preOrderStorePhone',shopPhone);
                 }
 
             }

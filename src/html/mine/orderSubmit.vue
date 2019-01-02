@@ -1,6 +1,6 @@
 <template>
-    <yd-layout >
-        <div class="nav_bar" >
+    <yd-layout>
+        <div class="nav_bar">
             <div class="nav_cell" @click.prevent="backPage">
                 <yd-navbar-back-icon></yd-navbar-back-icon>
             </div>
@@ -15,10 +15,11 @@
             </yd-button>
         </div>
         <yd-cell-group v-else>
-            <yd-cell-item arrow class="list_item" :href="{ path:'/addressSelect',query:{ userId:userId}}" type="link" >
+            <yd-cell-item arrow class="list_item" :href="{ path:'/addressSelect',query:{ userId:userId}}" type="link">
                 <div slot="left">
                     <p> {{addressInfo.consignee}} <span class="ml-40">{{addressInfo.phone}}</span></p>
-                    <div class="address_detail">{{addressInfo.provinceName + addressInfo.cityName + addressInfo.areaName+addressInfo.detailAddr}}
+                    <div class="address_detail">{{addressInfo.provinceName + addressInfo.cityName +
+                        addressInfo.areaName+addressInfo.detailAddr}}
                     </div>
                 </div>
                 <span slot="right"></span>
@@ -66,20 +67,24 @@
                 addressInfo: {},
                 goodsInfo: {},
                 num: 1,
-                goodsType: ''
+                goodsType: '',
+                storeName: '',
+                storePhone: ''
             }
         },
         created() {
             this.userId = this.$comm.getStorge('preOrderUserId') || '';
             this.goodsId = this.$comm.getStorge('preOrderGoodsId') || '';
             this.specId = this.$comm.getStorge('preOrderSpecId') || '';
+            this.storeName = this.$comm.getStorge('preOrderStoreName') || '';
+            this.storePhone = this.$comm.getStorge('preOrderStorePhone') || '';
             this.goodsType = this.$comm.getStorge('preOrderGoodsType') || '0';
             this.num = this.$comm.getUrlKey('num') || this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
         },
         methods: {
             // 返回
-            backPage(){
+            backPage() {
                 this.$router.back(-1);
             },
             // 获取页面信息
@@ -144,8 +149,7 @@
                 this.$router.push({path: 'addressSelect', query: {userId: this.userId}})
             },
             // 提交订单
-            submitFn(){
-
+            submitFn() {
                 if (!this.hasAddress) {
                     this.$dialog.toast({
                         mes: '请选择收货地址！',
@@ -159,7 +163,11 @@
                     goodsId: this.goodsId,
                     userId: this.userId,
                     specId: this.specId,
+                    spec: this.goodsInfo.spec,
                     price: this.goodsInfo.price,
+                    photoPath: this.goodsInfo.goodsImg,
+                    storePhone: this.storePhone,
+                    storeName: this.storeName,
                     goodsNum: this.num,
                     goodsName: this.goodsInfo.goodsName,
                     totalPrice: this.totalMoney,
@@ -179,7 +187,7 @@
                     let errMsg = err.msg ? err.msg : '下单失败，请重试！';
                     this.$dialog.toast({
                         mes: errMsg,
-                        timeout:1500
+                        timeout: 1500
                     })
                     return;
                 })
@@ -189,28 +197,31 @@
 </script>
 
 <style scoped>
-    .nav_bar{
-        width:100%;
-        height:1rem;
+    .nav_bar {
+        width: 100%;
+        height: 1rem;
         background: #fff;
         line-height: 1rem;
         position: relative;
     }
-    .nav_cell{
-        width:1rem;
-        padding-left:0.24rem;
+
+    .nav_cell {
+        width: 1rem;
+        padding-left: 0.24rem;
         position: absolute;
-        top:0;
-        left:0;
+        top: 0;
+        left: 0;
         z-index: 10;
     }
-    .nav_title{
+
+    .nav_title {
         width: 100%;
-        height:1rem;
+        height: 1rem;
         text-align: center;
-        font-size:0.3rem;
+        font-size: 0.3rem;
         line-height: 1rem;
     }
+
     .address_item {
         height: 52px;
         width: 100%;
