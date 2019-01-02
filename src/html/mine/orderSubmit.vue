@@ -78,6 +78,7 @@
             this.specId = this.$comm.getStorge('preOrderSpecId') || '';
             this.storeName = this.$comm.getStorge('preOrderStoreName') || '';
             this.storePhone = this.$comm.getStorge('preOrderStorePhone') || '';
+            this.storeCode = this.$comm.getStorge('preOrderStoreCode') || '';
             this.goodsType = this.$comm.getStorge('preOrderGoodsType') || '0';
             this.num = this.$comm.getUrlKey('num') || this.$comm.getStorge('preOrderGoodsNum') || '';
             this.getPageData();
@@ -168,6 +169,7 @@
                     photoPath: this.goodsInfo.goodsImg,
                     storePhone: this.storePhone,
                     storeName: this.storeName,
+                    storeCode: this.storeCode,
                     goodsNum: this.num,
                     goodsName: this.goodsInfo.goodsName,
                     totalPrice: this.totalMoney,

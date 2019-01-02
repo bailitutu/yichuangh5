@@ -253,6 +253,7 @@
                         price: this.buyGoodsInfo.price,
                         spec: this.buyGoodsInfo.spec,
                         photoPath: this.goodInfo.goodsImg ? this.goodInfo.goodsImg[0] : '',
+                        storeCode: this.goodInfo.shop ? this.goodInfo.shop.shopCode : '',
                         storeName: this.goodInfo.shop ? this.goodInfo.shop.shopName : '',
                         storePhone: this.goodInfo.shop ? this.goodInfo.shop.shopPhone : ''
                     }, (res) => {
@@ -276,6 +277,7 @@
                     let goodsType = this.goodInfo.goods ? this.goodInfo.goods.type : '0';
                     let shopName = this.goodInfo.shop ? this.goodInfo.shop.shopName : '';
                     let shopPhone = this.goodInfo.shop ? this.goodInfo.shop.shopPhone : '';
+                    let shopCode = this.goodInfo.shop ? this.goodInfo.shop.shopCode : '';
                     // 跳转结算页面
                     this.$router.push({
                         path: 'orderSubmit',
@@ -288,6 +290,7 @@
                     this.$comm.setStorge('preOrderUserId', this.userId);
                     this.$comm.setStorge('preOrderStoreName', shopName);
                     this.$comm.setStorge('preOrderStorePhone',shopPhone);
+                    this.$comm.setStorge('preOrderStoreCode',shopCode);
                 }
 
             }
