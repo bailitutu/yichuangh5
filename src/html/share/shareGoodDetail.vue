@@ -192,7 +192,7 @@
         },
         created() {
             this.swiperHeight = window.innerWidth + 'px'; //设置轮播图高度
-            this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '231225779655151616';
+            this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '241050760891207680';
             this.getGoodDetail();
         },
         methods: {

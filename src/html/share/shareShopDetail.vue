@@ -90,8 +90,8 @@
                 shopInfo: {}, //店铺信息
                 goodList: [], //商品列表
                 presellList: [], //预售列表
-                userCode:'',
-                userOpenId:''
+                userCode: '',
+                userOpenId: ''
             }
         },
         created() {
@@ -100,7 +100,7 @@
             if (this.isCheck) {
                 this.getConcerShop();
             }
-            if(this.userCode){
+            if (this.userCode) {
                 this.getOpenId();
             }
         },
@@ -123,16 +123,35 @@
                     if (!res.data.shopBackground) {
                         res.data.shopBackground = this.bgImg;
                     }
+                    if (res.data && res.data.isOpen == 0) {
+                        let that = this;
+                        this.$dialog.toast({
+                            mes: '该店铺已停封！',
+                            timeout: 1500,
+                            callback() {
+                                that.backPage();
+                            }
+                        })
+                        return;
+                    }
                     this.shopInfo = res.data;
-
+                }, (err) => {
+                    let that = this;
+                    this.$dialog.toast({
+                        mes: err.msg,
+                        timeout: 1500,
+                        callback() {
+                            that.backPage();
+                        }
+                    })
                 })
             },
             // 获取openId
-            getOpenId(){
+            getOpenId() {
                 this.$http.post('/weixin/getOpenId', {
                     code: this.userCode
                 }, (res) => {
-                    this.$comm.setStorge('YCshareOpenId',res.data.openId)
+                    this.$comm.setStorge('YCshareOpenId', res.data.openId)
                 })
             },
             // 获取商品列表
@@ -230,7 +249,6 @@
         align-items: center;
     }
 
-
     /*店铺信息*/
     .shop_top {
         height: 4.2rem;
@@ -274,6 +292,7 @@
         align-items: flex-start;
         margin-left: 1px;
     }
+
     .tabLabel {
         overflow-y: auto;
         padding: 0.1rem 0.2rem;

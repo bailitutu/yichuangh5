@@ -35,9 +35,9 @@
             }
         },
         created() {
-            this.userId = this.$comm.getUrlKey('userId') || '224418465157615616';
+            this.userId = this.$comm.getUrlKey('userId') || '240377469021065216';
             this.getAddressList();
-            this.isH5 = this.$comm.getUrlKey('isH5')|| undefined;
+            this.isH5 = this.$comm.getUrlKey('isH5') || undefined;
         },
         methods: {
             // 页面回跳

@@ -165,8 +165,6 @@
                 if(this.$comm.isAndroid()){
                     window.location.href = 'http://www.yichuangpt.com/static/goShareShop.html?title='+ info.title +'&imgUrl='+ info.imgUrl +'&url='+ info.url + '&conntent='+ info.conntent
                 }else if(this.$comm.isIos()){
-                    let url = info.url;
-                    console.log(url)
                     goShare(info);
                 }
             },
@@ -232,7 +230,6 @@
                         })
                         this.isConcern = false;
                         return;
-
                     }
                 })
             },
@@ -247,15 +244,26 @@
                         res.data.shopBackground = this.bgImg;
                     }
                     if( res.data.isOpen == 0){
+                        let that = this;
                         this.$dialog.toast({
                             mes:'该店铺已停封！',
-                            timeout:1500
+                            timeout:1500,
+                            callback(){
+                                that.backPage();
+                            }
                         })
-                        this.backPage();
                         return;
                     }
                     this.shopInfo = res.data;
-
+                },(err)=>{
+                    let that = this;
+                    this.$dialog.toast({
+                        mes:err.msg,
+                        timeout:1500,
+                        callback(){
+                            that.backPage();
+                        }
+                    })
                 })
             },
             // 获取商品列表

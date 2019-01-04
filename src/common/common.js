@@ -22,7 +22,7 @@ function normalBack() {
 }
 
 // APP下载
-function downLoadApp(){
+function downLoadApp() {
     if (isAndroid()) {
         window.location.href = 'https://www.baidu.com/?tn=22073068_2_oem_dg'
     } else if (isIos()) {
@@ -30,6 +30,27 @@ function downLoadApp(){
     }
 }
 
+//设置localStorage
+function setLocalStorage(key, value, seconds) {
+    if (!value) localStorage.removeItem(key);
+    else {
+        let seconds = (seconds || 30 * 60) * 1000; // 资源有效期，默认保留30分钟
+        let exp = new Date();
+        localStorage[key] = JSON.stringify({value: value, expires: exp.getTime() + seconds});
+    }
+};
+
+
+// 获取LocalStorage
+function getLocalStorage(key) {
+    if (localStorage.length > 0 && localStorage[key]) {
+        let o = JSON.parse(localStorage[key]);
+        localStorage.removeItem(key)
+        if (!o || o.expires < Date.now()) return null;
+        if (o && o.expires >= Date.now()) setLocalStorage(key, o.value);
+        return o.value
+    } else return null;
+};
 
 export default {
     isAndroid: isAndroid,
@@ -39,10 +60,10 @@ export default {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
     },
     setStorge: function (key, val) {
-        localStorage.setItem(key, JSON.stringify(val));
+        setLocalStorage(key, val);
     },
     getStorge: function (key) {
-        return JSON.parse(localStorage.getItem(key))
+        return getLocalStorage(key)
     },
     removeStorge: function (key) {
         localStorage.removeItem(key)
