@@ -24,9 +24,9 @@ function normalBack() {
 // APP下载
 function downLoadApp() {
     if (isAndroid()) {
-        window.location.href = 'https://www.baidu.com/?tn=22073068_2_oem_dg'
+        window.location.href = 'https://sj.qq.com/myapp/detail.htm?apkName=com.tianer.yichuang'
     } else if (isIos()) {
-        window.location.href = 'https://www.baidu.com/?tn=22073068_2_oem_dg'
+        window.location.href = 'https://itunes.apple.com/cn/app/%E8%A1%A3%E5%88%9B/id1444581337?mt=8'
     }
 }
 
