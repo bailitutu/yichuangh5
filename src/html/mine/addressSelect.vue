@@ -20,12 +20,13 @@
                 </div>
             </yd-cell-item>
         </yd-cell-group>
-        <white-page v-if="addressList.length > 0 ? false :true"></white-page>
         <div class="plr-10 mt-10">
             <yd-button size="large" type="primary" class='foo_btn' bgcolor="#fff" @click.native="addressManage">
                 地址管理
             </yd-button>
         </div>
+        <white-page v-if="addressList.length > 0 ? false :true"></white-page>
+
     </div>
 </template>
 
