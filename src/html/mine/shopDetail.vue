@@ -127,10 +127,10 @@
             }
         },
         created() {
-            this.shopId = this.$comm.getUrlKey('shopId') || '230849995971104768';
+            this.shopId = this.$comm.getUrlKey('shopId') || '240389639612010496';
             this.isCheck = this.$comm.getUrlKey('isCheck') == '1' ? true : false ;
             this.isBanner = this.$comm.getUrlKey('isBanner') == '1' ? true : false ;
-            this.userId = this.$comm.getUrlKey('userId') || '230178710307868672';
+            this.userId = this.$comm.getUrlKey('userId') || '240389639612010496';
             if (this.isCheck) {
                 this.getConcerShop();
             }
@@ -160,7 +160,7 @@
                     title:this.shopInfo.shopName,
                     imgUrl:'https://appyichuang.oss-cn-hangzhou.aliyuncs.com/img/test/23ece438-1382-4a19-ad60-3802b681dc14-1545126120466',
                     url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc9353d09a0d1f197&redirect_uri=http%3a%2f%2fwww.yichuangpt.com%2fstatic%2fh5%2fdist%2findex.html%23%2fshareShopDetail&response_type=code&scope=snsapi_base&state='+ this.shopInfo.id+'#wechat_redirect',
-                    conntent:this.shopInfo.shopInfo
+                    conntent:this.shopInfo.shopInfo || '个性设计定制平台'
                 };
                 if(this.$comm.isAndroid()){
                     window.location.href = 'http://www.yichuangpt.com/static/goShareShop.html?title='+ info.title +'&imgUrl='+ info.imgUrl +'&url='+ info.url + '&conntent='+ info.conntent
