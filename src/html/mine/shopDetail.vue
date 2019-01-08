@@ -39,7 +39,7 @@
             <div class="shop_right" v-show="!isCheck">
                 <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn" @click.native="upperFn">上架
                 </yd-button>
-                <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn" @click.native="presellFn">预售
+                <yd-button size="small" bgcolor="#fff" color="#333" class="shop_btn" @click.native="presellFn">原创
                 </yd-button>
             </div>
         </div>
@@ -69,7 +69,7 @@
                 <white-page v-if="goodList.length ==  0 ? true :false"></white-page>
 
             </yd-tab-panel>
-            <yd-tab-panel label="预售" :style="{ height: scrollHeight + 'px'}"
+            <yd-tab-panel label="原创" :style="{ height: scrollHeight + 'px'}"
                           style="overflow-y:auto;padding:0.1rem 0.2rem;">
                 <ul class="pre_list">
                     <li v-for="(cell, pre) in presellList" :key="pre" class="hasBra" @click="checkPresell(cell.id)"
@@ -127,7 +127,7 @@
             }
         },
         created() {
-            this.shopId = this.$comm.getUrlKey('shopId') || '240389639612010496';
+            this.shopId = this.$comm.getUrlKey('shopId') || '240619245908660224';
             this.isCheck = this.$comm.getUrlKey('isCheck') == '1' ? true : false ;
             this.isBanner = this.$comm.getUrlKey('isBanner') == '1' ? true : false ;
             this.userId = this.$comm.getUrlKey('userId') || '240389639612010496';

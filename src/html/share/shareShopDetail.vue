@@ -42,7 +42,7 @@
                 <white-page v-if="goodList.length ==  0 ? true :false"></white-page>
 
             </yd-tab-panel>
-            <yd-tab-panel label="预售" :style="{ height: scrollHeight + 'px'}"
+            <yd-tab-panel label="原创" :style="{ height: scrollHeight + 'px'}"
                           style="overflow-y:auto;padding:0.1rem 0.2rem;">
                 <ul class="pre_list">
                     <li v-for="(cell, pre) in presellList" :key="pre" class="hasBra" @click="checkPresell(cell.id)"
