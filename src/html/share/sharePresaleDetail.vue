@@ -116,7 +116,7 @@
             }
         },
         created() {
-            this.preSaleId = this.$comm.getUrlKey('preSaleId') || '224409962628124672';
+            this.preSaleId = this.$comm.getUrlKey('preSaleId') || '';
             this.pageType = this.$comm.getUrlKey('pageType') || '';
             if (!this.pageType) { //预售
                 this.getPresaleData();
@@ -163,12 +163,23 @@
             *  type:预售为2,创意为1
             * */
             getShareList(status, type) {
-                this.$http.post('/preSale/commentInfo', {
-                    userId: '1111111111111',
-                    preSaleId: this.preSaleId,
-                    status: status,
-                    type: type
-                }, (res) => {
+                let postData = {};
+                if (type == 2) {
+                    postData = {
+                        userId: '1111111111111',
+                        preSaleId: this.preSaleId,
+                        status: status,
+                        type: type
+                    }
+                } else {
+                    postData = {
+                        userId: '1111111111111',
+                        originalityId: this.preSaleId,
+                        status: status,
+                        type: type
+                    }
+                }
+                this.$http.post('/preSale/commentInfo', postData, (res) => {
                     switch (status) {
                         case 1:
                             this.commandList = res.data;
