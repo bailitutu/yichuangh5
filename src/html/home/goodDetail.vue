@@ -21,8 +21,7 @@
             <div class="good_info_head" v-if="goodInfo.goods">
                 <p class="fs-16 c-333 goods_name">{{goodInfo.goods.goodsName}}</p>
                 <div v-if="goodInfo.detail">
-                    <p class="good_prop">价格 <span class="fs-16 c-money">￥{{goodInfo.detail[0].price || '0.00'}}</span>
-                    </p>
+                    <p class="good_prop">价格 <span class="fs-16 c-money">￥{{goodInfo.detail[0].price || '0.00'}}</span>   <span class="fs-12 c-b0 ml-10">   销量: {{goodInfo.goods.salesVolume || 0}}</span> </p>
                     <div class="good_attr">
                         <span class="good_label">{{goodInfo.goods.label}}</span>
                         <span class="good_baotui">七天包退</span>
@@ -105,7 +104,7 @@
         },
         mounted() {
             this.swiperHeight = window.innerWidth + 'px'; //设置轮播图高度
-            this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '238112524891983872';
+            this.shopGoodsId = this.$comm.getUrlKey('shopGoodsId') || '243586504285360128';
             this.userId = this.$comm.getUrlKey('userId') || '230178710307868672';
             this.getGoodDetail();
         },

@@ -18,7 +18,7 @@
             <div class="good_info_head" >
                 <p class="fs-16 c-333 goods_name">{{goodInfo.goodsName}}</p>
                 <div v-if="goodInfo.spec">
-                    <p class="good_prop">价格 <span class="fs-16 c-money">￥{{goodInfo.spec.price || 0.00}} </span><span class="c-money plr-10">佣金：￥{{goodInfo.spec.commission }}</span></p>
+                    <p class="good_prop">价格 <span class="fs-16 c-money">￥{{goodInfo.spec.price || 0.00}} </span><span class="c-money plr-10">佣金：￥{{goodInfo.spec.commission }}</span>  <span class="fs-12 c-b0 plr-10">销量: {{goodInfo.salesVolume}}</span></p>
                     <div class="good_attr">
                         <span class="good_label">{{goodInfo.label}}</span>
                         <span class="good_baotui">七天包退</span>
