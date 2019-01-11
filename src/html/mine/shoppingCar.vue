@@ -60,7 +60,7 @@
                 let allPrice = 0
                 this.list.map((item) => {
                     if (item.selected) {
-                        allPrice += Math.floor(parseFloat(item.price) * 100 * parseFloat(item.number)) / 100
+                        allPrice += Math.round(parseFloat(item.price) * 100 * parseFloat(item.number)) / 100
                     }
                 });
                 return allPrice.toFixed(2)
@@ -88,7 +88,7 @@
             }
         },
         created(){
-            this.userId = this.$comm.getUrlKey('userId') || '230178710307868672'; // 少莲：230178710307868672 //开郑：235310783729373184
+            this.userId = this.$comm.getUrlKey('userId') || ''; // 少莲：240377538520682496 //开郑：235310783729373184
 
             this.getCarList();
         },

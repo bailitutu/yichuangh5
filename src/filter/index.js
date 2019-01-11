@@ -6,7 +6,7 @@ let myFilter = {
         if (!val) {
             return '0.00'
         } else {
-            return Math.floor(parseFloat(val * 100)) / 100
+            return Math.round(parseFloat(val * 100)) / 100
         }
     },
     /**
@@ -19,7 +19,7 @@ let myFilter = {
      * 转换为金额 99.99 形式
      */
     transMoney: function (val) {
-        return Math.floor(parseFloat(val * 100)) / 100
+        return Math.round(parseFloat(val * 100)) / 100
     }
 }
 

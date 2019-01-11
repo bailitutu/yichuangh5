@@ -140,7 +140,7 @@
                     detailId: this.specId
                 }, (res) => {
                     this.goodsInfo = res.data;
-                    this.totalMoney = (Math.floor(parseFloat(this.goodsInfo.price) * 100 * parseFloat(this.num)) / 100).toFixed(2);
+                    this.totalMoney = (Math.round(parseFloat(this.goodsInfo.price) * 100 * parseFloat(this.num)) / 100).toFixed(2);
                 })
             },
             // 选择收货地址

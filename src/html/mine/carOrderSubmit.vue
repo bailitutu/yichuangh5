@@ -130,7 +130,7 @@
                 this.orderInfoList.map((item)=>{
                     carts.push(item.id);
                     totalNum += parseFloat(item.number);
-                    totalPrice += Math.floor(parseFloat(item.price) * 100 * parseFloat(item.number)) / 100;
+                    totalPrice += Math.round(parseFloat(item.price) * 100 * parseFloat(item.number)) / 100;
                 });
                 this.carts = carts;
                 this.totalNum = totalNum;
