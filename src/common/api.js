@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 let http = axios.create({
-    // baseURL: 'http://192.168.10.63/api',
-    baseURL: 'http://www.yichuangpt.com/api',
+    baseURL: 'http://192.168.10.63/api',
+    
     withCredentials: false,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
